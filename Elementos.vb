@@ -2,7 +2,7 @@ Option Explicit
 
 Sub el()
 
-Dim gcadDoc As Object, gcadUtil As Object, gcadModel As Object, Eje1 As Object, blockRef As Object
+Dim AcadDoc As Object, AcadUtil As Object, AcadModel As Object, Eje1 As Object, blockRef As Object
 Dim rutags As String, rutamp As String, rutator As String, rutaperf As String, rutampacc As String, rutacuña As String, capa As String, rutass As String, rutaps As String, rutapl As String, tipo As String, naranja As String, plalz As String, rutap6 As String
 Dim plalzslim As String, plalzmp As String, slim As String, mp As String, ps As String, gs As String
 Dim Gcapa As Object
@@ -13,27 +13,27 @@ Dim perf As String, jr As String, perfil As String, p As String
 Dim lon As String, alma450 As String, alma As String, junta As String, plalzp As String
 
 
-Set gcadDoc = GetObject(, "gcad.Application").ActiveDocument
-Set gcadModel = gcadDoc.ModelSpace
-Set gcadUtil = gcadDoc.Utility
+Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
+Set AcadModel = AcadDoc.ModelSpace
+Set AcadUtil = AcadDoc.Utility
 
 Ncapa = "Mega"
-Set Gcapa = gcadDoc.Layers.Add(Ncapa)
+Set Gcapa = AcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 Ncapa = "Granshor"
-Set Gcapa = gcadDoc.Layers.Add(Ncapa)
+Set Gcapa = AcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 150
 Ncapa = "Pipeshor4S"
-Set Gcapa = gcadDoc.Layers.Add(Ncapa)
+Set Gcapa = AcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 7
 Ncapa = "Pipeshor6"
-Set Gcapa = gcadDoc.Layers.Add(Ncapa)
+Set Gcapa = AcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 7
 Ncapa = "Pipeshor4L"
-Set Gcapa = gcadDoc.Layers.Add(Ncapa)
+Set Gcapa = AcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 5
 Ncapa = "Slims"
-Set Gcapa = gcadDoc.Layers.Add(Ncapa)
+Set Gcapa = AcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 
 
@@ -74,8 +74,8 @@ ElseIf tipo = "GS" Then
     tipo = "Gshor"
 ElseIf tipo = "Perfil" Then
     tipo = "Perfil"
-ElseIf tipo = "Tornilleria" Then 
-	Call Anclajes.An()
+ElseIf tipo = "Tornilleria" Then
+    Call Anclajes.an
 Else
 GoTo terminar
 End If
@@ -96,7 +96,7 @@ If tipo = "Perfil" Then
         End If
     End If
 ElseIf tipo = "Tornilleria" Then
-	GoTo terminar
+    GoTo terminar
 
 Else
     kwordList = "Planta Alzado"
@@ -155,9 +155,9 @@ If tipo = "Pshor_6" Then
 End If
 
 If tipo = "Gshor" Then
-    kwordList = "6000 4500 3000 1500 750"
+    kwordList = "6000 4500 3000 1500 750 GS2-6000"
     ThisDrawing.Utility.InitializeUserInput 0, kwordList
-    gs = ThisDrawing.Utility.GetKeyword(vbLf & "Viga: [6000/4500/3000/1500/750]")
+    gs = ThisDrawing.Utility.GetKeyword(vbLf & "Viga: [6000/4500/3000/1500/750/GS2-6000]")
     If gs = "" Then gs = "6000"
 End If
 
@@ -210,13 +210,13 @@ End If
 
 
 'Geometría:
-punto1 = gcadUtil.GetPoint(, "1º Punto: ")
-punto2 = gcadUtil.GetPoint(punto1, "2º Punto: ")
+punto1 = AcadUtil.GetPoint(, "1º Punto: ")
+punto2 = AcadUtil.GetPoint(punto1, "2º Punto: ")
 P1(0) = punto1(0): P1(1) = punto1(1): P1(2) = punto1(2)
 P2(0) = punto2(0): P2(1) = punto2(1): P2(2) = punto2(2)
 
-Set Eje1 = gcadModel.AddLine(P1, P2)
-ANG = gcadUtil.AngleFromXAxis(P1, P2)
+Set Eje1 = AcadModel.AddLine(P1, P2)
+ANG = AcadUtil.AngleFromXAxis(P1, P2)
 
 x = P2(0) - P1(0)
 y = P2(1) - P1(1)
@@ -231,11 +231,11 @@ If tipo = "SSlimsG" Then
       
     If slim = "0360OS" Then
         slim = rutass & "SS" & plalzslim & "0360Offsecc.dwg"
-        Set blockRef = gcadModel.InsertBlock(P1, slim, Xs, Ys, Zs, ANG)
+        Set blockRef = AcadModel.InsertBlock(P1, slim, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Slims"
     Else
         slim = rutass & "SS" & plalzslim & slim & naranja & ".dwg"
-        Set blockRef = gcadModel.InsertBlock(P1, slim, Xs, Ys, Zs, ANG)
+        Set blockRef = AcadModel.InsertBlock(P1, slim, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Slims"
     End If
     
@@ -243,18 +243,18 @@ ElseIf tipo = "MSHOR" Then
 
     If mp = "fusible" Then
         mp = rutamp & "Mshor90" & plalzmp & "fusible.dwg"
-        Set blockRef = gcadModel.InsertBlock(P1, mp, Xs, Ys, Zs, ANG)
+        Set blockRef = AcadModel.InsertBlock(P1, mp, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Mega"
     Else
         mp = rutamp & "Mshor" & mp & plalzmp & ".dwg"
-        Set blockRef = gcadModel.InsertBlock(P1, mp, Xs, Ys, Zs, ANG)
+        Set blockRef = AcadModel.InsertBlock(P1, mp, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Mega"
     End If
 
 ElseIf tipo = "Pshor_4L" Then
 
     ps = rutapl & "PL_" & ps & "_" & plalz & ".dwg"
-    Set blockRef = gcadModel.InsertBlock(P1, ps, Xs, Ys, Zs, ANG)
+    Set blockRef = AcadModel.InsertBlock(P1, ps, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Pipeshor4L"
 
 ElseIf tipo = "Pshor_4S" Then
@@ -262,13 +262,13 @@ ElseIf tipo = "Pshor_4S" Then
     If ps = "560" Then
     
     ps = rutaps & "PS_" & ps & ".dwg"
-    Set blockRef = gcadModel.InsertBlock(P1, ps, Xs, Ys, Zs, ANG)
+    Set blockRef = AcadModel.InsertBlock(P1, ps, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Pipeshor4S"
     
     Else
     
     ps = rutaps & "PS_" & ps & "_" & plalz & ".dwg"
-    Set blockRef = gcadModel.InsertBlock(P1, ps, Xs, Ys, Zs, ANG)
+    Set blockRef = AcadModel.InsertBlock(P1, ps, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Pipeshor4S"
     
     End If
@@ -277,42 +277,48 @@ ElseIf tipo = "Pshor_6" Then
 
     If ps = "Cono" Then
         ps = rutap6 & "P6_cono.dwg"
-        Set blockRef = gcadModel.InsertBlock(P1, ps, Xs, Ys, Zs, ANG)
+        Set blockRef = AcadModel.InsertBlock(P1, ps, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Pipeshor6"
     Else
         ps = rutap6 & "P6_" & ps & "_" & plalz & ".dwg"
-        Set blockRef = gcadModel.InsertBlock(P1, ps, Xs, Ys, Zs, ANG)
+        Set blockRef = AcadModel.InsertBlock(P1, ps, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Pipeshor6"
     End If
 
 ElseIf tipo = "Gshor" Then
-
-    gs = rutags & "GS_" & gs & "_" & plalz & ".dwg"
-    Set blockRef = gcadModel.InsertBlock(P1, gs, Xs, Ys, Zs, ANG)
+    
+    If gs = "GS2-6000" Then
+        gs = rutags & "GS_2_6000_" & plalz & ".dwg"
+    Else
+        gs = rutags & "GS_" & gs & "_" & plalz & ".dwg"
+    End If
+    
+    
+    Set blockRef = AcadModel.InsertBlock(P1, gs, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Granshor"
     
 ElseIf tipo = "Perfil" Then
     If perf = "300" Then
         If jr = "Sí" Or jr = "" Then
             p = rutaperf & "Incye_300JR_" & lon & "_" & plalzp & ".dwg"
-            Set blockRef = gcadModel.InsertBlock(P1, p, Xs, Ys, Zs, ANG)
+            Set blockRef = AcadModel.InsertBlock(P1, p, Xs, Ys, Zs, ANG)
             blockRef.Layer = "Perfiles"
         ElseIf jr = "No" Then
             p = rutaperf & "Incye_300_" & lon & "_" & plalzp & ".dwg"
-            Set blockRef = gcadModel.InsertBlock(P1, p, Xs, Ys, Zs, ANG)
+            Set blockRef = AcadModel.InsertBlock(P1, p, Xs, Ys, Zs, ANG)
             blockRef.Layer = "Perfiles"
         End If
     ElseIf perf = "450" Then
         p = rutaperf & "Incye_450" & alma & "JR_" & lon & "_" & plalzp & ".dwg"
-        Set blockRef = gcadModel.InsertBlock(P1, p, Xs, Ys, Zs, ANG)
+        Set blockRef = AcadModel.InsertBlock(P1, p, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Perfiles"
     ElseIf perf = "600" Then
         p = rutaperf & "Incye_600" & junta & "_4000_" & plalzp & ".dwg"
-        Set blockRef = gcadModel.InsertBlock(P1, p, Xs, Ys, Zs, ANG)
+        Set blockRef = AcadModel.InsertBlock(P1, p, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Perfiles"
     ElseIf perf = "Bisagra" Then
             p = rutaperf & "BIS_DIN.dwg"
-            Set blockRef = gcadModel.InsertBlock(P1, p, Xs, Ys, Zs, ANG)
+            Set blockRef = AcadModel.InsertBlock(P1, p, Xs, Ys, Zs, ANG)
             blockRef.Layer = "Perfiles"
             blockRef.Update
             blockRef.Explode
@@ -336,17 +342,17 @@ Sub InsertDynamicBlock_2()
 
     ' Declara variables para el documento y el bloque
     Dim gcadApp As Object
-    Dim gcadDoc As Object
+    Dim AcadDoc As Object
     Dim gcadBlock As String
     
     ' Intenta obtener la instancia activa de gcad
     On Error Resume Next
-    Set gcadApp = GetObject(, "gcad.Application")
+    Set gcadApp = GetObject(, "Autocad.Application")
     On Error GoTo 0
     
     ' Si no hay instancia activa, crea una nueva
     If gcadApp Is Nothing Then
-        Set gcadApp = CreateObject("gcad.Application")
+        Set gcadApp = CreateObject("Autocad.Application")
     End If
     
     ' Verifica si hay documentos abiertos
@@ -356,7 +362,7 @@ Sub InsertDynamicBlock_2()
     End If
     
     ' Establece el documento activo
-    Set gcadDoc = gcadApp.ActiveDocument
+    Set AcadDoc = gcadApp.ActiveDocument
     
     ' Especifica la ruta del archivo del bloque
     Dim blockName As String
@@ -381,7 +387,7 @@ Sub InsertDynamicBlock_2()
     
     ' Inserta el bloque en el modelo del espacio
     Dim newBlockRef As Object
-    Set newBlockRef = gcadDoc.ModelSpace.InsertBlock(insertPoint, blockName, 1#, 1#, 1#, 0#)
+    Set newBlockRef = AcadDoc.ModelSpace.InsertBlock(insertPoint, blockName, 1#, 1#, 1#, 0#)
     
     ' Actualiza los atributos del bloque insertado
     Dim att As Object
@@ -397,7 +403,7 @@ Sub InsertDynamicBlock_2()
     Next att
     
     ' Regenera el dibujo para que se muestren los cambios
-    gcadDoc.Regen acAllViewports
+    AcadDoc.Regen acAllViewports
 
 End Sub
 
@@ -406,17 +412,17 @@ Sub InsertDynamicBlock()
 
     ' Declara variables para el documento y el bloque
     Dim gcadApp As Object
-    Dim gcadDoc As Object
+    Dim AcadDoc As Object
     Dim gcadBlock As Object
     
     ' Intenta obtener la instancia activa de gcad
     On Error Resume Next
-    Set gcadApp = GetObject(, "gcad.Application")
+    Set gcadApp = GetObject(, "Autocad.Application")
     On Error GoTo 0
     
     ' Si no hay instancia activa, crea una nueva
     If gcadApp Is Nothing Then
-        Set gcadApp = CreateObject("gcad.Application")
+        Set gcadApp = CreateObject("Autocad.Application")
     End If
     
     ' Verifica si hay documentos abiertos
@@ -426,7 +432,7 @@ Sub InsertDynamicBlock()
     End If
     
     ' Establece el documento activo
-    Set gcadDoc = gcadApp.ActiveDocument
+    Set AcadDoc = gcadApp.ActiveDocument
     
     ' Especifica la ruta del archivo del bloque
     Dim blockName As String
@@ -441,7 +447,7 @@ Sub InsertDynamicBlock()
     
     ' Inserta el bloque en el modelo del espacio
     Dim newBlockRef As Object
-    Set newBlockRef = gcadDoc.ModelSpace.InsertBlock(insertPoint, blockName, 1#, 1#, 1#, 0#)
+    Set newBlockRef = AcadDoc.ModelSpace.InsertBlock(insertPoint, blockName, 1#, 1#, 1#, 0#)
     
     ' Actualiza los atributos del bloque insertado
     Dim att As GcadDynamicBlockReferenceProperty
@@ -457,7 +463,7 @@ Sub InsertDynamicBlock()
     Next att
     
     ' Regenera el dibujo para que se muestren los cambios
-    gcadDoc.Regen acAllViewports
+    AcadDoc.Regen acAllViewports
 
 End Sub
 
