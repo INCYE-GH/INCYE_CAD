@@ -1,19 +1,19 @@
 Public Sub GetUserSelection()
     
-    Dim AcadDoc As Object, AcadUtil As Object, AcadModel As Object
-    Dim ss As AcadSelectionSet
-    Dim block As AcadBlockReference
+    Dim GcadDoc As Object, GcadUtil As Object, GcadModel As Object
+    Dim ss As GcadSelectionSet
+    Dim block As GcadBlockReference
             
-    Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
-    Set AcadModel = AcadDoc.ModelSpace
-    Set AcadUtil = AcadDoc.Utility
+    Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+    Set GcadModel = GcadDoc.ModelSpace
+    Set GcadUtil = GcadDoc.Utility
 
     On Error Resume Next
-    Set ss = AcadDoc.SelectionSets("SS1")
+    Set ss = GcadDoc.SelectionSets("SS1")
     On Error GoTo 0
 
     If ss Is Nothing Then
-        Set ss = AcadDoc.SelectionSets.Add("SS1")
+        Set ss = GcadDoc.SelectionSets.Add("SS1")
     Else
         ss.Clear
     End If
@@ -37,7 +37,7 @@ End Sub
 Public Sub sust()
     On Error GoTo terminar
 
-    Dim ss As AcadSelectionSet
+    Dim ss As GcadSelectionSet
     On Error Resume Next
     Set ss = ThisDrawing.SelectionSets("SS1")
     On Error GoTo 0
@@ -60,7 +60,7 @@ Public Sub sust()
     End If
     
     ' Paso 3: Obtener el bloque seleccionado
-    Dim block_inicial2 As AcadBlockReference
+    Dim block_inicial2 As GcadBlockReference
     Set block_inicial2 = ss.Item(0)
     
     Dim nombre_inicial2 As String
@@ -88,22 +88,22 @@ terminar:
     
 End Sub
 
-Sub DivPS(ss As AcadSelectionSet)
+Sub DivPS(ss As GcadSelectionSet)
 
-    Dim AcadDoc As Object, AcadUtil As Object, AcadModel As Object, blockRef As Object
+    Dim GcadDoc As Object, GcadUtil As Object, GcadModel As Object, blockRef As Object
     Dim M20x90_16 As String
-    Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
-    Set AcadModel = AcadDoc.ModelSpace
-    Set AcadUtil = AcadDoc.Utility
+    Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+    Set GcadModel = GcadDoc.ModelSpace
+    Set GcadUtil = GcadDoc.Utility
     ' Paso 1: Crear un nuevo conjunto de selección
 
     
         rutator = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\TORNILLERIA\"
         
-        M20x90_16 = rutator & "16M20X90.dwg"
+        M20x90_16 = rutator & "16-M20X90.dwg"
     
-    Dim block As AcadBlockReference
-    Dim block_inicial As AcadBlockReference
+    Dim block As GcadBlockReference
+    Dim block_inicial As GcadBlockReference
     Set block_inicial = ss.Item(0)
     
     Dim nombre_inicial As String
@@ -179,11 +179,11 @@ Sub DivPS(ss As AcadSelectionSet)
     'i = 0
     'For i = 0 To ss.Count
        ' Set block = ss.Item(i)
-    Dim obj As AcadEntity
+    Dim obj As GcadEntity
     For Each obj In ss
-        If TypeOf obj Is AcadBlockReference Then
+        If TypeOf obj Is GcadBlockReference Then
             Set block = obj
-        ElseIf TypeOf obj Is AcadLine Then
+        ElseIf TypeOf obj Is GcadLine Then
             GoTo terminar
         End If
         Dim effectiveName As String
@@ -206,110 +206,110 @@ Sub DivPS(ss As AcadSelectionSet)
         If effectiveName = "PL_6000_Alzado" Then
             block.Delete
             If ui_pl6000 = "1" Or ui_pl6000 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl4500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl4500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 4500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 4500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_pl6000 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl3000_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl3000_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 3000 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 3000 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl3000_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl3000_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 3000 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 3000 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_pl6000 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "PL_6000_Planta" Then
             block.Delete
             If ui_pl6000 = "1" Or ui_pl6000 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl4500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl4500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 4500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 4500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_pl6000 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl3000_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl3000_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 3000 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 3000 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl3000_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl3000_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 3000 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 3000 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_pl6000 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
@@ -318,198 +318,198 @@ Sub DivPS(ss As AcadSelectionSet)
         ElseIf effectiveName = "PL_4500_Planta" Then
             block.Delete
             If ui_pl4500 = "1" Or ui_pl4500 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl3000_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl3000_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 3000 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 3000 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_pl4500 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_pl4500 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl3000_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl3000_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 3000 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 3000 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_pl4500 = "4" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "PL_4500_Alzado" Then
             block.Delete
             If ui_pl4500 = "1" Or ui_pl4500 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl3000_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl3000_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 3000 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 3000 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_pl4500 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_pl4500 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl3000_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl3000_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 3000 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 3000 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_pl4500 = "4" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
@@ -518,86 +518,86 @@ Sub DivPS(ss As AcadSelectionSet)
         ElseIf effectiveName = "PL_3000_Planta" Then
             block.Delete
             If ui_pl3000 = "1" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_pl3000 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "PL_3000_Alzado" Then
             block.Delete
             If ui_pl3000 = "1" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_pl3000 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
@@ -606,30 +606,30 @@ Sub DivPS(ss As AcadSelectionSet)
         ElseIf effectiveName = "PL_1500_Alzado" Then
             block.Delete
             If ui_pl1500 = "1" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "PL_1500_Planta" Then
             block.Delete
             If ui_pl1500 = "1" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
@@ -639,110 +639,110 @@ Sub DivPS(ss As AcadSelectionSet)
         ElseIf effectiveName = "PS_6000_Alzado" Then
             block.Delete
             If ui_ps6000 = "1" Or ui_ps6000 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps4500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps4500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 4500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 4500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ps6000 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps3000_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps3000_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 3000 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 3000 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps3000_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps3000_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 3000 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 3000 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ps6000 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "PS_6000_Planta" Then
             block.Delete
             If ui_ps6000 = "1" Or ui_ps6000 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps4500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps4500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 4500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 4500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ps6000 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps3000_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps3000_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 3000 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 3000 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps3000_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps3000_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 3000 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 3000 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ps6000 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
@@ -751,198 +751,198 @@ Sub DivPS(ss As AcadSelectionSet)
         ElseIf effectiveName = "PS_4500_Planta" Then
             block.Delete
             If ui_ps4500 = "1" Or ui_ps4500 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps3000_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps3000_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 3000 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 3000 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ps4500 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ps4500 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps3000_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps3000_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 3000 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 3000 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ps4500 = "4" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "PS_4500_Alzado" Then
             block.Delete
             If ui_ps4500 = "1" Or ui_ps4500 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps3000_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps3000_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 3000 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 3000 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ps4500 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ps4500 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps3000_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps3000_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 3000 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 3000 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ps4500 = "4" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
@@ -951,86 +951,86 @@ Sub DivPS(ss As AcadSelectionSet)
         ElseIf effectiveName = "PS_3000_Planta" Then
             block.Delete
             If ui_ps3000 = "1" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ps3000 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "PS_3000_Alzado" Then
             block.Delete
             If ui_ps3000 = "1" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ps3000 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
@@ -1039,30 +1039,30 @@ Sub DivPS(ss As AcadSelectionSet)
         ElseIf effectiveName = "PS_1500_Alzado" Then
             block.Delete
             If ui_ps1500 = "1" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "PS_1500_Planta" Then
             block.Delete
             If ui_ps1500 = "1" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
@@ -1070,28 +1070,28 @@ Sub DivPS(ss As AcadSelectionSet)
         ' Pipeshor 4S 560
         ElseIf effectiveName = "PS_560" Then
             block.Delete
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps280_al, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps280_al, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Pipeshor4S"
             insertionPoint(0) = insertionPoint(0) + 280 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 280 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps280_al, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps280_al, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Pipeshor4S"
             insertionPoint(0) = insertionPoint(0) + 280 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 280 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
         ElseIf effectiveName = "PS_560_Planta" Then
             block.Delete
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps280_pl, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps280_pl, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Pipeshor4S"
             insertionPoint(0) = insertionPoint(0) + 280 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x90_16, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ps280_pl, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps280_pl, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Pipeshor4S"
             insertionPoint(0) = insertionPoint(0) + 280 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
         End If
@@ -1105,15 +1105,15 @@ terminar:
     ss.Delete
 End Sub
 
-Sub DivSS(ss As AcadSelectionSet)
+Sub DivSS(ss As GcadSelectionSet)
 
-    Dim AcadDoc As Object, AcadUtil As Object, AcadModel As Object, blockRef As Object
-    Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
-    Set AcadModel = AcadDoc.ModelSpace
-    Set AcadUtil = AcadDoc.Utility
+    Dim GcadDoc As Object, GcadUtil As Object, GcadModel As Object, blockRef As Object
+    Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+    Set GcadModel = GcadDoc.ModelSpace
+    Set GcadUtil = GcadDoc.Utility
     ' Paso 1: Crear un nuevo conjunto de selección
-    Dim block As AcadBlockReference
-    Dim block_inicial As AcadBlockReference
+    Dim block As GcadBlockReference
+    Dim block_inicial As GcadBlockReference
     Set block_inicial = ss.Item(0)
     
     Dim nombre_inicial As String
@@ -1170,7 +1170,7 @@ Sub DivSS(ss As AcadSelectionSet)
     rutat = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\TORNILLERIA\"
     
     
-    M16x40 = rutat & "4M16X40.dwg"
+    M16x40 = rutat & "4-M16X40.dwg"
 
 
 
@@ -1203,11 +1203,11 @@ Sub DivSS(ss As AcadSelectionSet)
 
 
 
-    Dim obj As AcadEntity
+    Dim obj As GcadEntity
     For Each obj In ss
-        If TypeOf obj Is AcadBlockReference Then
+        If TypeOf obj Is GcadBlockReference Then
             Set block = obj
-        ElseIf TypeOf obj Is AcadLine Then
+        ElseIf TypeOf obj Is GcadLine Then
             GoTo terminar
         End If
         Dim effectiveName As String
@@ -1233,220 +1233,220 @@ Sub DivSS(ss As AcadSelectionSet)
         If effectiveName = "SS3600" Then
             block.Delete
             If ui_ss3600 = "1" Or ui_ss3600 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss2700, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss2700, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 2700 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 2700 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0900, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0900, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss3600 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss1800, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss1800, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 1800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss1800, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss1800, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 1800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss3600 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0900, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0900, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0900, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0900, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0900, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0900, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0900, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0900, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "SS3600N" Then ' NARANJA 3600
             block.Delete
             If ui_ss3600 = "1" Or ui_ss3600 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss2700n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss2700n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 2700 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 2700 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0900n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0900n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss3600 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss1800n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss1800n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 1800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss1800n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss1800n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 1800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss3600 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0900n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0900n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0900n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0900n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0900n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0900n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0900n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0900n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "SSPL3600" Then ' GALVANIZADA 3600 PLANTA
             block.Delete
             If ui_ss3600 = "1" Or ui_ss3600 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl2700, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl2700, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 2700 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 2700 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0900, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0900, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss3600 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl1800, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl1800, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 1800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl1800, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl1800, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 1800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss3600 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0900, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0900, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0900, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0900, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0900, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0900, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0900, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0900, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "SSPL3600N" Then ' NARANJA 3600 PLANTA
             block.Delete
             If ui_ss3600 = "1" Or ui_ss3600 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl2700n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl2700n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 2700 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 2700 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0900n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0900n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss3600 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl1800n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl1800n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 1800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl1800n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl1800n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 1800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss3600 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0900n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0900n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0900n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0900n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0900n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0900n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0900n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0900n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
@@ -1456,252 +1456,252 @@ Sub DivSS(ss As AcadSelectionSet)
         ElseIf effectiveName = "SS2700" Then
             block.Delete
             If ui_ss2700 = "1" Or ui_ss2700 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss1800, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss1800, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 1800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0900, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0900, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss2700 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0900, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0900, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0900, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0900, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0900, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0900, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss2700 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0720, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0720, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 720 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 720 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0720, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0720, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 720 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 720 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0720, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0720, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 720 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 720 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0540, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0540, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 540 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 540 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "SS2700N" Then ' NARANJA 2700
             block.Delete
             If ui_ss2700 = "1" Or ui_ss2700 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss1800n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss1800n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 1800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0900n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0900n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss2700 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0900n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0900n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0900n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0900n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0900n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0900n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss2700 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0720n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0720n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 720 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 720 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0720n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0720n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 720 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 720 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0720n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0720n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 720 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 720 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0540n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0540n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 540 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 540 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "SSPL2700" Then ' GALVANIZADA 2700 PLANTA
             block.Delete
             If ui_ss2700 = "1" Or ui_ss2700 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl1800, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl1800, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 1800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0900, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0900, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss2700 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0900, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0900, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0900, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0900, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0900, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0900, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss2700 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0720, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0720, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 720 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 720 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0720, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0720, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 720 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 720 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0720, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0720, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 720 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 720 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0540, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0540, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 540 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 540 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "SSPL2700N" Then ' NARANJA 2700 PLANTA
             block.Delete
             If ui_ss2700 = "1" Or ui_ss2700 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl1800n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl1800n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 1800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0900n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0900n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss2700 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0900n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0900n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0900n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0900n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0900n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0900n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss2700 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0720n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0720n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 720 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 720 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0720n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0720n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 720 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 720 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0720n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0720n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 720 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 720 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0540n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0540n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 540 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 540 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
@@ -1710,140 +1710,140 @@ Sub DivSS(ss As AcadSelectionSet)
         ElseIf effectiveName = "SS1800" Then
             block.Delete
             If ui_ss1800 = "1" Or ui_ss1800 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0900, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0900, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0900, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0900, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss1800 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0720, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0720, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 720 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 720 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0540, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0540, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 540 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 540 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0540, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0540, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 540 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 540 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "SS1800N" Then ' NARANJA 1800
             block.Delete
             If ui_ss1800 = "1" Or ui_ss1800 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0900n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0900n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0900n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0900n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss1800 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0720n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0720n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 720 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 720 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0540n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0540n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 540 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 540 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0540n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0540n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 540 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 540 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "SSPL1800" Then ' GALVANIZADA 1800 PLANTA
             block.Delete
             If ui_ss1800 = "1" Or ui_ss1800 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0900, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0900, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0900, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0900, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss1800 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0720, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0720, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 720 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 720 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0540, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0540, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 540 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 540 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0540, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0540, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 540 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 540 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "SSPL1800N" Then ' NARANJA 1800 PLANTA
             block.Delete
             If ui_ss1800 = "1" Or ui_ss1800 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0900n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0900n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0900n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0900n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss1800 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0720n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0720n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 720 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 720 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0540n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0540n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 540 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 540 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0540n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0540n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 540 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 540 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
@@ -1852,220 +1852,220 @@ Sub DivSS(ss As AcadSelectionSet)
         ElseIf effectiveName = "SS0900" Then
             block.Delete
             If ui_ss900 = "1" Or ui_ss900 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0720, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0720, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 720 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 720 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0180, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0180, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss900 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0360, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0360, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 360 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 360 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0360, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0360, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 360 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 360 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0180, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0180, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss900 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0720, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0720, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 720 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 720 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0090, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0090, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0090, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0090, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "SS0900N" Then ' NARANJA 900
             block.Delete
             If ui_ss900 = "1" Or ui_ss900 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0720n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0720n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 720 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 720 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0180n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0180n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss900 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0360n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0360n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 360 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 360 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0360n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0360n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 360 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 360 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0180n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0180n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss900 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0720n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0720n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 720 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 720 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0090n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0090n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0090n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0090n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "SSPL0900" Then ' GALVANIZADA 900 PLANTA
             block.Delete
             If ui_ss900 = "1" Or ui_ss900 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0720, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0720, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 720 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 720 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0180, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0180, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss900 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0360, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0360, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 360 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 360 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0360, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0360, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 360 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 360 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0180, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0180, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss900 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0720, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0720, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 720 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 720 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0090, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0090, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0090, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0090, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "SSPL0900N" Then ' NARANJA 900 PLANTA
             block.Delete
             If ui_ss900 = "1" Or ui_ss900 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0720n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0720n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 720 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 720 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0180n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0180n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss900 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0360n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0360n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 360 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 360 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0360n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0360n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 360 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 360 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0180n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0180n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss900 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0720n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0720n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 720 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 720 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0090n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0090n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0090n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0090n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
@@ -2074,108 +2074,108 @@ Sub DivSS(ss As AcadSelectionSet)
         ElseIf effectiveName = "SS0720" Then
             block.Delete
             If ui_ss720 = "1" Or ui_ss720 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0360, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0360, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 360 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 360 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0360, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0360, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 360 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 360 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss720 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0540, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0540, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 540 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 540 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0180, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0180, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "SS0720N" Then ' NARANJA 720
             block.Delete
             If ui_ss720 = "1" Or ui_ss720 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0360n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0360n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 360 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 360 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0360n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0360n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 360 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 360 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss720 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0540n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0540n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 540 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 540 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0180n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0180n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "SSPL0720" Then ' GALVANIZADA 720 PLANTA
             block.Delete
             If ui_ss720 = "1" Or ui_ss720 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0360, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0360, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 360 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 360 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0360, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0360, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 360 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 360 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss720 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0540, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0540, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 540 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 540 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0180, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0180, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "SSPL0720N" Then ' NARANJA 720 PLANTA
             block.Delete
             If ui_ss720 = "1" Or ui_ss720 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0360n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0360n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 360 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 360 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0360n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0360n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 360 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 360 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss720 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0540n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0540n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 540 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 540 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0180n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0180n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
@@ -2184,140 +2184,140 @@ Sub DivSS(ss As AcadSelectionSet)
         ElseIf effectiveName = "SS0540" Then
             block.Delete
             If ui_ss540 = "1" Or ui_ss540 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0360, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0360, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 360 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 360 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0180, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0180, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss540 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0360, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0360, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 360 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 360 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0090, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0090, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0090, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0090, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "SS0540N" Then ' NARANJA 540
             block.Delete
             If ui_ss540 = "1" Or ui_ss540 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0360n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0360n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 360 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 360 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0180n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0180n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss540 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0360n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0360n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 360 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 360 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0090n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0090n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0090n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0090n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "SSPL0540" Then ' GALVANIZADA 540 PLANTA
             block.Delete
             If ui_ss540 = "1" Or ui_ss540 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0360, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0360, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 360 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 360 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0180, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0180, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss540 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0360, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0360, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 360 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 360 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0090, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0090, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0090, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0090, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "SSPL0540N" Then ' NARANJA 540 PLANTA
             block.Delete
             If ui_ss540 = "1" Or ui_ss540 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0360n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0360n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 360 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 360 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0180n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0180n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss540 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0360n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0360n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 360 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 360 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0090n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0090n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0090n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0090n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
@@ -2326,172 +2326,172 @@ Sub DivSS(ss As AcadSelectionSet)
         ElseIf effectiveName = "SS0360" Then
             block.Delete
             If ui_ss360 = "1" Or ui_ss360 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0180, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0180, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0180, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0180, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss360 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0090, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0090, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0090, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0090, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0090, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0090, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0090, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0090, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "SS0360N" Then ' NARANJA 360
             block.Delete
             If ui_ss360 = "1" Or ui_ss360 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0180n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0180n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0180n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0180n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss360 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0090n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0090n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0090n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0090n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0090n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0090n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0090n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0090n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "SSPL0360" Then ' GALVANIZADA 360 PLANTA
             block.Delete
             If ui_ss360 = "1" Or ui_ss360 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0180, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0180, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0180, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0180, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss360 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0090, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0090, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0090, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0090, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0090, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0090, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0090, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0090, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "SSPL0360N" Then ' NARANJA 360 PLANTA
             block.Delete
             If ui_ss360 = "1" Or ui_ss360 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0180n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0180n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0180n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0180n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ss360 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0090n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0090n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0090n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0090n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0090n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0090n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0090n, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0090n, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
@@ -2499,54 +2499,54 @@ Sub DivSS(ss As AcadSelectionSet)
         ' SuperSlim 180 GALVANIZADA -----------
         ElseIf effectiveName = "SS0180" Then
             block.Delete
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0090, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0090, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Slims"
             insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0090, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0090, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Slims"
             insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
         ElseIf effectiveName = "SS0180N" Then ' NARANJA 180
             block.Delete
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0090n, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0090n, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Slims"
             insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ss0090n, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0090n, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Slims"
             insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
         ElseIf effectiveName = "SSPL0180" Then ' GALVANIZADA 180 PLANTA
             block.Delete
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0090, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0090, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Slims"
             insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0090, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0090, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Slims"
             insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
         ElseIf effectiveName = "SSPL0180N" Then ' NARANJA 180 PLANTA
             block.Delete
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0090n, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0090n, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Slims"
             insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_sspl0090n, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0090n, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Slims"
             insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
 
@@ -2557,20 +2557,20 @@ terminar:
     ss.Delete
 End Sub
 
-Sub DivTN(ss As AcadSelectionSet)
+Sub DivTN(ss As GcadSelectionSet)
 
-    Dim AcadDoc As Object, AcadUtil As Object, AcadModel As Object, blockRef As Object
-    Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
-    Set AcadModel = AcadDoc.ModelSpace
-    Set AcadUtil = AcadDoc.Utility
+    Dim GcadDoc As Object, GcadUtil As Object, GcadModel As Object, blockRef As Object
+    Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+    Set GcadModel = GcadDoc.ModelSpace
+    Set GcadUtil = GcadDoc.Utility
     ' Paso 1: Crear un nuevo conjunto de selección
 
     
     Dim M16x40 As String
     
 
-    Dim block As AcadBlockReference
-    Dim block_inicial As AcadBlockReference
+    Dim block As GcadBlockReference
+    Dim block_inicial As GcadBlockReference
     Set block_inicial = ss.Item(0)
     
     Dim nombre_inicial As String
@@ -2612,17 +2612,17 @@ Sub DivTN(ss As AcadSelectionSet)
     b_tn400_pl = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\Tensor80x4\Tensor80x4PL_400.dwg"
     ruta2 = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\TORNILLERIA\"
     
-    M16x40 = ruta2 & "4M16X40.dwg"
+    M16x40 = ruta2 & "4-M16X40.dwg"
 
     'Dim i As Long
     'i = 0
     'For i = 0 To ss.Count
        ' Set block = ss.Item(i)
-    Dim obj As AcadEntity
+    Dim obj As GcadEntity
     For Each obj In ss
-        If TypeOf obj Is AcadBlockReference Then
+        If TypeOf obj Is GcadBlockReference Then
             Set block = obj
-        ElseIf TypeOf obj Is AcadLine Then
+        ElseIf TypeOf obj Is GcadLine Then
             GoTo terminar
         End If
         Dim effectiveName As String
@@ -2645,78 +2645,78 @@ Sub DivTN(ss As AcadSelectionSet)
         If effectiveName = "Tensor80x4_3200" Then
             block.Delete
             If ui_tn3200 = "1" Or ui_tn3200 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn1600_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn1600_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 1600 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1600 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn1600_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn1600_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 1600 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1600 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_tn3200 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn2800_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn2800_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 2800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 2800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn400_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn400_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_tn3200 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn2400_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn2400_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 2400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 2400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn800_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn800_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "Tensor80x4PL_3200" Then
             block.Delete
             If ui_tn3200 = "1" Or ui_tn3200 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn1600_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn1600_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 1600 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1600 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn1600_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn1600_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 1600 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1600 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_tn3200 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn2800_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn2800_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 2800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 2800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn400_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn400_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_tn3200 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn2400_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn2400_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 2400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 2400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn800_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn800_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
@@ -2725,94 +2725,94 @@ Sub DivTN(ss As AcadSelectionSet)
         ElseIf effectiveName = "Tensor80x4_2800" Then
             block.Delete
             If ui_tn2800 = "1" Or ui_tn2800 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn2400_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn2400_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 2400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 2400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn400_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn400_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_tn2800 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn2000_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn2000_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 2000 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 2000 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn800_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn800_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_tn2800 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn1600_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn1600_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 1600 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1600 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn800_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn800_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn400_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn400_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "Tensor80x4PL_2800" Then
             block.Delete
             If ui_tn2800 = "1" Or ui_tn2800 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn2400_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn2400_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 2400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 2400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn400_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn400_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_tn2800 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn2000_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn2000_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 2000 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 2000 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn800_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn800_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_tn2800 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn1600_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn1600_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 1600 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1600 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn800_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn800_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn400_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn400_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
@@ -2821,94 +2821,94 @@ Sub DivTN(ss As AcadSelectionSet)
         ElseIf effectiveName = "Tensor80x4_2400" Then
             block.Delete
             If ui_tn2400 = "1" Or ui_tn2400 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn2000_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn2000_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 2000 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 2000 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn400_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn400_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_tn2400 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn1600_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn1600_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 1600 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1600 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn800_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn800_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_tn2400 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn800_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn800_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn800_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn800_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn800_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn800_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "Tensor80x4PL_2400" Then
             block.Delete
             If ui_tn2400 = "1" Or ui_tn2400 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn2000_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn2000_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 2000 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 2000 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn400_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn400_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_tn2400 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn1600_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn1600_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 1600 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1600 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn800_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn800_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_tn2400 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn800_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn800_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn800_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn800_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn800_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn800_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
@@ -2917,70 +2917,70 @@ Sub DivTN(ss As AcadSelectionSet)
         ElseIf effectiveName = "Tensor80x4_2000" Then
             block.Delete
             If ui_tn2000 = "1" Or ui_tn2000 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn1600_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn1600_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 1600 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1600 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn400_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn400_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_tn2000 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn800_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn800_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn800_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn800_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn400_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn400_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "Tensor80x4PL_2000" Then
             block.Delete
             If ui_tn2000 = "1" Or ui_tn2000 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn1600_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn1600_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 1600 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1600 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn400_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn400_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_tn2000 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn800_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn800_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn800_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn800_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn400_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn400_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
@@ -2990,86 +2990,86 @@ Sub DivTN(ss As AcadSelectionSet)
         ElseIf effectiveName = "Tensor80x4_1600" Then
             block.Delete
             If ui_tn1600 = "1" Or ui_tn1600 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn800_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn800_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
                 blockRef.Layer = "Slims"
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn800_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn800_al, Xs, Ys, Zs, orientation)
                 insertionPoint(0) = insertionPoint(0) + 800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_tn1600 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn400_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn400_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn400_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn400_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn400_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn400_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn400_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn400_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "Tensor80x4PL_1600" Then
             block.Delete
             If ui_tn1600 = "1" Or ui_tn1600 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn800_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn800_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn800_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn800_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_tn1600 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn400_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn400_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn400_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn400_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn400_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn400_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn400_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn400_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
@@ -3077,28 +3077,28 @@ Sub DivTN(ss As AcadSelectionSet)
         ' Tubo 800
         ElseIf effectiveName = "Tensor80x4_800" Then
             block.Delete
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn400_al, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn400_al, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Slims"
             insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
             blockRef.Layer = "Nonplot"
             blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn400_al, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn400_al, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Slims"
             insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
         ElseIf effectiveName = "Tensor80x4PL_800" Then
             block.Delete
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn400_pl, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn400_pl, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Slims"
             insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, M16x40, Xs, Ys, Zs, ANG)
             blockRef.Layer = "Nonplot"
             blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_tn400_pl, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn400_pl, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Slims"
             insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
         End If
@@ -3112,17 +3112,17 @@ terminar:
     ss.Delete
 End Sub
 
-Sub DivGS(ss As AcadSelectionSet)
+Sub DivGS(ss As GcadSelectionSet)
 
-    Dim AcadDoc As Object, AcadUtil As Object, AcadModel As Object, blockRef As Object
-    Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
-    Set AcadModel = AcadDoc.ModelSpace
-    Set AcadUtil = AcadDoc.Utility
+    Dim GcadDoc As Object, GcadUtil As Object, GcadModel As Object, blockRef As Object
+    Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+    Set GcadModel = GcadDoc.ModelSpace
+    Set GcadUtil = GcadDoc.Utility
     
     Dim M20x60 As String
     
-    Dim block As AcadBlockReference
-    Dim block_inicial As AcadBlockReference
+    Dim block As GcadBlockReference
+    Dim block_inicial As GcadBlockReference
     Set block_inicial = ss.Item(0)
     
     Dim nombre_inicial As String
@@ -3159,18 +3159,18 @@ Sub DivGS(ss As AcadSelectionSet)
     
     ruta2 = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\TORNILLERIA\"
     
-    M20x60 = ruta2 & "12M20X60.dwg"
+    M20x60 = ruta2 & "12-M20X60.dwg"
     
 
     'Dim i As Long
     'i = 0
     'For i = 0 To ss.Count
        ' Set block = ss.Item(i)
-    Dim obj As AcadEntity
+    Dim obj As GcadEntity
     For Each obj In ss
-        If TypeOf obj Is AcadBlockReference Then
+        If TypeOf obj Is GcadBlockReference Then
             Set block = obj
-        ElseIf TypeOf obj Is AcadLine Then
+        ElseIf TypeOf obj Is GcadLine Then
             GoTo terminar
         End If
         Dim effectiveName As String
@@ -3193,112 +3193,112 @@ Sub DivGS(ss As AcadSelectionSet)
         If effectiveName = "GS_6000_alzado" Then
             block.Delete
             If ui_gs6000 = "1" Or ui_gs6000 = "a" Or ui_gs6000 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs4500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs4500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 4500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 4500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
                 
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
                 
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_gs6000 = "2" Or ui_gs6000 = "b" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs3000_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs3000_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 3000 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 3000 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs3000_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs3000_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 3000 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 3000 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_gs6000 = "3" Or ui_gs6000 = "c" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "GS_6000_planta" Then
             block.Delete
             If ui_gs6000 = "1" Or ui_gs6000 = "a" Or ui_gs6000 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs4500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs4500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 4500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 4500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_gs6000 = "2" Or ui_gs6000 = "b" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs3000_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs3000_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 3000 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 3000 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs3000_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs3000_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 3000 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 3000 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_gs6000 = "3" Or ui_gs6000 = "c" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
@@ -3307,70 +3307,70 @@ Sub DivGS(ss As AcadSelectionSet)
         ElseIf effectiveName = "GS_4500_alzado" Then
             block.Delete
             If ui_gs4500 = "1" Or ui_gs4500 = "A" Or ui_gs4500 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs3000_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs3000_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 3000 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 3000 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_gs4500 = "2" Or ui_gs4500 = "B" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "GS_4500_planta" Then
             block.Delete
             If ui_gs4500 = "1" Or ui_gs4500 = "A" Or ui_gs4500 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs3000_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs3000_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 3000 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 3000 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_gs4500 = "2" Or ui_gs4500 = "B" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
@@ -3379,86 +3379,86 @@ Sub DivGS(ss As AcadSelectionSet)
         ElseIf effectiveName = "GS_3000_alzado" Then
             block.Delete
             If ui_gs3000 = "1" Or ui_gs3000 = "" Or ui_gs3000 = "A" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs1500_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs1500_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_gs3000 = "2" Or ui_gs3000 = "B" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs750_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs750_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "GS_3000_planta" Then
             block.Delete
             If ui_gs3000 = "1" Or ui_gs3000 = "A" Or ui_gs3000 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs1500_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs1500_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_gs3000 = "2" Or ui_gs3000 = "B" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs750_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs750_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
@@ -3466,28 +3466,28 @@ Sub DivGS(ss As AcadSelectionSet)
         ' GS 1500
         ElseIf effectiveName = "GS_1500_alzado" Then
             block.Delete
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs750_al, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs750_al, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Granshor"
             insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Nonplot"
             blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs750_al, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs750_al, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Granshor"
             insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
         ElseIf effectiveName = "GS_1500_planta" Then
             block.Delete
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs750_pl, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs750_pl, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Granshor"
             insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Nonplot"
             blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_gs750_pl, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs750_pl, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Granshor"
             insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
         End If
@@ -3501,16 +3501,16 @@ terminar:
     ss.Delete
 End Sub
 
-Sub DivLS(ss As AcadSelectionSet)
+Sub DivLS(ss As GcadSelectionSet)
 
-    Dim AcadDoc As Object, AcadUtil As Object, AcadModel As Object, blockRef As Object
-    Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
-    Set AcadModel = AcadDoc.ModelSpace
-    Set AcadUtil = AcadDoc.Utility
+    Dim GcadDoc As Object, GcadUtil As Object, GcadModel As Object, blockRef As Object
+    Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+    Set GcadModel = GcadDoc.ModelSpace
+    Set GcadUtil = GcadDoc.Utility
     ' Paso 1: Crear un nuevo conjunto de selección
 
-    Dim block As AcadBlockReference
-    Dim block_inicial As AcadBlockReference
+    Dim block As GcadBlockReference
+    Dim block_inicial As GcadBlockReference
     Set block_inicial = ss.Item(0)
     
     Dim nombre_inicial As String
@@ -3540,11 +3540,11 @@ Sub DivLS(ss As AcadSelectionSet)
     'i = 0
     'For i = 0 To ss.Count
        ' Set block = ss.Item(i)
-    Dim obj As AcadEntity
+    Dim obj As GcadEntity
     For Each obj In ss
-        If TypeOf obj Is AcadBlockReference Then
+        If TypeOf obj Is GcadBlockReference Then
             Set block = obj
-        ElseIf TypeOf obj Is AcadLine Then
+        ElseIf TypeOf obj Is GcadLine Then
             GoTo terminar
         End If
         Dim effectiveName As String
@@ -3567,51 +3567,51 @@ Sub DivLS(ss As AcadSelectionSet)
         If effectiveName = "Lola_2200" Then
             block.Delete
             If ui_ls2200 = "1" Or ui_ls2200 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ls1100_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ls1100_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Lolashor"
                 insertionPoint(0) = insertionPoint(0) + 1100 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1100 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ls1100_al, Xs, Ys, Zs, orientation)
-                'Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ls1100_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ls1100_al, Xs, Ys, Zs, orientation)
+                'Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ls1100_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Lolashor"
                 insertionPoint(0) = insertionPoint(0) + 1100 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1100 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ls2200 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ls550_al, Xs, Ys, Zs, orientation)
-                'Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ls550_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ls550_al, Xs, Ys, Zs, orientation)
+                'Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ls550_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Lolashor"
                 insertionPoint(0) = insertionPoint(0) + 550 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 550 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ls550_al, Xs, Ys, Zs, orientation)
-                'Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ls550_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ls550_al, Xs, Ys, Zs, orientation)
+                'Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ls550_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Lolashor"
                 insertionPoint(0) = insertionPoint(0) + 550 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 550 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ls550_al, Xs, Ys, Zs, orientation)
-                'Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ls550_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ls550_al, Xs, Ys, Zs, orientation)
+                'Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ls550_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Lolashor"
                 insertionPoint(0) = insertionPoint(0) + 550 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 550 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ls550_al, Xs, Ys, Zs, orientation)
-                'Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ls550_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ls550_al, Xs, Ys, Zs, orientation)
+                'Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ls550_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Lolashor"
                 insertionPoint(0) = insertionPoint(0) + 550 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 550 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
         ElseIf effectiveName = "Lola_2200PL" Then
             block.Delete
             If ui_ls2200 = "1" Or ui_ls2200 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ls1100_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ls1100_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Lolashor"
                 insertionPoint(0) = insertionPoint(0) + 1100 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1100 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ls1100_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ls1100_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Lolashor"
                 insertionPoint(0) = insertionPoint(0) + 1100 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1100 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_ls2200 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ls550_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ls550_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Lolashor"
                 insertionPoint(0) = insertionPoint(0) + 550 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 550 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ls550_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ls550_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Lolashor"
                 insertionPoint(0) = insertionPoint(0) + 550 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 550 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ls550_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ls550_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Lolashor"
                 insertionPoint(0) = insertionPoint(0) + 550 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 550 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ls550_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ls550_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Lolashor"
                 insertionPoint(0) = insertionPoint(0) + 550 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 550 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
@@ -3619,18 +3619,18 @@ Sub DivLS(ss As AcadSelectionSet)
         ' LOLASHOR 1100
         ElseIf effectiveName = "Lola_1100" Then
             block.Delete
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ls550_al, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ls550_al, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Lolashor"
             insertionPoint(0) = insertionPoint(0) + 550 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 550 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ls550_al, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ls550_al, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Lolashor"
             insertionPoint(0) = insertionPoint(0) + 550 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 550 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
         ElseIf effectiveName = "Lola_1100PL" Then
             block.Delete
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ls550_pl, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ls550_pl, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Lolashor"
             insertionPoint(0) = insertionPoint(0) + 550 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 550 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_ls550_pl, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ls550_pl, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Lolashor"
             insertionPoint(0) = insertionPoint(0) + 550 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 550 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
         End If
@@ -3646,17 +3646,17 @@ terminar:
 End Sub
 
 
-Sub DivMP(ss As AcadSelectionSet)
+Sub DivMP(ss As GcadSelectionSet)
 
-    Dim AcadDoc As Object, AcadUtil As Object, AcadModel As Object, blockRef As Object
-    Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
-    Set AcadModel = AcadDoc.ModelSpace
-    Set AcadUtil = AcadDoc.Utility
+    Dim GcadDoc As Object, GcadUtil As Object, GcadModel As Object, blockRef As Object
+    Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+    Set GcadModel = GcadDoc.ModelSpace
+    Set GcadUtil = GcadDoc.Utility
     
     Dim M20x60 As String
     
-    Dim block As AcadBlockReference
-    Dim block_inicial As AcadBlockReference
+    Dim block As GcadBlockReference
+    Dim block_inicial As GcadBlockReference
     Set block_inicial = ss.Item(0)
     
     Dim nombre_inicial As String
@@ -3713,17 +3713,17 @@ Sub DivMP(ss As AcadSelectionSet)
 
     ruta2 = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\TORNILLERIA\"
     
-    M20x60 = ruta2 & "4M20X60.dwg"
+    M20x60 = ruta2 & "4-M20X60.dwg"
 
     'Dim i As Long
     'i = 0
     'For i = 0 To ss.Count
        ' Set block = ss.Item(i)
-    Dim obj As AcadEntity
+    Dim obj As GcadEntity
     For Each obj In ss
-        If TypeOf obj Is AcadBlockReference Then
+        If TypeOf obj Is GcadBlockReference Then
             Set block = obj
-        ElseIf TypeOf obj Is AcadLine Then
+        ElseIf TypeOf obj Is GcadLine Then
             GoTo terminar
         End If
         Dim effectiveName As String
@@ -3784,119 +3784,119 @@ Sub DivMP(ss As AcadSelectionSet)
         If effectiveName = "Mshor5400ALZ" Then
             block.Delete
             If ui_mp5400 = "1" Or ui_mp5400 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp2700_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp2700_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 2700 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 2700 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
                 
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
                 
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp2700_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp2700_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 2700 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 2700 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp5400 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp1800_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp1800_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 1800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp1800_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp1800_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 1800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp1800_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp1800_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 1800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp5400 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp2700_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp2700_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 2700 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 2700 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp1800_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp1800_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 1800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp900_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp900_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp5400 = "4" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp5400_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp5400_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
             End If
         ElseIf effectiveName = "Mshor5400PLA" Then
             block.Delete
             If ui_mp5400 = "1" Or ui_mp5400 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp2700_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp2700_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 2700 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 2700 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp2700_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp2700_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 2700 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 2700 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp5400 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp1800_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp1800_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 1800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp1800_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp1800_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 1800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp1800_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp1800_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 1800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp5400 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp2700_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp2700_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 2700 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 2700 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp1800_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp1800_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 1800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp900_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp900_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp5400 = "4" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp5400_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp5400_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
             End If
         
@@ -3904,117 +3904,117 @@ Sub DivMP(ss As AcadSelectionSet)
         ElseIf effectiveName = "Mshor2700ALZ" Then
             block.Delete
             If ui_mp2700 = "1" Or ui_mp2700 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp1800_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp1800_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 1800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp900_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp900_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp2700 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp900_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp900_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp900_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp900_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp900_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp900_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp2700 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp1800_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp1800_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 1800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp450_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp450_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 450 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 450 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp450_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp450_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 450 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 450 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp2700 = "4" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp2700_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp2700_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
             End If
         ElseIf effectiveName = "Mshor2700PLA" Then
             block.Delete
             If ui_mp2700 = "1" Or ui_mp2700 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp1800_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp1800_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 1800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp900_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp900_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp2700 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp900_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp900_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp900_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp900_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp900_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp900_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp2700 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp1800_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp1800_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 1800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp450_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp450_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 450 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 450 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp450_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp450_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 450 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 450 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp2700 = "4" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp2700_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp2700_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
             End If
             
@@ -4023,93 +4023,93 @@ Sub DivMP(ss As AcadSelectionSet)
         ElseIf effectiveName = "Mshor1800ALZ" Then
             block.Delete
             If ui_mp1800 = "1" Or ui_mp1800 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp900_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp900_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp900_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp900_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp1800 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp450_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp450_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 450 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 450 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp450_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp450_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 450 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 450 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp450_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp450_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 450 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 450 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp450_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp450_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 450 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 450 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp1800 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp1800_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp1800_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
             End If
         ElseIf effectiveName = "Mshor1800PLA" Then
             block.Delete
             If ui_mp1800 = "1" Or ui_mp1800 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp900_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp900_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp900_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp900_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp1800 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp450_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp450_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 450 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 450 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp450_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp450_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 450 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 450 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp450_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp450_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 450 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 450 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp450_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp450_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 450 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 450 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp1800 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp1800_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp1800_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
             End If
             
@@ -4117,145 +4117,145 @@ Sub DivMP(ss As AcadSelectionSet)
         ElseIf effectiveName = "Mshor900ALZ" Then
             block.Delete
             If ui_mp900 = "1" Or ui_mp900 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp450_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp450_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 450 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 450 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp450_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp450_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 450 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 450 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp900 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp270_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp270_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 270 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 270 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp270_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp270_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 270 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 270 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp180_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp180_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp180_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp180_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp900 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp270_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp270_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 270 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 270 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp270_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp270_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 270 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 270 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp270_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp270_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 270 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 270 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp900 = "4" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp900_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp900_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
             End If
         ElseIf effectiveName = "Mshor900PLA" Then
             block.Delete
             If ui_mp900 = "1" Or ui_mp900 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp450_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp450_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 450 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 450 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp450_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp450_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 450 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 450 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp900 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp270_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp270_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 270 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 270 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp270_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp270_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 270 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 270 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp180_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp180_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp180_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp180_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp900 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp270_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp270_pl, Xs, Ys, Zs, orientation)
                 insertionPoint(0) = insertionPoint(0) + 270 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 270 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp270_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp270_pl, Xs, Ys, Zs, orientation)
                 insertionPoint(0) = insertionPoint(0) + 270 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 270 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp270_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp270_pl, Xs, Ys, Zs, orientation)
                 insertionPoint(0) = insertionPoint(0) + 270 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 270 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp900 = "4" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp900_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp900_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
             End If
             
@@ -4263,149 +4263,149 @@ Sub DivMP(ss As AcadSelectionSet)
         ElseIf effectiveName = "Mshor450ALZ" Then
             block.Delete
             If ui_mp450 = "1" Or ui_mp450 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp270_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp270_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 270 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 270 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp180_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp180_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp450 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp180_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp180_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp180_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp180_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp450 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp450 = "4" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp450_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp450_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
             End If
         ElseIf effectiveName = "Mshor450PLA" Then
             block.Delete
             If ui_mp450 = "1" Or ui_mp450 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp270_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp270_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 270 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 270 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp180_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp180_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp450 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp180_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp180_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp180_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp180_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp450 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp450 = "4" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp450_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp450_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
             End If
             
@@ -4413,106 +4413,106 @@ Sub DivMP(ss As AcadSelectionSet)
         ElseIf effectiveName = "Mshor270ALZ" Then
             block.Delete
             If ui_mp270 = "1" Or ui_mp270 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp180_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp180_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp270 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp270 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp270_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp270_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
             
             End If
         ElseIf effectiveName = "Mshor270PLA" Then
             block.Delete
             If ui_mp270 = "1" Or ui_mp270 = "" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp180_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp180_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp270 = "2" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             ElseIf ui_mp270 = "3" Then
-                Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp270_al, Xs, Ys, Zs, orientation)
+                Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp270_al, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
             End If
             
         ' MEGAPROP 180
         ElseIf effectiveName = "Mshor180ALZ" Then
             block.Delete
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Mega"
             insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Nonplot"
             blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Mega"
             insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
         ElseIf effectiveName = "Mshor180PLA" Then
             block.Delete
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Mega"
             insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, M20x60, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Nonplot"
             blockRef.Update
                 blockRef.Explode
                 blockRef.Delete
-            Set blockRef = AcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
+            Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Mega"
             insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
         Else
