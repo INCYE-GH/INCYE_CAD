@@ -336,42 +336,6 @@ End If
 DirBulon1 = DirMuro1 - (PI / 2)
 DirBulon2 = DirMuro2 + (PI / 2)
 
-'''''Extremo 1 del puntal
-Dim AnguloAbsoluto2 As Double
-Dim UmbralMin2 As Double
-Dim UmbralMax2 As Double
-
-UmbralMin2 = 80 * (PI / 180) ' Convertir 80 grados a radianes
-UmbralMax2 = 100 * (PI / 180) ' Convertir 105 grados a radianes
-
-AnguloAbsoluto2 = Abs(DirPuntal - DirMuro1)
-
-If AnguloAbsoluto2 > UmbralMin2 And AnguloAbsoluto2 < UmbralMax2 Then
-    ' No pasa nada
-    P2(0) = PA(0) + 85 * Cos(DirBulon1): P2(1) = PA(1) + 85 * Sin(DirBulon1): P2(2) = PA(2)
-    placaanc2 = "CompactaMP"
-Else
-    kwordList = "Naranja Azul MP CompactaMP"
-    placaanc2 = ""
-    ThisDrawing.Utility.InitializeUserInput 0, kwordList
-    placaanc2 = ThisDrawing.Utility.GetKeyword(vbLf & "Tipo de cuña en el primer extremo seleccionado: [Naranja/Azul/MP/CompactaMP]")
-    
-    ' aquí vienen los condicionales de las diferentes placas de anclaje, según cuál sea la seleccionada, moveremos para encontrar el P1 en este caso
-    ' tenemos todas las medidas para P1
-    
-    If placaanc2 = "" Or placaanc2 = "Naranja" Then
-        P2(0) = PA(0) + 239.2 * Cos(DirBulon1): P2(1) = PA(1) + 239.2 * Sin(DirBulon1): P2(2) = PA(2)
-        P2(0) = P2(0) + 179.21 * Cos(DirMuro1): P2(1) = P2(1) + 179.21 * Sin(DirMuro1): P2(2) = P2(2)
-    ElseIf placaanc2 = "Azul" Then
-        P2(0) = PA(0) + 288.7 * Cos(DirBulon1): P2(1) = PA(1) + 288.7 * Sin(DirBulon1): P2(2) = PA(2)
-        P2(0) = P2(0) + 213.7 * Cos(DirMuro1): P2(1) = P2(1) + 213.7 * Sin(DirMuro1): P2(2) = P2(2)
-    ElseIf placaanc2 = "MP" Then
-        P2(0) = PA(0) + 90 * Cos(DirBulon1): P2(1) = PA(1) + 90 * Sin(DirBulon1): P2(2) = PA(2)
-    ElseIf placaanc2 = "CompactaMP" Then
-        P2(0) = PA(0) + 85 * Cos(DirBulon1): P2(1) = PA(1) + 85 * Sin(DirBulon1): P2(2) = PA(2)
-    End If
-    
-End If
 
 
 '''''Extremo 2 del puntal
@@ -391,7 +355,7 @@ Else
     kwordList = "Naranja Azul MP CompactaMP"
     placaanc1 = ""
     ThisDrawing.Utility.InitializeUserInput 0, kwordList
-    placaanc1 = ThisDrawing.Utility.GetKeyword(vbLf & "Tipo de cuña en el segundo extremo seleccionado: [Naranja/Azul/MP/CompactaMP]")
+    placaanc1 = ThisDrawing.Utility.GetKeyword(vbLf & "Tipo de cuña en el primer extremo seleccionado: [Naranja/Azul/MP/CompactaMP]")
 
     ' aquí vienen los condicionales de las diferentes placas de anclaje, según cuál sea la seleccionada, moveremos para encontrar el P1 en este caso
     ' tenemos todas las medidas para P1
@@ -408,6 +372,46 @@ Else
         P1(0) = PB(0) + 85 * Cos(DirBulon2): P1(1) = PB(1) + 85 * Sin(DirBulon2): P1(2) = PB(2)
     End If
         
+End If
+
+
+
+
+'''''Extremo 1 del puntal
+Dim AnguloAbsoluto2 As Double
+Dim UmbralMin2 As Double
+Dim UmbralMax2 As Double
+
+UmbralMin2 = 80 * (PI / 180) ' Convertir 80 grados a radianes
+UmbralMax2 = 100 * (PI / 180) ' Convertir 105 grados a radianes
+
+AnguloAbsoluto2 = Abs(DirPuntal - DirMuro1)
+
+If AnguloAbsoluto2 > UmbralMin2 And AnguloAbsoluto2 < UmbralMax2 Then
+    ' No pasa nada
+    P2(0) = PA(0) + 85 * Cos(DirBulon1): P2(1) = PA(1) + 85 * Sin(DirBulon1): P2(2) = PA(2)
+    placaanc2 = "CompactaMP"
+Else
+    kwordList = "Naranja Azul MP CompactaMP"
+    placaanc2 = ""
+    ThisDrawing.Utility.InitializeUserInput 0, kwordList
+    placaanc2 = ThisDrawing.Utility.GetKeyword(vbLf & "Tipo de cuña en el segundo extremo seleccionado: [Naranja/Azul/MP/CompactaMP]")
+    
+    ' aquí vienen los condicionales de las diferentes placas de anclaje, según cuál sea la seleccionada, moveremos para encontrar el P1 en este caso
+    ' tenemos todas las medidas para P1
+    
+    If placaanc2 = "" Or placaanc2 = "Naranja" Then
+        P2(0) = PA(0) + 239.2 * Cos(DirBulon1): P2(1) = PA(1) + 239.2 * Sin(DirBulon1): P2(2) = PA(2)
+        P2(0) = P2(0) + 179.21 * Cos(DirMuro1): P2(1) = P2(1) + 179.21 * Sin(DirMuro1): P2(2) = P2(2)
+    ElseIf placaanc2 = "Azul" Then
+        P2(0) = PA(0) + 288.7 * Cos(DirBulon1): P2(1) = PA(1) + 288.7 * Sin(DirBulon1): P2(2) = PA(2)
+        P2(0) = P2(0) + 213.7 * Cos(DirMuro1): P2(1) = P2(1) + 213.7 * Sin(DirMuro1): P2(2) = P2(2)
+    ElseIf placaanc2 = "MP" Then
+        P2(0) = PA(0) + 90 * Cos(DirBulon1): P2(1) = PA(1) + 90 * Sin(DirBulon1): P2(2) = PA(2)
+    ElseIf placaanc2 = "CompactaMP" Then
+        P2(0) = PA(0) + 85 * Cos(DirBulon1): P2(1) = PA(1) + 85 * Sin(DirBulon1): P2(2) = PA(2)
+    End If
+    
 End If
 
 
@@ -1910,7 +1914,7 @@ If (carga < 1350) Then
     MsgBox "Los puntales mixtos actualmente han de lanzarse con el comando PM"
 ElseIf (carga >= 1350) And (carga < 1500) Then
     Punto_inial(0) = P1(0) + lgiro * Cos(ANG): Punto_inial(1) = P1(1) + lgiro * Sin(ANG): Punto_inial(2) = P1(2)
-    GS_Fusible = rutags & "GS_Fusible_" & dato1 & ".dwg"
+    GS_Fusible = rutags & "GS_Fusible_Planta.dwg"
     Set blockRef = AcadModel.InsertBlock(Punto_inial, GS_Fusible, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Granshor"
     M20x90 = ruta2 & "4M20X90.dwg"
@@ -1938,7 +1942,7 @@ ElseIf (carga >= 1350) And (carga < 1500) Then
         blockRef.Delete
 ElseIf (carga >= 1500) And (carga < 2000) Then
     Punto_inial(0) = P1(0) + lgiro * Cos(ANG): Punto_inial(1) = P1(1) + lgiro * Sin(ANG): Punto_inial(2) = P1(2)
-    GS_Fusible = rutags & "GS_Fusible_" & dato1 & ".dwg"
+    GS_Fusible = rutags & "GS_Fusible_Planta.dwg"
     Set blockRef = AcadModel.InsertBlock(Punto_inial, GS_Fusible, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Granshor"
     M20x90 = ruta2 & "4M20X90.dwg"
@@ -1970,7 +1974,7 @@ ElseIf (carga >= 1500) And (carga < 2000) Then
         blockRef.Delete
 ElseIf (carga >= 2000) And (carga < 2900) Then
     Punto_inial(0) = P1(0) + lgiro * Cos(ANG): Punto_inial(1) = P1(1) + lgiro * Sin(ANG): Punto_inial(2) = P1(2)
-    GS_Fusible = rutags & "GS_Fusible_" & dato1 & ".dwg"
+    GS_Fusible = rutags & "GS_Fusible_Planta.dwg"
     Set blockRef = AcadModel.InsertBlock(Punto_inial, GS_Fusible, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Granshor"
     M20x90 = ruta2 & "4M20X90.dwg"
@@ -2001,7 +2005,7 @@ ElseIf (carga >= 2000) And (carga < 2900) Then
         blockRef.Delete
 ElseIf carga >= 2900 Then
     Punto_inial(0) = P2(0) + lgiro * Cos(ANG + PI): Punto_inial(1) = P2(1) + lgiro * Sin(ANG + PI): Punto_inial(2) = P2(2)
-    GS_Fusible = rutags & "GS_Fusible_" & dato1 & ".dwg"
+    GS_Fusible = rutags & "GS_Fusible_Planta.dwg"
     Punto_inial(0) = Punto_inial(0) + lfusible * Cos(ANG + PI): Punto_inial(1) = Punto_inial(1) + lfusible * Sin(ANG + PI): Punto_inial(2) = Punto_inial(2)
     Set blockRef = AcadModel.InsertBlock(Punto_inial, GS_Fusible, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Granshor"
@@ -2074,8 +2078,8 @@ Select Case lpuntal
     Case 560 To 750
     nfusible = 1
         If dato2 = "Pshor_4L" Then
-        n280 = 2
-        n560 = 0
+        n280 = 0
+        n560 = 1
         ElseIf dato2 = "Pshor_4S" Then
         n280 = 0
         n560 = 1
@@ -2085,7 +2089,6 @@ Select Case lpuntal
     GoTo terminar
         
 End Select
-
 
 
 M20x90_16 = ruta2 & "16M20X90.dwg"
@@ -2105,6 +2108,8 @@ If carga > 2900 Then
     End If
 
     If n560 > 0 Then
+        i = 0
+        Do While i < n560
             Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
             PS_560 = ruta & "PS_560.dwg"
             Punto_final(0) = Punto_inial(0) + l560 * Cos(ANG + PI): Punto_final(1) = Punto_inial(1) + l560 * Sin(ANG + PI): Punto_final(2) = Punto_inial(2)
@@ -2112,6 +2117,8 @@ If carga > 2900 Then
             blockRef.Layer = capa
             Set blockRef = AcadModel.InsertBlock(Punto_final, M20x90_16, Xs, Ys, Zs, ANG)
             blockRef.Layer = "Nonplot"
+            i = i + 1
+        Loop
     End If
 
     If n1500 > 0 Then
@@ -2189,6 +2196,8 @@ Else
     End If
 
     If n560 > 0 Then
+        i = 0
+        Do While i < n560
             Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
             PS_560 = ruta & "PS_560.dwg"
             Set blockRef = AcadModel.InsertBlock(Punto_inial, PS_560, Xs, Ys, Zs, ANG)
@@ -2196,6 +2205,8 @@ Else
             Punto_final(0) = Punto_inial(0) + l560 * Cos(ANG): Punto_final(1) = Punto_inial(1) + l560 * Sin(ANG): Punto_final(2) = Punto_inial(2)
             Set blockRef = AcadModel.InsertBlock(Punto_final, M20x90_16, Xs, Ys, Zs, ANG)
             blockRef.Layer = "Nonplot"
+            i = i + 1
+        Loop
     End If
 
     If n1500 > 0 Then
@@ -2270,7 +2281,7 @@ If carga < 2900 Then
     Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
     PGato1(0) = Punto_inial(0): PGato1(1) = Punto_inial(1): PGato1(2) = Punto_inial(2)
     Punto_final(0) = Punto_inial(0) + l_conogato * Cos(ANG): Punto_final(1) = Punto_inial(1) + l_conogato * Sin(ANG): Punto_final(2) = Punto_inial(2)
-    zPS_Gato_Cono = rutaps & "zPS_Gato_Cono_" & dato1 & ".dwg"
+    zPS_Gato_Cono = rutaps & "zPS_Gato_Cono_Planta.dwg"
     Set blockRef = AcadModel.InsertBlock(Punto_inial, zPS_Gato_Cono, Xs, Ys, Zs, ANG + PI)
     blockRef.Layer = "Pipeshor4S"
     'M20x90_16 = ruta & "16M20x90.dwg"
@@ -2292,7 +2303,7 @@ If carga < 2900 Then
             Punto_final2(0) = Punto_inial2(0) - lfusible * Cos(ANG): Punto_final2(1) = Punto_inial2(1) - lfusible * Sin(ANG): Punto_final(2) = Punto_inial2(2)
         End If
     Punto_inial2(0) = Punto_final2(0): Punto_inial2(1) = Punto_final2(1): Punto_inial2(2) = Punto_final2(2)
-    zPS_Gato_Tope = rutaps & "zPS_Gato_Tope_" & dato1 & ".dwg"
+    zPS_Gato_Tope = rutaps & "zPS_Gato_Tope_Planta.dwg"
     Set blockRef = AcadModel.InsertBlock(Punto_inial2, zPS_Gato_Tope, Xs, Ys, Zs, ANG + PI)
     blockRef.Layer = "Pipeshor4S"
     Set blockRef = AcadModel.InsertBlock(Punto_final2, M20x90, Xs, Ys, Zs, ANG + PI)
@@ -2365,7 +2376,7 @@ Else
         End If
     Punto_inial2(0) = Punto_final2(0): Punto_inial2(1) = Punto_final2(1): Punto_inial2(2) = Punto_final2(2)
     'metemos aquí el cajón hidráulico
-    brazocajon = rutacajon & "modcajon_" & dato1 & ".dwg"
+    brazocajon = rutacajon & "modcajon_Planta.dwg"
     Set blockRef = AcadModel.InsertBlock(Punto_inial2, brazocajon, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Pipeshor4S"
     Set blockRef = AcadModel.InsertBlock(Punto_final2, M20x90, Xs, Ys, Zs, ANG + PI)
@@ -2745,6 +2756,12 @@ ElseIf dato2 = "Pshor_4L" Then
     End If
 End If
 
+If n280 > 1 Then
+    n280 = n280 - 2
+    n560 = n560 + 1
+End If
+
+
 n900 = Fix(lpuntal / l900)
 lpuntal = lpuntal - n900 * l900
 n450 = Fix(lpuntal / l450)
@@ -2756,8 +2773,8 @@ lpuntal = lpuntal - n180 * l180
 n90 = Fix(lpuntal / l90)
 lpuntal = lpuntal - n90 * l90
 
-MP_Giro1 = ruta3 & rutapl1 & plalz & ".dwg"
-MP_Giro2 = ruta3 & rutapl2 & plalz & ".dwg"
+MP_Giro1 = ruta3 & rutapl1 & "PLA" & ".dwg"
+MP_Giro2 = ruta3 & rutapl2 & "PLA" & ".dwg"
 
 Set blockRef = AcadModel.InsertBlock(P1, MP_Giro1, Xs, Ys, Zs, ANG)
 blockRef.Layer = "Mega"
@@ -2958,8 +2975,10 @@ If n750 > 0 Then
 End If
 
 If n560 > 0 Then
+    i = 0
+    Do While i < n560
         Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
-        PS_560 = ruta1 & dato5 & "_560_" & dato1 & ".dwg"
+        PS_560 = ruta1 & "PS_560.dwg"
         Set blockRef = AcadModel.InsertBlock(Punto_inial, PS_560, Xs, Ys, Zs, ANG)
         blockRef.Layer = capa
         If n280 > 0 Or n1500 > 0 Or n3000 > 0 Or n4500 > 0 Or n6000 > 0 Or n750 > 0 Then
@@ -2970,6 +2989,8 @@ If n560 > 0 Then
         blockRef.Delete
         End If
         Punto_final(0) = Punto_inial(0) + l560 * Cos(ANG): Punto_final(1) = Punto_inial(1) + l560 * Sin(ANG): Punto_final(2) = Punto_inial(2)
+        i = i + 1
+    Loop
 End If
 
 Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
