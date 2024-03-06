@@ -103,9 +103,9 @@ Sub an()
             metrica = ThisDrawing.Utility.GetKeyword(vbLf & "Referencia: [A-M16X40/B-M16X40A/C-M16X60/D-M16X90/E-M16X110/F-M16X150]")
             
             ElseIf referencia = "B-M20" Then
-            kwordList = "A-M20X40 B-M20X50 C-M20X60 D-M20X60A E-M20X80A F-M20X80{12.9} G-M20X80{12.9}RP H-M20X90  I-M20X110 J-M20X130 K-M20X150 L-M20X160{12.9}A"
+            kwordList = "A-M20X40 B-M20X50 C-M20X60 D-M20X60A E-M20X80A F-M20X80{12.9} G-M20X80{12.9}RP H-M20X90  I-M20X110 J-M20X130 K-M20X150 L-M20X160 M-M20X160{12.9}A" 
             ThisDrawing.Utility.InitializeUserInput 0, kwordList
-            metrica = ThisDrawing.Utility.GetKeyword(vbLf & "Referencia: [A-M20X40/B-M20X50/C-M20X60/D-M20X60A/E-M20X80A/F-M20X80{12.9}/G-M20X80{12.9}RP/H-M20X90/I-M20X110/J-M20X130/K-M20X150/L-M20X160{12.9}A]")
+            metrica = ThisDrawing.Utility.GetKeyword(vbLf & "Referencia: [A-M20X40/B-M20X50/C-M20X60/D-M20X60A/E-M20X80A/F-M20X80{12.9}/G-M20X80{12.9}RP/H-M20X90/I-M20X110/J-M20X130/K-M20X150/L-M20X160/M-M20X160{12.9}A]")
             
             ElseIf referencia = "C-M24" Then
             kwordList = "A-M24x60 B-M24x110"
@@ -157,11 +157,11 @@ Sub an()
                 Documents.Open rutaArchivo
                 
                 Dim nombreBloqueExistente As String
-                nombreBloqueExistente = "1" & Right(metrica, Len(metrica) - 2)
+                nombreBloqueExistente = "01" & Right(metrica, Len(metrica) - 2)
 
                 ' Nuevo nombre para el bloque existente
                 Dim nuevoNombre As String
-                nuevoNombre = numero & Right(metrica, Len(metrica) - 2)
+                nuevoNombre = "0" & numero & Right(metrica, Len(metrica) - 2)
 
                 ' Modificar el nombre del bloque existente
                 Dim blk As gcadBlock
