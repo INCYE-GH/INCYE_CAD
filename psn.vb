@@ -1925,8 +1925,8 @@ ElseIf (carga >= 1350) And (carga < 1500) Then
         blockRef.Delete
     Punto_inial(0) = Punto_inial(0) + lfusible * Cos(ANG): Punto_inial(1) = Punto_inial(1) + lfusible * Sin(ANG): Punto_inial(2) = Punto_inial(2)
     PS_Placa50mm = rutaps & "PS_Placa50mm_" & dato1 & ".dwg"
-    M20x110 = ruta2 & "4M20X110.dwg"
-    M20x160 = ruta2 & "4M20X160.dwg"
+    M20x110 = ruta2 & "4-M20X110.dwg"
+    M20x160 = ruta2 & "4-M20X160.dwg"
     Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x160, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Nonplot"
     blockRef.Update
@@ -1945,7 +1945,7 @@ ElseIf (carga >= 1500) And (carga < 2000) Then
     GS_Fusible = rutags & "GS_Fusible_Planta.dwg"
     Set blockRef = AcadModel.InsertBlock(Punto_inial, GS_Fusible, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Granshor"
-    M20x90 = ruta2 & "4M20X90.dwg"
+    M20x90 = ruta2 & "4-M20X90.dwg"
     Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x90, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Nonplot"
     blockRef.Update
@@ -1956,8 +1956,8 @@ ElseIf (carga >= 1500) And (carga < 2000) Then
     PS_Placa35mm = rutaps & "PS_Placa35mm_" & dato1 & ".dwg"
     Set blockRef = AcadModel.InsertBlock(Punto_inial, PS_Placa35mm, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Pipeshor4S"
-    M20x150 = ruta2 & "4M20X150.dwg"
-    M20x160 = ruta2 & "4M20X160.dwg"
+    M20x150 = ruta2 & "4-M20X150.dwg"
+    M20x160 = ruta2 & "4-M20X160.dwg"
     Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x160, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Nonplot"
     blockRef.Update
@@ -1977,7 +1977,7 @@ ElseIf (carga >= 2000) And (carga < 2900) Then
     GS_Fusible = rutags & "GS_Fusible_Planta.dwg"
     Set blockRef = AcadModel.InsertBlock(Punto_inial, GS_Fusible, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Granshor"
-    M20x90 = ruta2 & "4M20X90.dwg"
+    M20x90 = ruta2 & "4-M20X90.dwg"
     Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x90, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Nonplot"
     blockRef.Update
@@ -1987,8 +1987,8 @@ ElseIf (carga >= 2000) And (carga < 2900) Then
     PS_Placa50mm = rutaps & "PS_Placa50mm_" & dato1 & ".dwg"
     Set blockRef = AcadModel.InsertBlock(Punto_inial, PS_Placa50mm, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Pipeshor4S"
-    M20x150 = ruta2 & "4M20X150.dwg"
-    M20x160 = ruta2 & "4M20X160.dwg"
+    M20x150 = ruta2 & "4-M20X150.dwg"
+    M20x160 = ruta2 & "4-M20X160.dwg"
     Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x160, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Nonplot"
     blockRef.Update
@@ -2009,7 +2009,7 @@ ElseIf carga >= 2900 Then
     Punto_inial(0) = Punto_inial(0) + lfusible * Cos(ANG + PI): Punto_inial(1) = Punto_inial(1) + lfusible * Sin(ANG + PI): Punto_inial(2) = Punto_inial(2)
     Set blockRef = AcadModel.InsertBlock(Punto_inial, GS_Fusible, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Granshor"
-    M20x90 = ruta2 & "4M20X90.dwg"
+    M20x90 = ruta2 & "4-M20X90.dwg"
     Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x90, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Nonplot"
     blockRef.Update
@@ -2020,7 +2020,7 @@ ElseIf carga >= 2900 Then
     Set blockRef = AcadModel.InsertBlock(Punto_inial, PS_Placa50mm, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Pipeshor4S"
     Var20x250 = ruta2 & "1VarM20X250.dwg"
-    M20x160 = ruta2 & "4M20X160.dwg"
+    M20x160 = ruta2 & "4-M20X160.dwg"
     Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x160, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Nonplot"
     blockRef.Update
