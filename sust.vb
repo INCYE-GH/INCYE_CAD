@@ -117,13 +117,13 @@ Sub DivPS(ss As GcadSelectionSet)
     
     Dim ui_pl6000 As String, ui_pl4500 As String, ui_pl3000 As String, ui_pl1500 As String
     
-    If nombre_inicial = "PL_6000_Alzado" Or nombre_inicial = "PL_6000_Planta" Then
+    If Ucase(nombre_inicial) = "PL_6000_ALZADO" Or Ucase(nombre_inicial) = "PL_6000_PLANTA" Then
         ui_pl6000 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1).  4500 + 1500" & vbCrLf & vbCrLf & vbCrLf & "2). 3000 + 3000" & vbCrLf & vbCrLf & vbCrLf & "3). 4 x 1500")
-    ElseIf nombre_inicial = "PL_4500_Planta" Or nombre_inicial = "PL_4500_Alzado" Then
+    ElseIf Ucase(nombre_inicial) = "PL_4500_PLANTA" Or Ucase(nombre_inicial) = "PL_4500_ALZADO" Then
         ui_pl4500 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1).  3000 + 1500" & vbCrLf & vbCrLf & vbCrLf & "2). 3 x 1500" & vbCrLf & vbCrLf & vbCrLf & "3). 3000 + 750 + 750" & vbCrLf & vbCrLf & vbCrLf & "4. 6 x 750")
-    ElseIf nombre_inicial = "PL_3000_Planta" Or nombre_inicial = "PL_3000_Alzado" Then
+    ElseIf Ucase(nombre_inicial) = "PL_3000_PLANTA" Or Ucase(nombre_inicial) = "PL_3000_ALZADO" Then
         ui_pl3000 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1).  2 x 1500" & vbCrLf & vbCrLf & vbCrLf & "2). 4 x 750")
-    ElseIf nombre_inicial = "PL_1500_Planta" Or nombre_inicial = "PL_1500_Alzado" Then
+    ElseIf Ucase(nombre_inicial) = "PL_1500_PLANTA" Or Ucase(nombre_inicial) = "PL_1500_ALZADO" Then
         ui_pl1500 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1).  2 x 750")
     End If
 
@@ -148,13 +148,13 @@ Sub DivPS(ss As GcadSelectionSet)
     
     Dim ui_ps6000 As String, ui_ps4500 As String, ui_ps3000 As String, ui_ps1500 As String
     
-    If nombre_inicial = "PS_6000_Alzado" Or nombre_inicial = "PS_6000_Planta" Then
+    If Ucase(nombre_inicial) = "PS_6000_ALZADO" Or Ucase(nombre_inicial) = "PS_6000_PLANTA" Then
         ui_ps6000 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1).  4500 + 1500" & vbCrLf & vbCrLf & vbCrLf & "2). 3000 + 3000" & vbCrLf & vbCrLf & vbCrLf & "3). 4 x 1500")
-    ElseIf nombre_inicial = "PS_4500_Planta" Or nombre_inicial = "PS_4500_Alzado" Then
+    ElseIf Ucase(nombre_inicial) = "PS_4500_PLANTA" Or Ucase(nombre_inicial) = "PS_4500_ALZADO" Then
         ui_ps4500 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1).  3000 + 1500" & vbCrLf & vbCrLf & vbCrLf & "2). 3 x 1500" & vbCrLf & vbCrLf & vbCrLf & "3). 3000 + 750 + 750" & vbCrLf & vbCrLf & vbCrLf & "4. 6 x 750")
-    ElseIf nombre_inicial = "PS_3000_Planta" Or nombre_inicial = "PS_3000_Alzado" Then
+    ElseIf Ucase(nombre_inicial) = "PS_3000_PLANTA" Or Ucase(nombre_inicial) = "PS_3000_ALZADO" Then
         ui_ps3000 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1).  2 x 1500" & vbCrLf & vbCrLf & vbCrLf & "2). 4 x 750")
-    ElseIf nombre_inicial = "PS_1500_Planta" Or nombre_inicial = "PS_1500_Alzado" Then
+    ElseIf Ucase(nombre_inicial) = "PS_1500_PLANTA" Or Ucase(nombre_inicial) = "PS_1500_ALZADO" Then
         ui_ps1500 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1).  2 x 750")
     End If
     
@@ -185,6 +185,8 @@ Sub DivPS(ss As GcadSelectionSet)
             Set block = obj
         ElseIf TypeOf obj Is GcadLine Then
             GoTo terminar
+		Else
+            GoTo terminar
         End If
         Dim effectiveName As String
         effectiveName = block.effectiveName
@@ -203,7 +205,7 @@ Sub DivPS(ss As GcadSelectionSet)
         
         '------------------------------------- PIP 4L ----------------------------------------------------------------------------------------------------------------------
         ' Pipeshor 4L 6000
-        If effectiveName = "PL_6000_Alzado" Then
+        If Ucase(effectiveName) = "PL_6000_ALZADO" Then
             block.Delete
             If ui_pl6000 = "1" Or ui_pl6000 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl4500_al, Xs, Ys, Zs, orientation)
@@ -258,7 +260,7 @@ Sub DivPS(ss As GcadSelectionSet)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "PL_6000_Planta" Then
+        ElseIf Ucase(effectiveName) = "PL_6000_PLANTA" Then
             block.Delete
             If ui_pl6000 = "1" Or ui_pl6000 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl4500_pl, Xs, Ys, Zs, orientation)
@@ -315,7 +317,7 @@ Sub DivPS(ss As GcadSelectionSet)
             End If
             
         ' Pipeshor 4L 4500
-        ElseIf effectiveName = "PL_4500_Planta" Then
+        ElseIf Ucase(effectiveName) = "PL_4500_PLANTA" Then
             block.Delete
             If ui_pl4500 = "1" Or ui_pl4500 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl3000_pl, Xs, Ys, Zs, orientation)
@@ -414,7 +416,7 @@ Sub DivPS(ss As GcadSelectionSet)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "PL_4500_Alzado" Then
+        ElseIf Ucase(effectiveName) = "PL_4500_ALZADO" Then
             block.Delete
             If ui_pl4500 = "1" Or ui_pl4500 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl3000_al, Xs, Ys, Zs, orientation)
@@ -515,7 +517,7 @@ Sub DivPS(ss As GcadSelectionSet)
             End If
         
         ' Pipeshor 4L 3000
-        ElseIf effectiveName = "PL_3000_Planta" Then
+        ElseIf Ucase(effectiveName) = "PL_3000_PLANTA" Then
             block.Delete
             If ui_pl3000 = "1" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl1500_pl, Xs, Ys, Zs, orientation)
@@ -558,7 +560,7 @@ Sub DivPS(ss As GcadSelectionSet)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "PL_3000_Alzado" Then
+        ElseIf Ucase(effectiveName) = "PL_3000_ALZADO" Then
             block.Delete
             If ui_pl3000 = "1" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl1500_al, Xs, Ys, Zs, orientation)
@@ -603,7 +605,7 @@ Sub DivPS(ss As GcadSelectionSet)
             End If
         
         ' Pipeshor 4L 1500
-        ElseIf effectiveName = "PL_1500_Alzado" Then
+        ElseIf Ucase(effectiveName) = "PL_1500_ALZADO" Then
             block.Delete
             If ui_pl1500 = "1" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_al, Xs, Ys, Zs, orientation)
@@ -618,7 +620,7 @@ Sub DivPS(ss As GcadSelectionSet)
                 blockRef.Layer = "Pipeshor4L"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "PL_1500_Planta" Then
+        ElseIf Ucase(effectiveName) = "PL_1500_PLANTA" Then
             block.Delete
             If ui_pl1500 = "1" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_pl750_pl, Xs, Ys, Zs, orientation)
@@ -636,7 +638,7 @@ Sub DivPS(ss As GcadSelectionSet)
         
         '----------------------------------------------------- PIP 4S ----------------------------------------------------------------------------------------------------
         ' Pipeshor 4S 6000
-        ElseIf effectiveName = "PS_6000_Alzado" Then
+        ElseIf Ucase(effectiveName) = "PS_6000_ALZADO" Then
             block.Delete
             If ui_ps6000 = "1" Or ui_ps6000 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps4500_al, Xs, Ys, Zs, orientation)
@@ -691,7 +693,7 @@ Sub DivPS(ss As GcadSelectionSet)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "PS_6000_Planta" Then
+        ElseIf Ucase(effectiveName) = "PS_6000_PLANTA" Then
             block.Delete
             If ui_ps6000 = "1" Or ui_ps6000 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps4500_pl, Xs, Ys, Zs, orientation)
@@ -748,7 +750,7 @@ Sub DivPS(ss As GcadSelectionSet)
             End If
 
         ' Pipeshor 4S 4500
-        ElseIf effectiveName = "PS_4500_Planta" Then
+        ElseIf Ucase(effectiveName) = "PS_4500_PLANTA" Then
             block.Delete
             If ui_ps4500 = "1" Or ui_ps4500 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps3000_pl, Xs, Ys, Zs, orientation)
@@ -847,7 +849,7 @@ Sub DivPS(ss As GcadSelectionSet)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "PS_4500_Alzado" Then
+        ElseIf Ucase(effectiveName) = "PS_4500_ALZADO" Then
             block.Delete
             If ui_ps4500 = "1" Or ui_ps4500 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps3000_al, Xs, Ys, Zs, orientation)
@@ -948,7 +950,7 @@ Sub DivPS(ss As GcadSelectionSet)
             End If
             
         ' Pipeshor 4S 3000
-        ElseIf effectiveName = "PS_3000_Planta" Then
+        ElseIf Ucase(effectiveName) = "PS_3000_PLANTA" Then
             block.Delete
             If ui_ps3000 = "1" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps1500_pl, Xs, Ys, Zs, orientation)
@@ -991,7 +993,7 @@ Sub DivPS(ss As GcadSelectionSet)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "PS_3000_Alzado" Then
+        ElseIf Ucase(effectiveName) = "PS_3000_ALZADO" Then
             block.Delete
             If ui_ps3000 = "1" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps1500_al, Xs, Ys, Zs, orientation)
@@ -1036,7 +1038,7 @@ Sub DivPS(ss As GcadSelectionSet)
             End If
             
         ' Pipeshor 4S 1500
-        ElseIf effectiveName = "PS_1500_Alzado" Then
+        ElseIf Ucase(effectiveName) = "PS_1500_ALZADO" Then
             block.Delete
             If ui_ps1500 = "1" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_al, Xs, Ys, Zs, orientation)
@@ -1051,7 +1053,7 @@ Sub DivPS(ss As GcadSelectionSet)
                 blockRef.Layer = "Pipeshor4S"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "PS_1500_Planta" Then
+        ElseIf Ucase(effectiveName) = "PS_1500_PLANTA" Then
             block.Delete
             If ui_ps1500 = "1" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps750_pl, Xs, Ys, Zs, orientation)
@@ -1068,7 +1070,7 @@ Sub DivPS(ss As GcadSelectionSet)
             End If
         
         ' Pipeshor 4S 560
-        ElseIf effectiveName = "PS_560" Then
+        ElseIf Ucase(effectiveName) = "PS_560" Then
             block.Delete
             Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps280_al, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Pipeshor4S"
@@ -1081,7 +1083,7 @@ Sub DivPS(ss As GcadSelectionSet)
             Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps280_al, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Pipeshor4S"
             insertionPoint(0) = insertionPoint(0) + 280 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 280 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-        ElseIf effectiveName = "PS_560_Planta" Then
+        ElseIf Ucase(effectiveName) = "PS_560_PLANTA" Then
             block.Delete
             Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ps280_pl, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Pipeshor4S"
@@ -1183,19 +1185,19 @@ Sub DivSS(ss As GcadSelectionSet)
     Dim ui_ss3600 As String, ui_ss2700 As String, ui_ss1800 As String, ui_ss900 As String, ui_ss720 As String, ui_ss540 As String, ui_ss360 As String, ui_ss180 As String
     
     
-    If nombre_inicial = "SS3600" Or nombre_inicial = "SSPL3600" Or nombre_inicial = "SS3600N" Or nombre_inicial = "SSPL3600N" Then
+    If Ucase(nombre_inicial) = "SS3600" Or Ucase(nombre_inicial) = "SSPL3600" Or Ucase(nombre_inicial) = "SS3600N" Or Ucase(nombre_inicial) = "SSPL3600N" Then
         ui_ss3600 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1).  2700 + 900" & vbCrLf & vbCrLf & vbCrLf & "2). 2 x 1800" & vbCrLf & vbCrLf & vbCrLf & "3). 4 x 900")
-    ElseIf nombre_inicial = "SS2700" Or nombre_inicial = "SSPL2700" Or nombre_inicial = "SS2700N" Or nombre_inicial = "SSPL2700N" Then
+    ElseIf Ucase(nombre_inicial) = "SS2700" Or Ucase(nombre_inicial) = "SSPL2700" Or Ucase(nombre_inicial) = "SS2700N" Or Ucase(nombre_inicial) = "SSPL2700N" Then
         ui_ss2700 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1).  1800 + 900" & vbCrLf & vbCrLf & vbCrLf & "2). 3 x 900" & vbCrLf & vbCrLf & vbCrLf & "3). 3 x 720 + 540")
-    ElseIf nombre_inicial = "SS1800" Or nombre_inicial = "SSPL1800" Or nombre_inicial = "SS1800N" Or nombre_inicial = "SSPL1800N" Then
+    ElseIf Ucase(nombre_inicial) = "SS1800" Or Ucase(nombre_inicial) = "SSPL1800" Or Ucase(nombre_inicial) = "SS1800N" Or Ucase(nombre_inicial) = "SSPL1800N" Then
         ui_ss1800 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1).  2 x 900" & vbCrLf & vbCrLf & vbCrLf & "2). 720 + 2 x 540")
-    ElseIf nombre_inicial = "SS0900" Or nombre_inicial = "SSPL0900" Or nombre_inicial = "SS0900N" Or nombre_inicial = "SSPL0900N" Then
+    ElseIf Ucase(nombre_inicial) = "SS0900" Or Ucase(nombre_inicial) = "SSPL0900" Or Ucase(nombre_inicial) = "SS0900N" Or Ucase(nombre_inicial) = "SSPL0900N" Then
         ui_ss900 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1).  720 + 180" & vbCrLf & vbCrLf & vbCrLf & "2). 2 x 360 + 180" & vbCrLf & vbCrLf & vbCrLf & "3). 720 + 2 x 90")
-    ElseIf nombre_inicial = "SS0720" Or nombre_inicial = "SS0720N" Or nombre_inicial = "SSPL0720" Or nombre_inicial = "SSPL0720N" Then
+    ElseIf Ucase(nombre_inicial) = "SS0720" Or Ucase(nombre_inicial) = "SS0720N" Or Ucase(nombre_inicial) = "SSPL0720" Or Ucase(nombre_inicial) = "SSPL0720N" Then
         ui_ss720 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1).  2 x 360" & vbCrLf & vbCrLf & vbCrLf & "2). 540 + 180")
-    ElseIf nombre_inicial = "SS0540" Or nombre_inicial = "SSPL0540" Or nombre_inicial = "SS0540N" Or nombre_inicial = "SSPL0540N" Then
+    ElseIf Ucase(nombre_inicial) = "SS0540" Or Ucase(nombre_inicial) = "SSPL0540" Or Ucase(nombre_inicial) = "SS0540N" Or Ucase(nombre_inicial) = "SSPL0540N" Then
         ui_ss540 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1).  360 + 180" & vbCrLf & vbCrLf & vbCrLf & "2). 360 + 2 x 90" & vbCrLf & vbCrLf & vbCrLf & "3). 3 x 180")
-    ElseIf nombre_inicial = "SS0360" Or nombre_inicial = "SSPL0360" Or nombre_inicial = "SS0360N" Or nombre_inicial = "SSPL0360N" Then
+    ElseIf Ucase(nombre_inicial) = "SS0360" Or Ucase(nombre_inicial) = "SSPL0360" Or Ucase(nombre_inicial) = "SS0360N" Or Ucase(nombre_inicial) = "SSPL0360N" Then
         ui_ss360 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1).  2 x 180" & vbCrLf & vbCrLf & vbCrLf & "2). 4 x 90")
     End If
     
@@ -1208,6 +1210,8 @@ Sub DivSS(ss As GcadSelectionSet)
         If TypeOf obj Is GcadBlockReference Then
             Set block = obj
         ElseIf TypeOf obj Is GcadLine Then
+            GoTo terminar
+		Else
             GoTo terminar
         End If
         Dim effectiveName As String
@@ -1230,7 +1234,7 @@ Sub DivSS(ss As GcadSelectionSet)
 
         '--------------- SUPERSLIM -----------------------------------------------------------------------------------------------------
         ' SuperSlim 3600 GALVANIZADA -----------
-        If effectiveName = "SS3600" Then
+        If Ucase(effectiveName) = "SS3600" Then
             block.Delete
             If ui_ss3600 = "1" Or ui_ss3600 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss2700, Xs, Ys, Zs, orientation)
@@ -1285,7 +1289,7 @@ Sub DivSS(ss As GcadSelectionSet)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "SS3600N" Then ' NARANJA 3600
+        ElseIf Ucase(effectiveName) = "SS3600N" Then ' NARANJA 3600
             block.Delete
             If ui_ss3600 = "1" Or ui_ss3600 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss2700n, Xs, Ys, Zs, orientation)
@@ -1340,7 +1344,7 @@ Sub DivSS(ss As GcadSelectionSet)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "SSPL3600" Then ' GALVANIZADA 3600 PLANTA
+        ElseIf Ucase(effectiveName) = "SSPL3600" Then ' GALVANIZADA 3600 PLANTA
             block.Delete
             If ui_ss3600 = "1" Or ui_ss3600 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl2700, Xs, Ys, Zs, orientation)
@@ -1395,7 +1399,7 @@ Sub DivSS(ss As GcadSelectionSet)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 900 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 900 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "SSPL3600N" Then ' NARANJA 3600 PLANTA
+        ElseIf Ucase(effectiveName) = "SSPL3600N" Then ' NARANJA 3600 PLANTA
             block.Delete
             If ui_ss3600 = "1" Or ui_ss3600 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl2700n, Xs, Ys, Zs, orientation)
@@ -1453,7 +1457,7 @@ Sub DivSS(ss As GcadSelectionSet)
             
             
         ' SuperSlim 2700 GALVANIZADA -----------
-        ElseIf effectiveName = "SS2700" Then
+        ElseIf Ucase(effectiveName) = "SS2700" Then
             block.Delete
             If ui_ss2700 = "1" Or ui_ss2700 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss1800, Xs, Ys, Zs, orientation)
@@ -1516,7 +1520,7 @@ Sub DivSS(ss As GcadSelectionSet)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 540 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 540 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "SS2700N" Then ' NARANJA 2700
+        ElseIf Ucase(effectiveName) = "SS2700N" Then ' NARANJA 2700
             block.Delete
             If ui_ss2700 = "1" Or ui_ss2700 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss1800n, Xs, Ys, Zs, orientation)
@@ -1579,7 +1583,7 @@ Sub DivSS(ss As GcadSelectionSet)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 540 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 540 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "SSPL2700" Then ' GALVANIZADA 2700 PLANTA
+        ElseIf Ucase(effectiveName) = "SSPL2700" Then ' GALVANIZADA 2700 PLANTA
             block.Delete
             If ui_ss2700 = "1" Or ui_ss2700 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl1800, Xs, Ys, Zs, orientation)
@@ -1642,7 +1646,7 @@ Sub DivSS(ss As GcadSelectionSet)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 540 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 540 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "SSPL2700N" Then ' NARANJA 2700 PLANTA
+        ElseIf Ucase(effectiveName) = "SSPL2700N" Then ' NARANJA 2700 PLANTA
             block.Delete
             If ui_ss2700 = "1" Or ui_ss2700 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl1800n, Xs, Ys, Zs, orientation)
@@ -1707,7 +1711,7 @@ Sub DivSS(ss As GcadSelectionSet)
             End If
             
         ' SuperSlim 1800 GALVANIZADA -----------
-        ElseIf effectiveName = "SS1800" Then
+        ElseIf Ucase(effectiveName) = "SS1800" Then
             block.Delete
             If ui_ss1800 = "1" Or ui_ss1800 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0900, Xs, Ys, Zs, orientation)
@@ -1742,7 +1746,7 @@ Sub DivSS(ss As GcadSelectionSet)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 540 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 540 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "SS1800N" Then ' NARANJA 1800
+        ElseIf Ucase(effectiveName) = "SS1800N" Then ' NARANJA 1800
             block.Delete
             If ui_ss1800 = "1" Or ui_ss1800 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0900n, Xs, Ys, Zs, orientation)
@@ -1777,7 +1781,7 @@ Sub DivSS(ss As GcadSelectionSet)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 540 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 540 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "SSPL1800" Then ' GALVANIZADA 1800 PLANTA
+        ElseIf Ucase(effectiveName) = "SSPL1800" Then ' GALVANIZADA 1800 PLANTA
             block.Delete
             If ui_ss1800 = "1" Or ui_ss1800 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0900, Xs, Ys, Zs, orientation)
@@ -1812,7 +1816,7 @@ Sub DivSS(ss As GcadSelectionSet)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 540 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 540 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "SSPL1800N" Then ' NARANJA 1800 PLANTA
+        ElseIf Ucase(effectiveName) = "SSPL1800N" Then ' NARANJA 1800 PLANTA
             block.Delete
             If ui_ss1800 = "1" Or ui_ss1800 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0900n, Xs, Ys, Zs, orientation)
@@ -1849,7 +1853,7 @@ Sub DivSS(ss As GcadSelectionSet)
             End If
             
         ' SuperSlim 900 GALVANIZADA ----------------------
-        ElseIf effectiveName = "SS0900" Then
+        ElseIf Ucase(effectiveName) = "SS0900" Then
             block.Delete
             If ui_ss900 = "1" Or ui_ss900 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0720, Xs, Ys, Zs, orientation)
@@ -1904,7 +1908,7 @@ Sub DivSS(ss As GcadSelectionSet)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "SS0900N" Then ' NARANJA 900
+        ElseIf Ucase(effectiveName) = "SS0900N" Then ' NARANJA 900
             block.Delete
             If ui_ss900 = "1" Or ui_ss900 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0720n, Xs, Ys, Zs, orientation)
@@ -1959,7 +1963,7 @@ Sub DivSS(ss As GcadSelectionSet)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "SSPL0900" Then ' GALVANIZADA 900 PLANTA
+        ElseIf Ucase(effectiveName) = "SSPL0900" Then ' GALVANIZADA 900 PLANTA
             block.Delete
             If ui_ss900 = "1" Or ui_ss900 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0720, Xs, Ys, Zs, orientation)
@@ -2014,7 +2018,7 @@ Sub DivSS(ss As GcadSelectionSet)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "SSPL0900N" Then ' NARANJA 900 PLANTA
+        ElseIf Ucase(effectiveName) = "SSPL0900N" Then ' NARANJA 900 PLANTA
             block.Delete
             If ui_ss900 = "1" Or ui_ss900 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0720n, Xs, Ys, Zs, orientation)
@@ -2071,7 +2075,7 @@ Sub DivSS(ss As GcadSelectionSet)
             End If
             
         ' SuperSlim 720 GALVANIZADA -----------
-        ElseIf effectiveName = "SS0720" Then
+        ElseIf Ucase(effectiveName) = "SS0720" Then
             block.Delete
             If ui_ss720 = "1" Or ui_ss720 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0360, Xs, Ys, Zs, orientation)
@@ -2098,7 +2102,7 @@ Sub DivSS(ss As GcadSelectionSet)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "SS0720N" Then ' NARANJA 720
+        ElseIf Ucase(effectiveName) = "SS0720N" Then ' NARANJA 720
             block.Delete
             If ui_ss720 = "1" Or ui_ss720 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0360n, Xs, Ys, Zs, orientation)
@@ -2125,7 +2129,7 @@ Sub DivSS(ss As GcadSelectionSet)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "SSPL0720" Then ' GALVANIZADA 720 PLANTA
+        ElseIf Ucase(effectiveName) = "SSPL0720" Then ' GALVANIZADA 720 PLANTA
             block.Delete
             If ui_ss720 = "1" Or ui_ss720 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0360, Xs, Ys, Zs, orientation)
@@ -2152,7 +2156,7 @@ Sub DivSS(ss As GcadSelectionSet)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 180 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 180 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "SSPL0720N" Then ' NARANJA 720 PLANTA
+        ElseIf Ucase(effectiveName) = "SSPL0720N" Then ' NARANJA 720 PLANTA
             block.Delete
             If ui_ss720 = "1" Or ui_ss720 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0360n, Xs, Ys, Zs, orientation)
@@ -2181,7 +2185,7 @@ Sub DivSS(ss As GcadSelectionSet)
             End If
             
         ' SuperSlim 540 GALVANIZADA -----------
-        ElseIf effectiveName = "SS0540" Then
+        ElseIf Ucase(effectiveName) = "SS0540" Then
             block.Delete
             If ui_ss540 = "1" Or ui_ss540 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0360, Xs, Ys, Zs, orientation)
@@ -2216,7 +2220,7 @@ Sub DivSS(ss As GcadSelectionSet)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "SS0540N" Then ' NARANJA 540
+        ElseIf Ucase(effectiveName) = "SS0540N" Then ' NARANJA 540
             block.Delete
             If ui_ss540 = "1" Or ui_ss540 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0360n, Xs, Ys, Zs, orientation)
@@ -2251,7 +2255,7 @@ Sub DivSS(ss As GcadSelectionSet)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "SSPL0540" Then ' GALVANIZADA 540 PLANTA
+        ElseIf Ucase(effectiveName) = "SSPL0540" Then ' GALVANIZADA 540 PLANTA
             block.Delete
             If ui_ss540 = "1" Or ui_ss540 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0360, Xs, Ys, Zs, orientation)
@@ -2286,7 +2290,7 @@ Sub DivSS(ss As GcadSelectionSet)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "SSPL0540N" Then ' NARANJA 540 PLANTA
+        ElseIf Ucase(effectiveName) = "SSPL0540N" Then ' NARANJA 540 PLANTA
             block.Delete
             If ui_ss540 = "1" Or ui_ss540 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0360n, Xs, Ys, Zs, orientation)
@@ -2323,7 +2327,7 @@ Sub DivSS(ss As GcadSelectionSet)
             End If
         
         ' SuperSlim 360 GALVANIZADA -----------
-        ElseIf effectiveName = "SS0360" Then
+        ElseIf Ucase(effectiveName) = "SS0360" Then
             block.Delete
             If ui_ss360 = "1" Or ui_ss360 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0180, Xs, Ys, Zs, orientation)
@@ -2366,7 +2370,7 @@ Sub DivSS(ss As GcadSelectionSet)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "SS0360N" Then ' NARANJA 360
+        ElseIf Ucase(effectiveName) = "SS0360N" Then ' NARANJA 360
             block.Delete
             If ui_ss360 = "1" Or ui_ss360 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0180n, Xs, Ys, Zs, orientation)
@@ -2409,7 +2413,7 @@ Sub DivSS(ss As GcadSelectionSet)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "SSPL0360" Then ' GALVANIZADA 360 PLANTA
+        ElseIf Ucase(effectiveName) = "SSPL0360" Then ' GALVANIZADA 360 PLANTA
             block.Delete
             If ui_ss360 = "1" Or ui_ss360 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0180, Xs, Ys, Zs, orientation)
@@ -2452,7 +2456,7 @@ Sub DivSS(ss As GcadSelectionSet)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "SSPL0360N" Then ' NARANJA 360 PLANTA
+        ElseIf Ucase(effectiveName) = "SSPL0360N" Then ' NARANJA 360 PLANTA
             block.Delete
             If ui_ss360 = "1" Or ui_ss360 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0180n, Xs, Ys, Zs, orientation)
@@ -2497,7 +2501,7 @@ Sub DivSS(ss As GcadSelectionSet)
             End If
             
         ' SuperSlim 180 GALVANIZADA -----------
-        ElseIf effectiveName = "SS0180" Then
+        ElseIf Ucase(effectiveName) = "SS0180" Then
             block.Delete
             Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0090, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Slims"
@@ -2510,7 +2514,7 @@ Sub DivSS(ss As GcadSelectionSet)
             Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0090, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Slims"
             insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-        ElseIf effectiveName = "SS0180N" Then ' NARANJA 180
+        ElseIf Ucase(effectiveName) = "SS0180N" Then ' NARANJA 180
             block.Delete
             Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0090n, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Slims"
@@ -2523,7 +2527,7 @@ Sub DivSS(ss As GcadSelectionSet)
             Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ss0090n, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Slims"
             insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-        ElseIf effectiveName = "SSPL0180" Then ' GALVANIZADA 180 PLANTA
+        ElseIf Ucase(effectiveName) = "SSPL0180" Then ' GALVANIZADA 180 PLANTA
             block.Delete
             Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0090, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Slims"
@@ -2536,7 +2540,7 @@ Sub DivSS(ss As GcadSelectionSet)
             Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0090, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Slims"
             insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-        ElseIf effectiveName = "SSPL0180N" Then ' NARANJA 180 PLANTA
+        ElseIf Ucase(effectiveName) = "SSPL0180N" Then ' NARANJA 180 PLANTA
             block.Delete
             Set blockRef = GcadModel.InsertBlock(insertionPoint, b_sspl0090n, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Slims"
@@ -2583,15 +2587,15 @@ Sub DivTN(ss As GcadSelectionSet)
     
     Dim ui_tn3200 As String, ui_tn2800 As String, ui_tn2400 As String, ui_tn2000 As String, ui_tn1600 As String, ui_tn800 As String
     
-    If nombre_inicial = "Tensor80x4_3200" Or nombre_inicial = "Tensor80x4PL_3200" Then
+    If Ucase(nombre_inicial) = "TENSOR80x4_3200" Or Ucase(nombre_inicial) = "TENSOR80x4PL_3200" Then
         ui_tn3200 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1). 2 x 1600" & vbCrLf & vbCrLf & vbCrLf & "2). 2800 + 400" & vbCrLf & vbCrLf & vbCrLf & "3). 2400 + 800")
-    ElseIf nombre_inicial = "Tensor80x4_2800" Or nombre_inicial = "Tensor80x4PL_2800" Then
+    ElseIf Ucase(nombre_inicial) = "TENSOR80x4_2800" Or Ucase(nombre_inicial) = "TENSOR80x4PL_2800" Then
         ui_tn2800 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1). 2400 + 400" & vbCrLf & vbCrLf & vbCrLf & "2). 2000 + 800" & vbCrLf & vbCrLf & vbCrLf & "3). 1600 + 800 + 400")
-    ElseIf nombre_inicial = "Tensor80x4_2400" Or nombre_inicial = "Tensor80x4PL_2400" Then
+    ElseIf Ucase(nombre_inicial) = "TENSOR80x4_2400" Or Ucase(nombre_inicial) = "TENSOR80x4PL_2400" Then
         ui_tn2400 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1). 2000 + 400" & vbCrLf & vbCrLf & vbCrLf & "2). 1600 + 800" & vbCrLf & vbCrLf & vbCrLf & "3). 3 x 800")
-    ElseIf nombre_inicial = "Tensor80x4_2000" Or nombre_inicial = "Tensor80x4PL_2000" Then
+    ElseIf Ucase(nombre_inicial) = "TENSOR80x4_2000" Or Ucase(nombre_inicial) = "TENSOR80x4PL_2000" Then
         ui_tn2000 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1). 1600 + 400" & vbCrLf & vbCrLf & vbCrLf & "2). 2 x 800 + 400")
-    ElseIf nombre_inicial = "Tensor80x4_1600" Or nombre_inicial = "Tensor80x4PL_1600" Then
+    ElseIf Ucase(nombre_inicial) = "TENSOR80x4_1600" Or Ucase(nombre_inicial) = "TENSOR80x4PL_1600" Then
         ui_tn1600 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1). 2 x 800" & vbCrLf & vbCrLf & vbCrLf & "2). 4 x 400")
     End If
 
@@ -2624,6 +2628,8 @@ Sub DivTN(ss As GcadSelectionSet)
             Set block = obj
         ElseIf TypeOf obj Is GcadLine Then
             GoTo terminar
+		Else
+            GoTo terminar
         End If
         Dim effectiveName As String
         effectiveName = block.effectiveName
@@ -2642,7 +2648,7 @@ Sub DivTN(ss As GcadSelectionSet)
         
         '------------------------------------- TUBO 80 ----------------------------------------------------------------------------------------------------------------------
         ' Tubo 3200
-        If effectiveName = "Tensor80x4_3200" Then
+        If Ucase(effectiveName) = "TENSOR80x4_3200" Then
             block.Delete
             If ui_tn3200 = "1" Or ui_tn3200 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn1600_al, Xs, Ys, Zs, orientation)
@@ -2681,7 +2687,7 @@ Sub DivTN(ss As GcadSelectionSet)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "Tensor80x4PL_3200" Then
+        ElseIf Ucase(effectiveName) = "TENSOR80x4PL_3200" Then
             block.Delete
             If ui_tn3200 = "1" Or ui_tn3200 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn1600_pl, Xs, Ys, Zs, orientation)
@@ -2722,7 +2728,7 @@ Sub DivTN(ss As GcadSelectionSet)
             End If
             
         ' Tubo 2800
-        ElseIf effectiveName = "Tensor80x4_2800" Then
+        ElseIf Ucase(effectiveName) = "TENSOR80x4_2800" Then
             block.Delete
             If ui_tn2800 = "1" Or ui_tn2800 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn2400_al, Xs, Ys, Zs, orientation)
@@ -2769,7 +2775,7 @@ Sub DivTN(ss As GcadSelectionSet)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "Tensor80x4PL_2800" Then
+        ElseIf Ucase(effectiveName) = "TENSOR80x4PL_2800" Then
             block.Delete
             If ui_tn2800 = "1" Or ui_tn2800 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn2400_pl, Xs, Ys, Zs, orientation)
@@ -2818,7 +2824,7 @@ Sub DivTN(ss As GcadSelectionSet)
             End If
         
         ' Tubo 2400
-        ElseIf effectiveName = "Tensor80x4_2400" Then
+        ElseIf Ucase(effectiveName) = "TENSOR80x4_2400" Then
             block.Delete
             If ui_tn2400 = "1" Or ui_tn2400 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn2000_al, Xs, Ys, Zs, orientation)
@@ -2865,7 +2871,7 @@ Sub DivTN(ss As GcadSelectionSet)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 800 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 800 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "Tensor80x4PL_2400" Then
+        ElseIf Ucase(effectiveName) = "TENSOR80x4PL_2400" Then
             block.Delete
             If ui_tn2400 = "1" Or ui_tn2400 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn2000_pl, Xs, Ys, Zs, orientation)
@@ -2914,7 +2920,7 @@ Sub DivTN(ss As GcadSelectionSet)
             End If
         
         ' Tubo 2000
-        ElseIf effectiveName = "Tensor80x4_2000" Then
+        ElseIf Ucase(effectiveName) = "TENSOR80x4_2000" Then
             block.Delete
             If ui_tn2000 = "1" Or ui_tn2000 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn1600_al, Xs, Ys, Zs, orientation)
@@ -2949,7 +2955,7 @@ Sub DivTN(ss As GcadSelectionSet)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "Tensor80x4PL_2000" Then
+        ElseIf Ucase(effectiveName) = "TENSOR80x4PL_2000" Then
             block.Delete
             If ui_tn2000 = "1" Or ui_tn2000 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn1600_pl, Xs, Ys, Zs, orientation)
@@ -2987,7 +2993,7 @@ Sub DivTN(ss As GcadSelectionSet)
             
 
         ' Tubo 1600
-        ElseIf effectiveName = "Tensor80x4_1600" Then
+        ElseIf Ucase(effectiveName) = "TENSOR80x4_1600" Then
             block.Delete
             If ui_tn1600 = "1" Or ui_tn1600 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn800_al, Xs, Ys, Zs, orientation)
@@ -3030,7 +3036,7 @@ Sub DivTN(ss As GcadSelectionSet)
                 blockRef.Layer = "Slims"
                 insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "Tensor80x4PL_1600" Then
+        ElseIf Ucase(effectiveName) = "TENSOR80x4PL_1600" Then
             block.Delete
             If ui_tn1600 = "1" Or ui_tn1600 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn800_pl, Xs, Ys, Zs, orientation)
@@ -3075,7 +3081,7 @@ Sub DivTN(ss As GcadSelectionSet)
             End If
             
         ' Tubo 800
-        ElseIf effectiveName = "Tensor80x4_800" Then
+        ElseIf Ucase(effectiveName) = "TENSOR80x4_800" Then
             block.Delete
             Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn400_al, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Slims"
@@ -3088,7 +3094,7 @@ Sub DivTN(ss As GcadSelectionSet)
             Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn400_al, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Slims"
             insertionPoint(0) = insertionPoint(0) + 400 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 400 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-        ElseIf effectiveName = "Tensor80x4PL_800" Then
+        ElseIf Ucase(effectiveName) = "TENSOR80x4PL_800" Then
             block.Delete
             Set blockRef = GcadModel.InsertBlock(insertionPoint, b_tn400_pl, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Slims"
@@ -3137,11 +3143,11 @@ Sub DivGS(ss As GcadSelectionSet)
     
     Dim ui_gs6000 As String, ui_gs4500 As String, ui_gs3000 As String
     
-    If nombre_inicial = "GS_6000_planta" Or nombre_inicial = "GS_6000_alzado" Then
+    If Ucase(nombre_inicial) = "GS_6000_PLANTA" Or Ucase(nombre_inicial) = "GS_6000_ALZADO" Then
         ui_gs6000 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1). 4500 + 1500" & vbCrLf & vbCrLf & vbCrLf & "2). 2 x 3000" & vbCrLf & vbCrLf & vbCrLf & "3). 4 x 1500")
-    ElseIf nombre_inicial = "GS_4500_planta" Or nombre_inicial = "GS_4500_alzado" Then
+    ElseIf Ucase(nombre_inicial) = "GS_4500_PLANTA" Or Ucase(nombre_inicial) = "GS_4500_ALZADO" Then
         ui_gs4500 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1). 3000 + 1500" & vbCrLf & vbCrLf & vbCrLf & "2). 3 x 1500")
-    ElseIf nombre_inicial = "GS_3000_planta" Or nombre_inicial = "GS_3000_alzado" Then
+    ElseIf Ucase(nombre_inicial) = "GS_3000_PLANTA" Or Ucase(nombre_inicial) = "GS_3000_ALZADO" Then
         ui_gs3000 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1). 2 x 1500" & vbCrLf & vbCrLf & vbCrLf & "2). 4 x 750")
     End If
 
@@ -3172,6 +3178,8 @@ Sub DivGS(ss As GcadSelectionSet)
             Set block = obj
         ElseIf TypeOf obj Is GcadLine Then
             GoTo terminar
+		Else
+            GoTo terminar
         End If
         Dim effectiveName As String
         effectiveName = block.effectiveName
@@ -3190,7 +3198,7 @@ Sub DivGS(ss As GcadSelectionSet)
         
         '------------------------------------- GS ----------------------------------------------------------------------------------------------------------------------
         ' GS 6000
-        If effectiveName = "GS_6000_alzado" Then
+        If Ucase(effectiveName) = "GS_6000_ALZADO" Then
             block.Delete
             If ui_gs6000 = "1" Or ui_gs6000 = "a" Or ui_gs6000 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs4500_al, Xs, Ys, Zs, orientation)
@@ -3247,7 +3255,7 @@ Sub DivGS(ss As GcadSelectionSet)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "GS_6000_planta" Then
+        ElseIf Ucase(effectiveName) = "GS_6000_PLANTA" Then
             block.Delete
             If ui_gs6000 = "1" Or ui_gs6000 = "a" Or ui_gs6000 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs4500_pl, Xs, Ys, Zs, orientation)
@@ -3304,7 +3312,7 @@ Sub DivGS(ss As GcadSelectionSet)
             End If
         
         ' GS 4500
-        ElseIf effectiveName = "GS_4500_alzado" Then
+        ElseIf Ucase(effectiveName) = "GS_4500_ALZADO" Then
             block.Delete
             If ui_gs4500 = "1" Or ui_gs4500 = "A" Or ui_gs4500 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs3000_al, Xs, Ys, Zs, orientation)
@@ -3339,7 +3347,7 @@ Sub DivGS(ss As GcadSelectionSet)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 1500 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 1500 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "GS_4500_planta" Then
+        ElseIf Ucase(effectiveName) = "GS_4500_PLANTA" Then
             block.Delete
             If ui_gs4500 = "1" Or ui_gs4500 = "A" Or ui_gs4500 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs3000_pl, Xs, Ys, Zs, orientation)
@@ -3376,7 +3384,7 @@ Sub DivGS(ss As GcadSelectionSet)
             End If
         
         ' GS 3000
-        ElseIf effectiveName = "GS_3000_alzado" Then
+        ElseIf Ucase(effectiveName) = "GS_3000_ALZADO" Then
             block.Delete
             If ui_gs3000 = "1" Or ui_gs3000 = "" Or ui_gs3000 = "A" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs1500_al, Xs, Ys, Zs, orientation)
@@ -3419,7 +3427,7 @@ Sub DivGS(ss As GcadSelectionSet)
                 blockRef.Layer = "Granshor"
                 insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "GS_3000_planta" Then
+        ElseIf Ucase(effectiveName) = "GS_3000_PLANTA" Then
             block.Delete
             If ui_gs3000 = "1" Or ui_gs3000 = "A" Or ui_gs3000 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs1500_pl, Xs, Ys, Zs, orientation)
@@ -3464,7 +3472,7 @@ Sub DivGS(ss As GcadSelectionSet)
             End If
         
         ' GS 1500
-        ElseIf effectiveName = "GS_1500_alzado" Then
+        ElseIf Ucase(effectiveName) = "GS_1500_ALZADO" Then
             block.Delete
             Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs750_al, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Granshor"
@@ -3477,7 +3485,7 @@ Sub DivGS(ss As GcadSelectionSet)
             Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs750_al, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Granshor"
             insertionPoint(0) = insertionPoint(0) + 750 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 750 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-        ElseIf effectiveName = "GS_1500_planta" Then
+        ElseIf Ucase(effectiveName) = "GS_1500_PLANTA" Then
             block.Delete
             Set blockRef = GcadModel.InsertBlock(insertionPoint, b_gs750_pl, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Granshor"
@@ -3523,7 +3531,7 @@ Sub DivLS(ss As GcadSelectionSet)
     
     Dim ui_ls2200 As String
     
-    If nombre_inicial = "Lola_2200" Or nombre_inicial = "Lola_2200PL" Then
+    If Ucase(nombre_inicial) = "LOLA_2200" Or Ucase(nombre_inicial) = "LOLA_2200PL" Then
         ui_ls2200 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1). 2 x 1100" & vbCrLf & vbCrLf & vbCrLf & "2). 4 x 550")
     End If
 
@@ -3546,6 +3554,8 @@ Sub DivLS(ss As GcadSelectionSet)
             Set block = obj
         ElseIf TypeOf obj Is GcadLine Then
             GoTo terminar
+		Else
+            GoTo terminar
         End If
         Dim effectiveName As String
         effectiveName = block.effectiveName
@@ -3564,7 +3574,7 @@ Sub DivLS(ss As GcadSelectionSet)
         
         '------------------------------------- LS ----------------------------------------------------------------------------------------------------------------------
         ' LOLASHOR 2200
-        If effectiveName = "Lola_2200" Then
+        If Ucase(effectiveName) = "LOLA_2200" Then
             block.Delete
             If ui_ls2200 = "1" Or ui_ls2200 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ls1100_al, Xs, Ys, Zs, orientation)
@@ -3592,7 +3602,7 @@ Sub DivLS(ss As GcadSelectionSet)
                 blockRef.Layer = "Lolashor"
                 insertionPoint(0) = insertionPoint(0) + 550 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 550 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
             End If
-        ElseIf effectiveName = "Lola_2200PL" Then
+        ElseIf Ucase(effectiveName) = "LOLA_2200PL" Then
             block.Delete
             If ui_ls2200 = "1" Or ui_ls2200 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ls1100_pl, Xs, Ys, Zs, orientation)
@@ -3617,7 +3627,7 @@ Sub DivLS(ss As GcadSelectionSet)
             End If
         
         ' LOLASHOR 1100
-        ElseIf effectiveName = "Lola_1100" Then
+        ElseIf Ucase(effectiveName) = "LOLA_1100" Then
             block.Delete
             Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ls550_al, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Lolashor"
@@ -3625,7 +3635,7 @@ Sub DivLS(ss As GcadSelectionSet)
             Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ls550_al, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Lolashor"
             insertionPoint(0) = insertionPoint(0) + 550 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 550 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-        ElseIf effectiveName = "Lola_1100PL" Then
+        ElseIf Ucase(effectiveName) = "LOLA_1100PL" Then
             block.Delete
             Set blockRef = GcadModel.InsertBlock(insertionPoint, b_ls550_pl, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Lolashor"
@@ -3677,17 +3687,17 @@ Sub DivMP(ss As GcadSelectionSet)
     ui_mp900 = "ki"
     ui_mp450 = "ki"
     ui_mp270 = "ki"
-    If nombre_inicial = "Mshor5400PLA" Or nombre_inicial = "Mshor5400ALZ" Then
+    If Ucase(nombre_inicial) = "MSHOR5400PLA" Or Ucase(nombre_inicial) = "MSHOR5400ALZ" Then
         ui_mp5400 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1). 2 x 2700" & vbCrLf & vbCrLf & vbCrLf & "2). 3 x 1800" & vbCrLf & vbCrLf & vbCrLf & "3). 2700 + 1800 + 900" & vbCrLf & vbCrLf & vbCrLf & "4). Cambiar vista")
-    ElseIf nombre_inicial = "Mshor2700PLA" Or nombre_inicial = "Mshor2700ALZ" Then
+    ElseIf Ucase(nombre_inicial) = "MSHOR2700PLA" Or Ucase(nombre_inicial) = "MSHOR2700ALZ" Then
         ui_mp2700 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1). 1800 + 900" & vbCrLf & vbCrLf & vbCrLf & "2). 3 x 900" & vbCrLf & vbCrLf & vbCrLf & "3). 1800 + 2 x 450" & vbCrLf & vbCrLf & vbCrLf & "4). Cambiar vista")
-    ElseIf nombre_inicial = "Mshor1800PLA" Or nombre_inicial = "Mshor1800ALZ" Then
+    ElseIf Ucase(nombre_inicial) = "MSHOR1800PLA" Or Ucase(nombre_inicial) = "MSHOR1800ALZ" Then
         ui_mp1800 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1). 2 x 900" & vbCrLf & vbCrLf & vbCrLf & "2). 4 x 450" & vbCrLf & vbCrLf & vbCrLf & "3). Cambiar vista")
-    ElseIf nombre_inicial = "Mshor900PLA" Or nombre_inicial = "Mshor900ALZ" Then
+    ElseIf Ucase(nombre_inicial) = "MSHOR900PLA" Or Ucase(nombre_inicial) = "MSHOR900ALZ" Then
         ui_mp900 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1). 2 x 450" & vbCrLf & vbCrLf & vbCrLf & "2). 2 x 270 + 2 x 180" & vbCrLf & vbCrLf & vbCrLf & "3). 3 x 270 + 90" & vbCrLf & vbCrLf & vbCrLf & "4). Cambiar vista")
-    ElseIf nombre_inicial = "Mshor450PLA" Or nombre_inicial = "Mshor450ALZ" Then
+    ElseIf Ucase(nombre_inicial) = "MSHOR450PLA" Or Ucase(nombre_inicial) = "MSHOR450ALZ" Then
         ui_mp450 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1). 270 + 180" & vbCrLf & vbCrLf & vbCrLf & "2). 2 x 180 + 90" & vbCrLf & vbCrLf & vbCrLf & "3). 5 x 90" & vbCrLf & vbCrLf & vbCrLf & "4). Cambiar vista")
-    ElseIf nombre_inicial = "Mshor270PLA" Or nombre_inicial = "Mshor270ALZ" Then
+    ElseIf Ucase(nombre_inicial) = "MSHOR270PLA" Or Ucase(nombre_inicial) = "MSHOR270ALZ" Then
         ui_mp270 = InputBox("Elige una de las alternativas: " & vbCrLf & vbCrLf & vbCrLf & "1). 180 + 90" & vbCrLf & vbCrLf & vbCrLf & "2). 3 x 90" & vbCrLf & vbCrLf & vbCrLf & "3). Cambiar vista")
     End If
 
@@ -3724,6 +3734,8 @@ Sub DivMP(ss As GcadSelectionSet)
         If TypeOf obj Is GcadBlockReference Then
             Set block = obj
         ElseIf TypeOf obj Is GcadLine Then
+            GoTo terminar
+		Else
             GoTo terminar
         End If
         Dim effectiveName As String
@@ -3781,7 +3793,7 @@ Sub DivMP(ss As GcadSelectionSet)
         
         '------------------------------------- MEGAPROP ----------------------------------------------------------------------------------------------------------------------
         ' MEGAPROP 5400
-        If effectiveName = "Mshor5400ALZ" Then
+        If Ucase(effectiveName) = "MSHOR5400ALZ" Then
             block.Delete
             If ui_mp5400 = "1" Or ui_mp5400 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp2700_al, Xs, Ys, Zs, orientation)
@@ -3841,7 +3853,7 @@ Sub DivMP(ss As GcadSelectionSet)
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp5400_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
             End If
-        ElseIf effectiveName = "Mshor5400PLA" Then
+        ElseIf Ucase(effectiveName) = "MSHOR5400PLA" Then
             block.Delete
             If ui_mp5400 = "1" Or ui_mp5400 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp2700_pl, Xs, Ys, Zs, orientation)
@@ -3901,7 +3913,7 @@ Sub DivMP(ss As GcadSelectionSet)
             End If
         
         ' MEGAPROP 2700
-        ElseIf effectiveName = "Mshor2700ALZ" Then
+        ElseIf Ucase(effectiveName) = "MSHOR2700ALZ" Then
             block.Delete
             If ui_mp2700 = "1" Or ui_mp2700 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp1800_al, Xs, Ys, Zs, orientation)
@@ -3959,7 +3971,7 @@ Sub DivMP(ss As GcadSelectionSet)
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp2700_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
             End If
-        ElseIf effectiveName = "Mshor2700PLA" Then
+        ElseIf Ucase(effectiveName) = "MSHOR2700PLA" Then
             block.Delete
             If ui_mp2700 = "1" Or ui_mp2700 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp1800_pl, Xs, Ys, Zs, orientation)
@@ -4020,7 +4032,7 @@ Sub DivMP(ss As GcadSelectionSet)
             
             
         ' MEGAPROP 1800
-        ElseIf effectiveName = "Mshor1800ALZ" Then
+        ElseIf Ucase(effectiveName) = "MSHOR1800ALZ" Then
             block.Delete
             If ui_mp1800 = "1" Or ui_mp1800 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp900_al, Xs, Ys, Zs, orientation)
@@ -4066,7 +4078,7 @@ Sub DivMP(ss As GcadSelectionSet)
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp1800_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
             End If
-        ElseIf effectiveName = "Mshor1800PLA" Then
+        ElseIf Ucase(effectiveName) = "MSHOR1800PLA" Then
             block.Delete
             If ui_mp1800 = "1" Or ui_mp1800 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp900_pl, Xs, Ys, Zs, orientation)
@@ -4114,7 +4126,7 @@ Sub DivMP(ss As GcadSelectionSet)
             End If
             
         ' MEGAPROP 900
-        ElseIf effectiveName = "Mshor900ALZ" Then
+        ElseIf Ucase(effectiveName) = "MSHOR900ALZ" Then
             block.Delete
             If ui_mp900 = "1" Or ui_mp900 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp450_al, Xs, Ys, Zs, orientation)
@@ -4188,7 +4200,7 @@ Sub DivMP(ss As GcadSelectionSet)
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp900_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
             End If
-        ElseIf effectiveName = "Mshor900PLA" Then
+        ElseIf Ucase(effectiveName) = "MSHOR900PLA" Then
             block.Delete
             If ui_mp900 = "1" Or ui_mp900 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp450_pl, Xs, Ys, Zs, orientation)
@@ -4260,7 +4272,7 @@ Sub DivMP(ss As GcadSelectionSet)
             End If
             
         ' MEGAPROP 450
-        ElseIf effectiveName = "Mshor450ALZ" Then
+        ElseIf Ucase(effectiveName) = "MSHOR450ALZ" Then
             block.Delete
             If ui_mp450 = "1" Or ui_mp450 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp270_al, Xs, Ys, Zs, orientation)
@@ -4334,7 +4346,7 @@ Sub DivMP(ss As GcadSelectionSet)
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp450_pl, Xs, Ys, Zs, orientation)
                 blockRef.Layer = "Mega"
             End If
-        ElseIf effectiveName = "Mshor450PLA" Then
+        ElseIf Ucase(effectiveName) = "MSHOR450PLA" Then
             block.Delete
             If ui_mp450 = "1" Or ui_mp450 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp270_pl, Xs, Ys, Zs, orientation)
@@ -4410,7 +4422,7 @@ Sub DivMP(ss As GcadSelectionSet)
             End If
             
         ' MEGAPROP 270
-        ElseIf effectiveName = "Mshor270ALZ" Then
+        ElseIf Ucase(effectiveName) = "MSHOR270ALZ" Then
             block.Delete
             If ui_mp270 = "1" Or ui_mp270 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
@@ -4449,7 +4461,7 @@ Sub DivMP(ss As GcadSelectionSet)
                 blockRef.Layer = "Mega"
             
             End If
-        ElseIf effectiveName = "Mshor270PLA" Then
+        ElseIf Ucase(effectiveName) = "MSHOR270PLA" Then
             block.Delete
             If ui_mp270 = "1" Or ui_mp270 = "" Then
                 Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
@@ -4489,7 +4501,7 @@ Sub DivMP(ss As GcadSelectionSet)
             End If
             
         ' MEGAPROP 180
-        ElseIf effectiveName = "Mshor180ALZ" Then
+        ElseIf Ucase(effectiveName) = "MSHOR180ALZ" Then
             block.Delete
             Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Mega"
@@ -4502,7 +4514,7 @@ Sub DivMP(ss As GcadSelectionSet)
             Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_al, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Mega"
             insertionPoint(0) = insertionPoint(0) + 90 * Cos(orientation): insertionPoint(1) = insertionPoint(1) + 90 * Sin(orientation): insertionPoint(2) = insertionPoint(2)
-        ElseIf effectiveName = "Mshor180PLA" Then
+        ElseIf Ucase(effectiveName) = "MSHOR180PLA" Then
             block.Delete
             Set blockRef = GcadModel.InsertBlock(insertionPoint, b_mp90_pl, Xs, Ys, Zs, orientation)
             blockRef.Layer = "Mega"
