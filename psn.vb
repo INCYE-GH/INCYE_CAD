@@ -76,7 +76,7 @@ Dim Punto_inial(0 To 2) As Double
 Dim Punto_final(0 To 2) As Double
 Dim Punto_inial2(0 To 2) As Double
 Dim Punto_final2(0 To 2) As Double
-Dim PI As Variant
+Dim pi As Variant
 Dim Eje1 As Object
 Dim Eje2 As Object
 Dim Eje3 As Object
@@ -87,7 +87,7 @@ Dim ANG As Double
 Dim ANG2 As Double
 Dim DirBulon1 As Double
 Dim DirBulon2 As Double
-Dim Distancia As Double
+Dim distancia As Double
 Dim P1(0 To 2) As Double
 Dim P2(0 To 2) As Double
 Dim dato1 As String
@@ -173,7 +173,7 @@ Set Gcapa = AcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 150
 
 'Valores fijos
-PI = 4 * Atn(1)
+pi = 4 * Atn(1)
 repite = 1
 lgiro = 205
 lfusible = 187.5
@@ -194,7 +194,7 @@ lcajonmin = 835
 lcajonmax = 1022
 
 
-On Error GoTo terminar
+On Error GoTo Terminar
 Dim rutamp As String
 
 ruta = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\" & dato2 & "\"
@@ -225,7 +225,7 @@ plcue1 = "Ialzado"
 plcue2 = "Dalzado"
 plcu2 = "ALZ"
 Else
-GoTo terminar
+GoTo Terminar
 End If
 
 
@@ -262,7 +262,7 @@ DirPuntal = AcadUtil.AngleFromXAxis(PA, PB)
 ' conseguir la esquina:
 ' Calculamos las direcciones de las rectas
 Slope2 = Tan(DirMuro2)
-If DirMuro1 <> (PI / 2) And DirMuro1 <> (3 * PI / 2) Then
+If DirMuro1 <> (pi / 2) And DirMuro1 <> (3 * pi / 2) Then
     Slope1 = Tan(DirMuro1)
     If DirMuro1 = DirMuro2 Then
     Else
@@ -282,7 +282,7 @@ Else
 End If
 
 
-If Abs(DirMuro2 - DirMuro1) > PI Then
+If Abs(DirMuro2 - DirMuro1) > pi Then
     If DirMuro2 > DirMuro1 Then
         ' Intercambiar los puntos P1 y P3
         Dim tempP0(0 To 2) As Double
@@ -333,8 +333,8 @@ End If
 'End If
 
 
-DirBulon1 = DirMuro1 - (PI / 2)
-DirBulon2 = DirMuro2 + (PI / 2)
+DirBulon1 = DirMuro1 - (pi / 2)
+DirBulon2 = DirMuro2 + (pi / 2)
 
 
 
@@ -343,10 +343,10 @@ Dim AnguloAbsoluto1 As Double
 Dim UmbralMin1 As Double
 Dim UmbralMax1 As Double
 
-UmbralMin1 = 80 * (PI / 180) ' Convertir 80 grados a radianes
-UmbralMax1 = 100 * (PI / 180) ' Convertir 105 grados a radianes
+UmbralMin1 = 80 * (pi / 180) ' Convertir 80 grados a radianes
+UmbralMax1 = 100 * (pi / 180) ' Convertir 105 grados a radianes
 
-AnguloAbsoluto1 = Abs((DirPuntal + PI) - DirMuro2)
+AnguloAbsoluto1 = Abs((DirPuntal + pi) - DirMuro2)
 
 If AnguloAbsoluto1 > UmbralMin1 And AnguloAbsoluto1 < UmbralMax1 Then
     P1(0) = PB(0) + 85 * Cos(DirBulon2): P1(1) = PB(1) + 85 * Sin(DirBulon2): P1(2) = PB(2)
@@ -382,8 +382,8 @@ Dim AnguloAbsoluto2 As Double
 Dim UmbralMin2 As Double
 Dim UmbralMax2 As Double
 
-UmbralMin2 = 80 * (PI / 180) ' Convertir 80 grados a radianes
-UmbralMax2 = 100 * (PI / 180) ' Convertir 105 grados a radianes
+UmbralMin2 = 80 * (pi / 180) ' Convertir 80 grados a radianes
+UmbralMax2 = 100 * (pi / 180) ' Convertir 105 grados a radianes
 
 AnguloAbsoluto2 = Abs(DirPuntal - DirMuro1)
 
@@ -456,8 +456,8 @@ End If
 Dim agiro As String
 agiro = rutacu & "ANGgiro.dwg"
 
-DirMuro1Inv = DirMuro1 - PI
-DirMuro2Inv = DirMuro2 - PI
+DirMuro1Inv = DirMuro1 - pi
+DirMuro2Inv = DirMuro2 - pi
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ''''' Aquí viene la toma de decisiones de si coger un puntal o coger otro::::
@@ -509,7 +509,7 @@ Zs = 1
 x = P2(0) - P1(0)
 y = P2(1) - P1(1)
 
-Distancia = Val(Sqr((x ^ 2 + y ^ 2)))
+distancia = Val(Sqr((x ^ 2 + y ^ 2)))
 
     Dim tubo As String
     Dim placa1 As String
@@ -517,14 +517,14 @@ Distancia = Val(Sqr((x ^ 2 + y ^ 2)))
     Dim vista As String
 
 If carga >= 750 And carga <= 1350 Then
-    If Distancia >= 5000 And Distancia <= 12000 Then
+    If distancia >= 5000 And distancia <= 12000 Then
         Set blockRef = AcadModel.InsertBlock(PA, rutaplaca2, Xs, Ys, Zs, DirMuro1)
         blockRef.Layer = "Mega"
         Set blockRef = AcadModel.InsertBlock(PB, rutaplaca1, Xs, Ys, Zs, DirMuro2)
         blockRef.Layer = "Mega"
         
         ANG = AcadUtil.AngleFromXAxis(P1, P2)
-        ANG2 = ANG + (PI / 2)
+        ANG2 = ANG + (pi / 2)
         
         PAP(0) = PA(0): PAP(1) = PA(1): PAP(2) = PA(2)
         PBP(0) = PB(0): PBP(1) = PB(1): PBP(2) = PB(2)
@@ -535,7 +535,7 @@ If carga >= 750 And carga <= 1350 Then
         TxtPnt2(0) = PBP(0) + (D_ABP / 2) * Cos(ANG): TxtPnt2(1) = PBP(1) + (D_ABP / 2) * Sin(ANG): TxtPnt2(2) = PBP(2)
         TxtPnt2(0) = TxtPnt2(0) + 860 * Cos(ANG2): TxtPnt2(1) = TxtPnt2(1) + 860 * Sin(ANG2): TxtPnt2(2) = TxtPnt2(2)
         
-        TxtPnt(0) = P1(0) + (Distancia / 2) * Cos(ANG): TxtPnt(1) = P1(1) + (Distancia / 2) * Sin(ANG): TxtPnt(2) = P1(2)
+        TxtPnt(0) = P1(0) + (distancia / 2) * Cos(ANG): TxtPnt(1) = P1(1) + (distancia / 2) * Sin(ANG): TxtPnt(2) = P1(2)
         TxtPnt(0) = TxtPnt(0) + 410 * Cos(ANG2): TxtPnt(1) = TxtPnt(1) + 410 * Sin(ANG2): TxtPnt(2) = TxtPnt(2)
         
         Set objAcadDimAligned = ThisDrawing.ModelSpace.AddDimAligned(P1, P2, TxtPnt)
@@ -581,14 +581,14 @@ If carga >= 750 And carga <= 1350 Then
         Call pm(P1, P2, placa1, placa2, vista, tubo)
 
         GoTo volver
-    ElseIf Distancia > 12000 And Distancia <= 15000 Then
+    ElseIf distancia > 12000 And distancia <= 15000 Then
         Set blockRef = AcadModel.InsertBlock(PA, rutaplaca2, Xs, Ys, Zs, DirMuro1)
         blockRef.Layer = "Mega"
         Set blockRef = AcadModel.InsertBlock(PB, rutaplaca1, Xs, Ys, Zs, DirMuro2)
         blockRef.Layer = "Mega"
         
         ANG = AcadUtil.AngleFromXAxis(P1, P2)
-        ANG2 = ANG + (PI / 2)
+        ANG2 = ANG + (pi / 2)
         
         PAP(0) = PA(0): PAP(1) = PA(1): PAP(2) = PA(2)
         PBP(0) = PB(0): PBP(1) = PB(1): PBP(2) = PB(2)
@@ -599,7 +599,7 @@ If carga >= 750 And carga <= 1350 Then
         TxtPnt2(0) = PBP(0) + (D_ABP / 2) * Cos(ANG): TxtPnt2(1) = PBP(1) + (D_ABP / 2) * Sin(ANG): TxtPnt2(2) = PBP(2)
         TxtPnt2(0) = TxtPnt2(0) + 860 * Cos(ANG2): TxtPnt2(1) = TxtPnt2(1) + 860 * Sin(ANG2): TxtPnt2(2) = TxtPnt2(2)
         
-        TxtPnt(0) = P1(0) + (Distancia / 2) * Cos(ANG): TxtPnt(1) = P1(1) + (Distancia / 2) * Sin(ANG): TxtPnt(2) = P1(2)
+        TxtPnt(0) = P1(0) + (distancia / 2) * Cos(ANG): TxtPnt(1) = P1(1) + (distancia / 2) * Sin(ANG): TxtPnt(2) = P1(2)
         TxtPnt(0) = TxtPnt(0) + 410 * Cos(ANG2): TxtPnt(1) = TxtPnt(1) + 410 * Sin(ANG2): TxtPnt(2) = TxtPnt(2)
         
         Set objAcadDimAligned = ThisDrawing.ModelSpace.AddDimAligned(P1, P2, TxtPnt)
@@ -644,9 +644,9 @@ If carga >= 750 And carga <= 1350 Then
         Call pm(P1, P2, placa1, placa2, vista, tubo)
         
         GoTo volver
-    ElseIf Distancia > 15000 Then
+    ElseIf distancia > 15000 Then
         MsgBox "Puntal de más de 15 metros, revisar si no es necesario terminación con gato Pipeshor."
-        GoTo terminar
+        GoTo Terminar
     End If
 End If
 
@@ -664,7 +664,7 @@ Dim n90 As Integer
 
 
 
-lpuntal = Distancia - lfija
+lpuntal = distancia - lfija
 n5400 = Fix(lpuntal / 5400)
 lpuntal = lpuntal - n5400 * 5400
 n2700 = Fix(lpuntal / 2700)
@@ -692,8 +692,8 @@ Dim mmm1 As Double, mmm2 As Double, modulacionmenorM1 As Double, modulacionmenor
 
 
 If n90 > 0 Then
-    lalt1 = Distancia - 90
-    lalt2 = Distancia + 90
+    lalt1 = distancia - 90
+    lalt2 = distancia + 90
     
     If DirMuro1 = DirMuro2 Then
     Else
@@ -714,22 +714,22 @@ If n90 > 0 Then
         
         
         ' modulamos hacia la esquina con un puntal más pequeño
-        mmm1 = (lalt1 * D_P20) / Distancia
-        mmm2 = (lalt1 * D_P10) / Distancia
+        mmm1 = (lalt1 * D_P20) / distancia
+        mmm2 = (lalt1 * D_P10) / distancia
         
         modulacionmenorM1 = D_P20 - mmm1
         modulacionmenorM2 = D_P10 - mmm2
         
         ' modulamos con un puntal más grande
-        mmmayor1 = (lalt2 * D_P20) / Distancia
-        mmmayor2 = (lalt2 * D_P10) / Distancia
+        mmmayor1 = (lalt2 * D_P20) / distancia
+        mmmayor2 = (lalt2 * D_P10) / distancia
         
         modulacionmayorM1 = mmmayor1 - D_P20
         modulacionmayorM2 = mmmayor2 - D_P10
         
         If ((modulacionmenorM1 + modulacionmayorM1) < 1400) Or ((modulacionmenorM2 + modulacionmayorM2) < 1400) Then
             
-            userInput = InputBox("Elija una de las siguientes opciones:" & vbCrLf & vbCrLf & vbCrLf & "1. Dibujar el puntal seleccionado de longitud " & Distancia & "." & vbCrLf & vbCrLf & vbCrLf & "2. Dibujar un puntal MENOR de " & lalt1 & "mm de longitud más cercano a la esquina" & vbCrLf & vbCrLf & vbCrLf & "3. Dibujar un puntal MAYOR de " & lalt2 & "mm de longitud más alejado de la esquina")
+            userInput = InputBox("Elija una de las siguientes opciones:" & vbCrLf & vbCrLf & vbCrLf & "1. Dibujar el puntal seleccionado de longitud " & distancia & "." & vbCrLf & vbCrLf & vbCrLf & "2. Dibujar un puntal MENOR de " & lalt1 & "mm de longitud más cercano a la esquina" & vbCrLf & vbCrLf & vbCrLf & "3. Dibujar un puntal MAYOR de " & lalt2 & "mm de longitud más alejado de la esquina")
 
             If userInput = "1" Or userInput = "" Then
             ElseIf userInput = "2" Then
@@ -779,13 +779,13 @@ End If
 
 Set Eje1 = AcadModel.AddLine(P1, P2)
 ANG = AcadUtil.AngleFromXAxis(P1, P2)
-ANG2 = ANG + (PI / 2)
+ANG2 = ANG + (pi / 2)
 
 
 
-If Distancia < lfija Then
-        MsgBox "Medida de puntal " & Distancia & "mm, menor que el mínimo necesario de " & lfija & "."""
-        GoTo terminar
+If distancia < lfija Then
+        MsgBox "Medida de puntal " & distancia & "mm, menor que el mínimo necesario de " & lfija & "."""
+        GoTo Terminar
 End If
 
 'Puntos centrales de las placas
@@ -799,7 +799,7 @@ D_ABP = Val(Sqr((x4 ^ 2 + y4 ^ 2)))
 TxtPnt2(0) = PBP(0) + (D_ABP / 2) * Cos(ANG): TxtPnt2(1) = PBP(1) + (D_ABP / 2) * Sin(ANG): TxtPnt2(2) = PBP(2)
 TxtPnt2(0) = TxtPnt2(0) + 860 * Cos(ANG2): TxtPnt2(1) = TxtPnt2(1) + 860 * Sin(ANG2): TxtPnt2(2) = TxtPnt2(2)
 
-TxtPnt(0) = P1(0) + (Distancia / 2) * Cos(ANG): TxtPnt(1) = P1(1) + (Distancia / 2) * Sin(ANG): TxtPnt(2) = P1(2)
+TxtPnt(0) = P1(0) + (distancia / 2) * Cos(ANG): TxtPnt(1) = P1(1) + (distancia / 2) * Sin(ANG): TxtPnt(2) = P1(2)
 TxtPnt(0) = TxtPnt(0) + 410 * Cos(ANG2): TxtPnt(1) = TxtPnt(1) + 410 * Sin(ANG2): TxtPnt(2) = TxtPnt(2)
 
 Set objAcadDimAligned = ThisDrawing.ModelSpace.AddDimAligned(P1, P2, TxtPnt)
@@ -1007,16 +1007,16 @@ Punto_inial(0) = Punto_inial(0) + 150 * Cos(ANG): Punto_inial(1) = Punto_inial(1
 ' angulito de giro o la terminación de las cuñas que hagan falta
 If placaanc2 = "MP" Then
     CuMP = rutacu & "PL_GCODAL_PLA.dwg"
-    Set blockRef = AcadModel.InsertBlock(Punto_final, CuMP, Xs, Ys, Zs, ANG + PI)
+    Set blockRef = AcadModel.InsertBlock(Punto_final, CuMP, Xs, Ys, Zs, ANG + pi)
     blockRef.Layer = "Mega"
     Punto_final(0) = Punto_final(0) - 315 * Cos(ANG): Punto_final(1) = Punto_final(1) - 315 * Sin(ANG): Punto_final(2) = Punto_final(2)
 ElseIf placaanc2 = "CompactaMP" Then
     CuMPc = rutacu & "PL_GCODAL_C_PLA.dwg"
-    Set blockRef = AcadModel.InsertBlock(Punto_final, CuMPc, Xs, Ys, Zs, ANG + PI)
+    Set blockRef = AcadModel.InsertBlock(Punto_final, CuMPc, Xs, Ys, Zs, ANG + pi)
     blockRef.Layer = "Mega"
     Punto_final(0) = Punto_final(0) - 95 * Cos(ANG): Punto_final(1) = Punto_final(1) - 95 * Sin(ANG): Punto_final(2) = Punto_final(2)
 Else
-    Set blockRef = AcadModel.InsertBlock(Punto_final, agiro, Xs, Ys, Zs, ANG + PI)
+    Set blockRef = AcadModel.InsertBlock(Punto_final, agiro, Xs, Ys, Zs, ANG + pi)
     blockRef.Layer = "Mega"
     Punto_final(0) = Punto_final(0) - 90 * Cos(ANG): Punto_final(1) = Punto_final(1) - 90 * Sin(ANG): Punto_final(2) = Punto_final(2)
 End If
@@ -1040,7 +1040,7 @@ PGato1(0) = Punto_final(0): PGato1(1) = Punto_final(1): PGato1(2) = Punto_final(
 ' base naranja del gato
 Dim base_naranja As String
 base_naranja = rutacu & "zMGBaseGato_naranja.dwg"
-Set blockRef = AcadModel.InsertBlock(Punto_final, base_naranja, Xs, Ys, Zs, ANG + PI)
+Set blockRef = AcadModel.InsertBlock(Punto_final, base_naranja, Xs, Ys, Zs, ANG + pi)
 blockRef.Layer = "Mega"
 If carga < 1200 Then
     Set blockRef = AcadModel.InsertBlock(Punto_final, M20x60_4, Xs, Ys, Zs, ANG)
@@ -1056,11 +1056,11 @@ Punto_final(0) = Punto_final(0) - 150 * Cos(ANG): Punto_final(1) = Punto_final(1
 x1 = Punto_final(0) - Punto_inial(0)
 y1 = Punto_final(1) - Punto_inial(1)
 
-Distancia = Val(Sqr((x1 ^ 2 + y1 ^ 2)))
-Distancia = Distancia / 2
+distancia = Val(Sqr((x1 ^ 2 + y1 ^ 2)))
+distancia = distancia / 2
 
 
-Punto_inial(0) = Punto_inial(0) + Distancia * Cos(ANG): Punto_inial(1) = Punto_inial(1) + Distancia * Sin(ANG): Punto_inial(2) = Punto_inial(2)
+Punto_inial(0) = Punto_inial(0) + distancia * Cos(ANG): Punto_inial(1) = Punto_inial(1) + distancia * Sin(ANG): Punto_inial(2) = Punto_inial(2)
 
 
 ' husillo
@@ -1089,7 +1089,7 @@ Eje1.Layer = "Nonplot"
 volver:
 Loop
 
-terminar:
+Terminar:
 
 End Sub
 
@@ -1110,7 +1110,7 @@ Dim line2 As AcadLine
 Dim line1 As AcadLine
 Dim M20x90 As String
 Dim M20x150 As String, M20x110 As String, Var20x250 As String
-Dim M20x160 As String
+Dim M20x100 As String
 Dim M20x90_16 As String
 Dim GS_Bulon120mm As String
 Dim GS_Giro As String
@@ -1165,7 +1165,7 @@ Dim Punto_inial(0 To 2) As Double
 Dim Punto_final(0 To 2) As Double
 Dim Punto_inial2(0 To 2) As Double
 Dim Punto_final2(0 To 2) As Double
-Dim PI As Variant
+Dim pi As Variant
 Dim Eje1 As Object
 Dim Eje2 As Object
 Dim Eje3 As Object
@@ -1176,7 +1176,7 @@ Dim ANG As Double
 Dim ANG2 As Double
 Dim DirBulon1 As Double
 Dim DirBulon2 As Double
-Dim Distancia As Double
+Dim distancia As Double
 Dim P1(0 To 2) As Double
 Dim P2(0 To 2) As Double
 Dim dato1 As String
@@ -1259,7 +1259,7 @@ Set Gcapa = AcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 150
 
 'Valores fijos
-PI = 4 * Atn(1)
+pi = 4 * Atn(1)
 repite = 1
 lgiro = 205
 lfusible = 187.5
@@ -1280,12 +1280,12 @@ lcajonmin = 835
 lcajonmax = 1022
 
 Dim carga As Double
-
+Do While repite = 1
 carga = InputBox("Introduce carga soportada por el codal (kN ELU): ", "Carga", 0)
 
 If (carga < 1350) Then
     Call mpn(carga)
-    GoTo terminar
+    GoTo Terminar
 ElseIf (carga >= 1350) And (carga < 1500) Then
     lfija = (2 * lgiro) + lfusible + l50 + lgatomin
 ElseIf (carga >= 1500) And (carga < 2000) Then
@@ -1298,7 +1298,7 @@ ElseIf carga = "" Then
     MsgBox "Introduce una carga para continuar"
 End If
 
-On Error GoTo terminar
+On Error GoTo Terminar
 
 kwordList = "S L"
 dato2 = ""
@@ -1313,7 +1313,7 @@ dato2 = "Pshor_4S"
 capa = "Pipeshor4S"
 dato3 = "PS"
 Else
-GoTo terminar
+GoTo Terminar
 End If
 
 ruta = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\" & dato2 & "\"
@@ -1331,7 +1331,7 @@ If dato1 = "" Or dato1 = "Planta" Then
 dato1 = "Planta"
 ElseIf dato1 = "Alzado" Then
 Else
-GoTo terminar
+GoTo Terminar
 End If
 
 
@@ -1378,7 +1378,7 @@ End If
 
 
 
-Do While repite = 1
+'Do While repite = 1
 
 
 lalt1 = 0
@@ -1409,7 +1409,7 @@ DirPuntal = AcadUtil.AngleFromXAxis(PA, PB)
 ' conseguir la esquina:
 ' Calculamos las direcciones de las rectas
 Slope2 = Tan(DirMuro2)
-If DirMuro1 <> (PI / 2) And DirMuro1 <> (3 * PI / 2) Then
+If DirMuro1 <> (pi / 2) And DirMuro1 <> (3 * pi / 2) Then
     Slope1 = Tan(DirMuro1)
     If DirMuro1 = DirMuro2 Then
     Else
@@ -1459,7 +1459,7 @@ End If
 ''''' NUEVO
 
 
-If Abs(DirMuro2 - DirMuro1) > PI Then
+If Abs(DirMuro2 - DirMuro1) > pi Then
     If DirMuro2 > DirMuro1 Then
         ' Intercambiar los puntos P1 y P3
         Dim tempP0(0 To 2) As Double
@@ -1492,8 +1492,8 @@ End If
 '''' FIN DE NUEVO
 
 
-DirBulon1 = DirMuro1 - (PI / 2)
-DirBulon2 = DirMuro2 + (PI / 2)
+DirBulon1 = DirMuro1 - (pi / 2)
+DirBulon2 = DirMuro2 + (pi / 2)
 
 P2(0) = PA(0) + l145 * Cos(DirBulon1): P2(1) = PA(1) + l145 * Sin(DirBulon1): P2(2) = PA(2)
 P1(0) = PB(0) + l145 * Cos(DirBulon2): P1(1) = PB(1) + l145 * Sin(DirBulon2): P1(2) = PB(2)
@@ -1503,16 +1503,16 @@ y = P2(1) - P1(1)
 Xs = 1
 Ys = 1
 Zs = 1
-Distancia = Val(Sqr((x ^ 2 + y ^ 2)))
+distancia = Val(Sqr((x ^ 2 + y ^ 2)))
 
-DirMuro1Inv = DirMuro1 - PI
-DirMuro2Inv = DirMuro2 - PI
+DirMuro1Inv = DirMuro1 - pi
+DirMuro2Inv = DirMuro2 - pi
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ''''' Aquí viene la toma de decisiones de si coger un puntal o coger otro::::
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 If DirMuro1 = DirMuro2 Then
-    lpuntal = Distancia - lfija
+    lpuntal = distancia - lfija
     n6000 = Fix(lpuntal / l6000)
     lpuntal = lpuntal - n6000 * l6000
     n4500 = Fix(lpuntal / l4500)
@@ -1553,12 +1553,12 @@ If DirMuro1 = DirMuro2 Then
             End If
         Case Else
         MsgBox "Longitud no controlada " & lpuntal & "mm, fuera de rango, revisar código"
-        GoTo terminar
+        GoTo Terminar
             
     End Select
     DirPuntal = AcadUtil.AngleFromXAxis(P1, P2)
     DirPuntal2 = AcadUtil.AngleFromXAxis(P2, P1)
-    If (Abs(DirMuro1 - DirPuntal2) <= (PI / 2)) Or (Abs(DirMuro1 - DirPuntal2) >= ((3 * PI) / 2)) Then
+    If (Abs(DirMuro1 - DirPuntal2) <= (pi / 2)) Or (Abs(DirMuro1 - DirPuntal2) >= ((3 * pi) / 2)) Then
         rutaplaca1 = rutaplaca1
         Set blockRef = AcadModel.InsertBlock(PA, rutaplaca1, Xs, Ys, Zs, DirMuro1)
         blockRef.Layer = "Granshor"
@@ -1572,7 +1572,7 @@ If DirMuro1 = DirMuro2 Then
             Set blockRef = AcadModel.InsertBlock(PA, rutaplaca1, Xs, Ys, Zs, DirMuro1Inv)
         blockRef.Layer = "Granshor"
     End If
-    If (Abs(DirPuntal - DirMuro2) <= (PI / 2)) Or (Abs(DirPuntal - DirMuro2) >= ((3 * PI) / 2)) Then
+    If (Abs(DirPuntal - DirMuro2) <= (pi / 2)) Or (Abs(DirPuntal - DirMuro2) >= ((3 * pi) / 2)) Then
         rutaplaca2 = rutaplaca2
         Set blockRef = AcadModel.InsertBlock(PB, rutaplaca2, Xs, Ys, Zs, DirMuro2)
         blockRef.Layer = "Granshor"
@@ -1587,7 +1587,7 @@ If DirMuro1 = DirMuro2 Then
         blockRef.Layer = "Granshor"
     End If
 Else
-    lpuntal = Distancia - lfija
+    lpuntal = distancia - lfija
     n6000 = Fix(lpuntal / l6000)
     lpuntal = lpuntal - n6000 * l6000
     n4500 = Fix(lpuntal / l4500)
@@ -1628,7 +1628,7 @@ Else
             End If
         Case Else
         MsgBox "Longitud no controlada " & lpuntal & "mm, fuera de rango, revisar código"
-        GoTo terminar
+        GoTo Terminar
             
     End Select
 
@@ -1637,36 +1637,36 @@ Else
     If dato3 = "PL" Then
         If nfusible = 1 Then
             If n280 = 1 Then
-                lalt1 = Distancia - l280
-                lalt2 = Distancia + 470
+                lalt1 = distancia - l280
+                lalt2 = distancia + 470
             ElseIf n280 = 2 Then
-                lalt1 = Distancia - l280
-                lalt2 = Distancia + 190
+                lalt1 = distancia - l280
+                lalt2 = distancia + 190
             End If
         ElseIf nfusible = 2 Then
             If n280 = 1 Then
-                lalt1 = Distancia - lfusible - l280 + 150
-                lalt2 = Distancia - l280 - lfusible + l750
+                lalt1 = distancia - lfusible - l280 + 150
+                lalt2 = distancia - l280 - lfusible + l750
             ElseIf n280 = 2 Then
-                lalt1 = Distancia - lfusible - l280 + 150
-                lalt2 = Distancia - 560 - lfusible + l750
+                lalt1 = distancia - lfusible - l280 + 150
+                lalt2 = distancia - 560 - lfusible + l750
             End If
         End If
     ElseIf dato3 = "PS" Then
         If n280 = 1 Then
             If n560 = 1 And n750 = 1 Then
-                lalt1 = Distancia - l280 + 190
-                lalt2 = Distancia + l280
+                lalt1 = distancia - l280 + 190
+                lalt2 = distancia + l280
             ElseIf n560 = 0 And n750 = 1 Then
-                lalt1 = Distancia - l280
-                lalt2 = Distancia + l280
+                lalt1 = distancia - l280
+                lalt2 = distancia + l280
                 
             ElseIf n560 = 1 And n750 = 0 Then
-                lalt1 = Distancia - 90
-                lalt2 = Distancia + 280
+                lalt1 = distancia - 90
+                lalt2 = distancia + 280
             Else
-                lalt1 = Distancia - 280
-                lalt2 = Distancia + 280
+                lalt1 = distancia - 280
+                lalt2 = distancia + 280
             End If
         End If
     End If
@@ -1676,7 +1676,7 @@ Else
 
 
     '''' MURO 1 '''''''
-    muro1menor = (Distancia * D_A0) / D_AB
+    muro1menor = (distancia * D_A0) / D_AB
     muromoduladome1 = (lalt1 * D_A0) / D_AB
     muromoduladoma1 = (lalt2 * D_A0) / D_AB
 
@@ -1687,7 +1687,7 @@ Else
     Plejos2(0) = P2(0) - mod1M * Cos(DirMuro1): Plejos2(1) = P2(1) - mod1M * Sin(DirMuro1): Plejos2(2) = P2(2)
 
     '''''' MURO 2 ''''''''''
-    muro2menor = (Distancia * D_B0) / D_AB
+    muro2menor = (distancia * D_B0) / D_AB
     muromoduladome2 = (lalt1 * D_B0) / D_AB
     muromoduladoma2 = (lalt2 * D_B0) / D_AB
 
@@ -1699,12 +1699,12 @@ Else
     
 
     If ((mod1M + mod1c) < 2000) Or ((mod2c + mod2M) < 2000) Then
-        userInput = InputBox("Elija una de las siguientes opciones:" & vbCrLf & vbCrLf & vbCrLf & "1. Dibujar el puntal seleccionado de longitud " & Distancia & "." & vbCrLf & vbCrLf & vbCrLf & "2. Dibujar un puntal MENOR de " & lalt1 & "mm de longitud más cercano a la esquina" & vbCrLf & vbCrLf & vbCrLf & "3. Dibujar un puntal MAYOR de " & lalt2 & "mm de longitud más alejado de la esquina")
+        userInput = InputBox("Elija una de las siguientes opciones:" & vbCrLf & vbCrLf & vbCrLf & "1. Dibujar el puntal seleccionado de longitud " & distancia & "." & vbCrLf & vbCrLf & vbCrLf & "2. Dibujar un puntal MENOR de " & lalt1 & "mm de longitud más cercano a la esquina" & vbCrLf & vbCrLf & vbCrLf & "3. Dibujar un puntal MAYOR de " & lalt2 & "mm de longitud más alejado de la esquina")
         
         If userInput = "1" Or userInput = "" Then
             DirPuntal = AcadUtil.AngleFromXAxis(P1, P2)
             DirPuntal2 = AcadUtil.AngleFromXAxis(P2, P1)
-            If (Abs(DirMuro1 - DirPuntal2) <= (PI / 2)) Or (Abs(DirMuro1 - DirPuntal2) >= ((3 * PI) / 2)) Then
+            If (Abs(DirMuro1 - DirPuntal2) <= (pi / 2)) Or (Abs(DirMuro1 - DirPuntal2) >= ((3 * pi) / 2)) Then
                 rutaplaca1 = rutaplaca1
                 Set blockRef = AcadModel.InsertBlock(PA, rutaplaca1, Xs, Ys, Zs, DirMuro1)
                 blockRef.Layer = "Granshor"
@@ -1718,7 +1718,7 @@ Else
                 Set blockRef = AcadModel.InsertBlock(PA, rutaplaca1, Xs, Ys, Zs, DirMuro1Inv)
                 blockRef.Layer = "Granshor"
             End If
-            If (Abs(DirPuntal - DirMuro2) <= (PI / 2)) Or (Abs(DirPuntal - DirMuro2) >= ((3 * PI) / 2)) Then
+            If (Abs(DirPuntal - DirMuro2) <= (pi / 2)) Or (Abs(DirPuntal - DirMuro2) >= ((3 * pi) / 2)) Then
                 rutaplaca2 = rutaplaca2
                 Set blockRef = AcadModel.InsertBlock(PB, rutaplaca2, Xs, Ys, Zs, DirMuro2)
                 blockRef.Layer = "Granshor"
@@ -1735,12 +1735,12 @@ Else
         ElseIf userInput = "2" Then
             P1(0) = Pcerca1(0): P1(1) = Pcerca1(1): P1(2) = Pcerca1(2)
             P2(0) = Pcerca2(0): P2(1) = Pcerca2(1): P2(2) = Pcerca2(2)
-            Distancia = lalt1
+            distancia = lalt1
             PA(0) = PA(0) + mod1c * Cos(DirMuro1): PA(1) = PA(1) + mod1c * Sin(DirMuro1): PA(2) = PA(2)
             PB(0) = PB(0) + mod2c * Cos(DirMuro2): PB(1) = PB(1) + mod2c * Sin(DirMuro2): PB(2) = PB(0)
             DirPuntal = AcadUtil.AngleFromXAxis(P1, P2)
             DirPuntal2 = AcadUtil.AngleFromXAxis(P2, P1)
-            If (Abs(DirMuro1 - DirPuntal2) <= (PI / 2)) Or (Abs(DirMuro1 - DirPuntal2) >= ((3 * PI) / 2)) Then
+            If (Abs(DirMuro1 - DirPuntal2) <= (pi / 2)) Or (Abs(DirMuro1 - DirPuntal2) >= ((3 * pi) / 2)) Then
                 rutaplaca1 = rutaplaca1
                 Set blockRef = AcadModel.InsertBlock(PA, rutaplaca1, Xs, Ys, Zs, DirMuro1)
                 blockRef.Layer = "Granshor"
@@ -1754,7 +1754,7 @@ Else
                 Set blockRef = AcadModel.InsertBlock(PA, rutaplaca1, Xs, Ys, Zs, DirMuro1Inv)
                 blockRef.Layer = "Granshor"
             End If
-            If (Abs(DirPuntal - DirMuro2) <= (PI / 2)) Or (Abs(DirPuntal - DirMuro2) >= ((3 * PI) / 2)) Then
+            If (Abs(DirPuntal - DirMuro2) <= (pi / 2)) Or (Abs(DirPuntal - DirMuro2) >= ((3 * pi) / 2)) Then
                 rutaplaca2 = rutaplaca2
                 Set blockRef = AcadModel.InsertBlock(PB, rutaplaca2, Xs, Ys, Zs, DirMuro2)
                 blockRef.Layer = "Granshor"
@@ -1772,12 +1772,12 @@ Else
         ElseIf userInput = "3" Then
             P1(0) = Plejos1(0): P1(1) = Plejos1(1): P1(2) = Plejos1(2)
             P2(0) = Plejos2(0): P2(1) = Plejos2(1): P2(2) = Plejos2(2)
-            Distancia = lalt2
+            distancia = lalt2
             PA(0) = PA(0) - mod1M * Cos(DirMuro1): PA(1) = PA(1) - mod1M * Sin(DirMuro1): PA(2) = PA(2)
             PB(0) = PB(0) - mod2M * Cos(DirMuro2): PB(1) = PB(1) - mod2M * Sin(DirMuro2): PB(2) = PB(0)
             DirPuntal = AcadUtil.AngleFromXAxis(P1, P2)
             DirPuntal2 = AcadUtil.AngleFromXAxis(P2, P1)
-            If (Abs(DirMuro1 - DirPuntal2) <= (PI / 2)) Or (Abs(DirMuro1 - DirPuntal2) >= ((3 * PI) / 2)) Then
+            If (Abs(DirMuro1 - DirPuntal2) <= (pi / 2)) Or (Abs(DirMuro1 - DirPuntal2) >= ((3 * pi) / 2)) Then
                 rutaplaca1 = rutaplaca1
                 Set blockRef = AcadModel.InsertBlock(PA, rutaplaca1, Xs, Ys, Zs, DirMuro1)
                 blockRef.Layer = "Granshor"
@@ -1791,7 +1791,7 @@ Else
                 Set blockRef = AcadModel.InsertBlock(PA, rutaplaca1, Xs, Ys, Zs, DirMuro1Inv)
                 blockRef.Layer = "Granshor"
             End If
-            If (Abs(DirPuntal - DirMuro2) <= (PI / 2)) Or (Abs(DirPuntal - DirMuro2) >= ((3 * PI) / 2)) Then
+            If (Abs(DirPuntal - DirMuro2) <= (pi / 2)) Or (Abs(DirPuntal - DirMuro2) >= ((3 * pi) / 2)) Then
                 rutaplaca2 = rutaplaca2
                 Set blockRef = AcadModel.InsertBlock(PB, rutaplaca2, Xs, Ys, Zs, DirMuro2)
                 blockRef.Layer = "Granshor"
@@ -1810,7 +1810,7 @@ Else
     Else
         DirPuntal = AcadUtil.AngleFromXAxis(P1, P2)
         DirPuntal2 = AcadUtil.AngleFromXAxis(P2, P1)
-        If (Abs(DirMuro1 - DirPuntal2) <= (PI / 2)) Or (Abs(DirMuro1 - DirPuntal2) >= ((3 * PI) / 2)) Then
+        If (Abs(DirMuro1 - DirPuntal2) <= (pi / 2)) Or (Abs(DirMuro1 - DirPuntal2) >= ((3 * pi) / 2)) Then
             rutaplaca1 = rutaplaca1
             Set blockRef = AcadModel.InsertBlock(PA, rutaplaca1, Xs, Ys, Zs, DirMuro1)
             blockRef.Layer = "Granshor"
@@ -1824,7 +1824,7 @@ Else
             Set blockRef = AcadModel.InsertBlock(PA, rutaplaca1, Xs, Ys, Zs, DirMuro1Inv)
             blockRef.Layer = "Granshor"
         End If
-        If (Abs(DirPuntal - DirMuro2) <= (PI / 2)) Or (Abs(DirPuntal - DirMuro2) >= ((3 * PI) / 2)) Then
+        If (Abs(DirPuntal - DirMuro2) <= (pi / 2)) Or (Abs(DirPuntal - DirMuro2) >= ((3 * pi) / 2)) Then
             rutaplaca2 = rutaplaca2
             Set blockRef = AcadModel.InsertBlock(PB, rutaplaca2, Xs, Ys, Zs, DirMuro2)
             blockRef.Layer = "Granshor"
@@ -1848,18 +1848,18 @@ End If
 
 Set Eje1 = AcadModel.AddLine(P1, P2)
 ANG = AcadUtil.AngleFromXAxis(P1, P2)
-ANG2 = ANG + (PI / 2)
+ANG2 = ANG + (pi / 2)
 
 x = P2(0) - P1(0)
 y = P2(1) - P1(1)
 Xs = 1
 Ys = 1
 Zs = 1
-Distancia = Val(Sqr((x ^ 2 + y ^ 2)))
+distancia = Val(Sqr((x ^ 2 + y ^ 2)))
 
-If Distancia < lfija Then
-        MsgBox "Medida de puntal " & Distancia & "mm, menor que el mínimo necesario de " & lfija & "."""
-        GoTo terminar
+If distancia < lfija Then
+        MsgBox "Medida de puntal " & distancia & "mm, menor que el mínimo necesario de " & lfija & "."""
+        GoTo Terminar
 End If
 
 'Puntos centrales de las placas
@@ -1872,7 +1872,7 @@ D_ABP = Val(Sqr((x4 ^ 2 + y4 ^ 2)))
 TxtPnt2(0) = PBP(0) + (D_ABP / 2) * Cos(ANG): TxtPnt2(1) = PBP(1) + (D_ABP / 2) * Sin(ANG): TxtPnt2(2) = PBP(2)
 TxtPnt2(0) = TxtPnt2(0) + 860 * Cos(ANG2): TxtPnt2(1) = TxtPnt2(1) + 860 * Sin(ANG2): TxtPnt2(2) = TxtPnt2(2)
 
-TxtPnt(0) = P1(0) + (Distancia / 2) * Cos(ANG): TxtPnt(1) = P1(1) + (Distancia / 2) * Sin(ANG): TxtPnt(2) = P1(2)
+TxtPnt(0) = P1(0) + (distancia / 2) * Cos(ANG): TxtPnt(1) = P1(1) + (distancia / 2) * Sin(ANG): TxtPnt(2) = P1(2)
 TxtPnt(0) = TxtPnt(0) + 410 * Cos(ANG2): TxtPnt(1) = TxtPnt(1) + 410 * Sin(ANG2): TxtPnt(2) = TxtPnt(2)
 
 Set objAcadDimAligned = ThisDrawing.ModelSpace.AddDimAligned(P1, P2, TxtPnt)
@@ -1905,7 +1905,7 @@ blockRef.Layer = "Granshor"
 GS_Giro = rutags & "GS_Giro_Planta.dwg"
 Set blockRef = AcadModel.InsertBlock(P1, GS_Giro, Xs, Ys, Zs, ANG)
 blockRef.Layer = "Granshor"
-Set blockRef = AcadModel.InsertBlock(P2, GS_Giro, Xs, Ys, Zs, ANG + PI)
+Set blockRef = AcadModel.InsertBlock(P2, GS_Giro, Xs, Ys, Zs, ANG + pi)
 blockRef.Layer = "Granshor"
 
 
@@ -1926,8 +1926,8 @@ ElseIf (carga >= 1350) And (carga < 1500) Then
     Punto_inial(0) = Punto_inial(0) + lfusible * Cos(ANG): Punto_inial(1) = Punto_inial(1) + lfusible * Sin(ANG): Punto_inial(2) = Punto_inial(2)
     PS_Placa50mm = rutaps & "PS_Placa50mm_" & dato1 & ".dwg"
     M20x110 = ruta2 & "4-M20X110.dwg"
-    M20x160 = ruta2 & "4-M20X160.dwg"
-    Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x160, Xs, Ys, Zs, ANG)
+    M20x100 = ruta2 & "4-M20X100A.dwg"
+    Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x100, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Nonplot"
     blockRef.Update
         blockRef.Explode
@@ -1957,8 +1957,8 @@ ElseIf (carga >= 1500) And (carga < 2000) Then
     Set blockRef = AcadModel.InsertBlock(Punto_inial, PS_Placa35mm, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Pipeshor4S"
     M20x150 = ruta2 & "4-M20X150.dwg"
-    M20x160 = ruta2 & "4-M20X160.dwg"
-    Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x160, Xs, Ys, Zs, ANG)
+    M20x100 = ruta2 & "4-M20X100A.dwg"
+    Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x100, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Nonplot"
     blockRef.Update
         blockRef.Explode
@@ -1988,8 +1988,8 @@ ElseIf (carga >= 2000) And (carga < 2900) Then
     Set blockRef = AcadModel.InsertBlock(Punto_inial, PS_Placa50mm, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Pipeshor4S"
     M20x150 = ruta2 & "4-M20X150.dwg"
-    M20x160 = ruta2 & "4-M20X160.dwg"
-    Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x160, Xs, Ys, Zs, ANG)
+    M20x100 = ruta2 & "4-M20X100A.dwg"
+    Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x100, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Nonplot"
     blockRef.Update
         blockRef.Explode
@@ -2004,32 +2004,34 @@ ElseIf (carga >= 2000) And (carga < 2900) Then
         blockRef.Explode
         blockRef.Delete
 ElseIf carga >= 2900 Then
-    Punto_inial(0) = P2(0) + lgiro * Cos(ANG + PI): Punto_inial(1) = P2(1) + lgiro * Sin(ANG + PI): Punto_inial(2) = P2(2)
-    GS_Fusible = rutags & "GS_Fusible_Planta.dwg"
-    Punto_inial(0) = Punto_inial(0) + lfusible * Cos(ANG + PI): Punto_inial(1) = Punto_inial(1) + lfusible * Sin(ANG + PI): Punto_inial(2) = Punto_inial(2)
-    Set blockRef = AcadModel.InsertBlock(Punto_inial, GS_Fusible, Xs, Ys, Zs, ANG)
-    blockRef.Layer = "Granshor"
     M20x90 = ruta2 & "4-M20X90.dwg"
+    Punto_inial(0) = P2(0) + lgiro * Cos(ANG + pi): Punto_inial(1) = P2(1) + lgiro * Sin(ANG + pi): Punto_inial(2) = P2(2)
+    GS_Fusible = rutags & "GS_Fusible_Planta.dwg"
     Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x90, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Nonplot"
     blockRef.Update
         blockRef.Explode
         blockRef.Delete
+    Punto_inial(0) = Punto_inial(0) + lfusible * Cos(ANG + pi): Punto_inial(1) = Punto_inial(1) + lfusible * Sin(ANG + pi): Punto_inial(2) = Punto_inial(2)
+    Set blockRef = AcadModel.InsertBlock(Punto_inial, GS_Fusible, Xs, Ys, Zs, ANG)
+    blockRef.Layer = "Granshor"
+
+
     PS_Placa50mm = rutaps & "PS_Placa50mm_" & dato1 & ".dwg"
-    Punto_inial(0) = Punto_inial(0) + l50 * Cos(ANG + PI): Punto_inial(1) = Punto_inial(1) + l50 * Sin(ANG + PI): Punto_inial(2) = Punto_inial(2)
+    Punto_inial(0) = Punto_inial(0) + l50 * Cos(ANG + pi): Punto_inial(1) = Punto_inial(1) + l50 * Sin(ANG + pi): Punto_inial(2) = Punto_inial(2)
     Set blockRef = AcadModel.InsertBlock(Punto_inial, PS_Placa50mm, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Pipeshor4S"
     Var20x250 = ruta2 & "1VarM20X250.dwg"
-    M20x160 = ruta2 & "4-M20X160.dwg"
-    Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x160, Xs, Ys, Zs, ANG)
+    M20x100 = ruta2 & "4-M20x100A.dwg"
+    Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x100, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Nonplot"
     blockRef.Update
         blockRef.Explode
         blockRef.Delete
-    Punto_inial(0) = Punto_inial(0) + l50 * Cos(ANG + PI): Punto_inial(1) = Punto_inial(1) + l50 * Sin(ANG + PI): Punto_inial(2) = Punto_inial(2)
+    Punto_inial(0) = Punto_inial(0) + l50 * Cos(ANG + pi): Punto_inial(1) = Punto_inial(1) + l50 * Sin(ANG + pi): Punto_inial(2) = Punto_inial(2)
     Set blockRef = AcadModel.InsertBlock(Punto_inial, PS_Placa50mm, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Pipeshor4S"
-    Punto_final(0) = Punto_inial(0) + l50 * Cos(ANG + PI): Punto_final(1) = Punto_inial(1) + l50 * Sin(ANG + PI): Punto_final(2) = Punto_inial(2)
+    Punto_final(0) = Punto_inial(0) + l50 * Cos(ANG + pi): Punto_final(1) = Punto_inial(1) + l50 * Sin(ANG + pi): Punto_final(2) = Punto_inial(2)
     Set blockRef = AcadModel.InsertBlock(Punto_final, PS_Placa50mm, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Pipeshor4S"
     ' aquí van las varillas
@@ -2045,7 +2047,7 @@ End If
 
 
 
-lpuntal = Distancia - lfija
+lpuntal = distancia - lfija
 n6000 = Fix(lpuntal / l6000)
 lpuntal = lpuntal - n6000 * l6000
 n4500 = Fix(lpuntal / l4500)
@@ -2086,7 +2088,7 @@ Select Case lpuntal
         End If
     Case Else
     MsgBox "Longitud no controlada " & lpuntal & "mm, fuera de rango, revisar código"
-    GoTo terminar
+    GoTo Terminar
         
 End Select
 
@@ -2098,7 +2100,7 @@ If carga > 2900 Then
         Do While i < n280
             Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
             PS_280 = rutapl & "PL_280_" & dato1 & ".dwg"
-            Punto_final(0) = Punto_inial(0) + l280 * Cos(ANG + PI): Punto_final(1) = Punto_inial(1) + l280 * Sin(ANG + PI): Punto_final(2) = Punto_inial(2)
+            Punto_final(0) = Punto_inial(0) + l280 * Cos(ANG + pi): Punto_final(1) = Punto_inial(1) + l280 * Sin(ANG + pi): Punto_final(2) = Punto_inial(2)
             Set blockRef = AcadModel.InsertBlock(Punto_final, PS_280, Xs, Ys, Zs, ANG)
             blockRef.Layer = "Pipeshor4L"
             Set blockRef = AcadModel.InsertBlock(Punto_final, M20x90_16, Xs, Ys, Zs, ANG)
@@ -2112,7 +2114,7 @@ If carga > 2900 Then
         Do While i < n560
             Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
             PS_560 = ruta & "PS_560.dwg"
-            Punto_final(0) = Punto_inial(0) + l560 * Cos(ANG + PI): Punto_final(1) = Punto_inial(1) + l560 * Sin(ANG + PI): Punto_final(2) = Punto_inial(2)
+            Punto_final(0) = Punto_inial(0) + l560 * Cos(ANG + pi): Punto_final(1) = Punto_inial(1) + l560 * Sin(ANG + pi): Punto_final(2) = Punto_inial(2)
             Set blockRef = AcadModel.InsertBlock(Punto_final, PS_560, Xs, Ys, Zs, ANG)
             blockRef.Layer = capa
             Set blockRef = AcadModel.InsertBlock(Punto_final, M20x90_16, Xs, Ys, Zs, ANG)
@@ -2124,7 +2126,7 @@ If carga > 2900 Then
     If n1500 > 0 Then
             Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
             PS_1500 = ruta & dato3 & "_1500_" & dato1 & ".dwg"
-            Punto_final(0) = Punto_inial(0) + l1500 * Cos(ANG + PI): Punto_final(1) = Punto_inial(1) + l1500 * Sin(ANG + PI): Punto_final(2) = Punto_inial(2)
+            Punto_final(0) = Punto_inial(0) + l1500 * Cos(ANG + pi): Punto_final(1) = Punto_inial(1) + l1500 * Sin(ANG + pi): Punto_final(2) = Punto_inial(2)
             Set blockRef = AcadModel.InsertBlock(Punto_final, PS_1500, Xs, Ys, Zs, ANG)
             blockRef.Layer = capa
             Set blockRef = AcadModel.InsertBlock(Punto_final, M20x90_16, Xs, Ys, Zs, ANG)
@@ -2134,7 +2136,7 @@ If carga > 2900 Then
     If n3000 > 0 Then
             Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_final(2) = Punto_final(2)
             PS_3000 = ruta & dato3 & "_3000_" & dato1 & ".dwg"
-            Punto_final(0) = Punto_inial(0) + l3000 * Cos(ANG + PI): Punto_final(1) = Punto_inial(1) + l3000 * Sin(ANG + PI): Punto_final(2) = Punto_inial(2)
+            Punto_final(0) = Punto_inial(0) + l3000 * Cos(ANG + pi): Punto_final(1) = Punto_inial(1) + l3000 * Sin(ANG + pi): Punto_final(2) = Punto_inial(2)
             Set blockRef = AcadModel.InsertBlock(Punto_final, PS_3000, Xs, Ys, Zs, ANG)
             blockRef.Layer = capa
             Set blockRef = AcadModel.InsertBlock(Punto_final, M20x90_16, Xs, Ys, Zs, ANG)
@@ -2144,7 +2146,7 @@ If carga > 2900 Then
     If n4500 > 0 Then
             Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_final(2) = Punto_final(2)
             PS_4500 = ruta & dato3 & "_4500_" & dato1 & ".dwg"
-            Punto_final(0) = Punto_inial(0) + l4500 * Cos(ANG + PI): Punto_final(1) = Punto_inial(1) + l4500 * Sin(ANG + PI): Punto_final(2) = Punto_inial(2)
+            Punto_final(0) = Punto_inial(0) + l4500 * Cos(ANG + pi): Punto_final(1) = Punto_inial(1) + l4500 * Sin(ANG + pi): Punto_final(2) = Punto_inial(2)
             Set blockRef = AcadModel.InsertBlock(Punto_final, PS_4500, Xs, Ys, Zs, ANG)
             blockRef.Layer = capa
             Set blockRef = AcadModel.InsertBlock(Punto_final, M20x90_16, Xs, Ys, Zs, ANG)
@@ -2156,7 +2158,7 @@ If carga > 2900 Then
         Do While i < n6000
             Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_final(2) = Punto_final(2)
             PS_6000 = ruta & dato3 & "_6000_" & dato1 & ".dwg"
-            Punto_final(0) = Punto_inial(0) + l6000 * Cos(ANG + PI): Punto_final(1) = Punto_inial(1) + l6000 * Sin(ANG + PI): Punto_final(2) = Punto_inial(2)
+            Punto_final(0) = Punto_inial(0) + l6000 * Cos(ANG + pi): Punto_final(1) = Punto_inial(1) + l6000 * Sin(ANG + pi): Punto_final(2) = Punto_inial(2)
             Set blockRef = AcadModel.InsertBlock(Punto_final, PS_6000, Xs, Ys, Zs, ANG)
             blockRef.Layer = capa
             Set blockRef = AcadModel.InsertBlock(Punto_final, M20x90_16, Xs, Ys, Zs, ANG)
@@ -2170,7 +2172,7 @@ If carga > 2900 Then
         Do While i < n750
             Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_final(2) = Punto_final(2)
             PS_750 = ruta & dato3 & "_750_" & dato1 & ".dwg"
-            Punto_final(0) = Punto_inial(0) + l750 * Cos(ANG + PI): Punto_final(1) = Punto_inial(1) + l750 * Sin(ANG + PI): Punto_final(2) = Punto_inial(2)
+            Punto_final(0) = Punto_inial(0) + l750 * Cos(ANG + pi): Punto_final(1) = Punto_inial(1) + l750 * Sin(ANG + pi): Punto_final(2) = Punto_inial(2)
             Set blockRef = AcadModel.InsertBlock(Punto_final, PS_750, Xs, Ys, Zs, ANG)
             blockRef.Layer = capa
                 Set blockRef = AcadModel.InsertBlock(Punto_final, M20x90_16, Xs, Ys, Zs, ANG)
@@ -2282,7 +2284,7 @@ If carga < 2900 Then
     PGato1(0) = Punto_inial(0): PGato1(1) = Punto_inial(1): PGato1(2) = Punto_inial(2)
     Punto_final(0) = Punto_inial(0) + l_conogato * Cos(ANG): Punto_final(1) = Punto_inial(1) + l_conogato * Sin(ANG): Punto_final(2) = Punto_inial(2)
     zPS_Gato_Cono = rutaps & "zPS_Gato_Cono_Planta.dwg"
-    Set blockRef = AcadModel.InsertBlock(Punto_inial, zPS_Gato_Cono, Xs, Ys, Zs, ANG + PI)
+    Set blockRef = AcadModel.InsertBlock(Punto_inial, zPS_Gato_Cono, Xs, Ys, Zs, ANG + pi)
     blockRef.Layer = "Pipeshor4S"
     'M20x90_16 = ruta & "16M20x90.dwg"
     'Set BlockRef = AcadModel.InsertBlock(Punto_inial, M20x90_16, Xs, Ys, Zs, ANG)
@@ -2293,9 +2295,9 @@ If carga < 2900 Then
     Punto_inial2(0) = P2(0) - lgiro * Cos(ANG): Punto_inial2(1) = P2(1) - lgiro * Sin(ANG): Punto_inial2(2) = P2(2)
     Punto_final2(0) = Punto_inial2(0): Punto_final2(1) = Punto_inial2(1): Punto_final2(2) = Punto_inial2(2)
         If nfusible = 2 Then
-            Set blockRef = AcadModel.InsertBlock(Punto_inial2, GS_Fusible, Xs, Ys, Zs, ANG + PI)
+            Set blockRef = AcadModel.InsertBlock(Punto_inial2, GS_Fusible, Xs, Ys, Zs, ANG + pi)
             blockRef.Layer = "Granshor"
-            Set blockRef = AcadModel.InsertBlock(Punto_inial2, M20x90, Xs, Ys, Zs, ANG + PI)
+            Set blockRef = AcadModel.InsertBlock(Punto_inial2, M20x90, Xs, Ys, Zs, ANG + pi)
             blockRef.Layer = "Nonplot"
             blockRef.Update
             blockRef.Explode
@@ -2304,9 +2306,9 @@ If carga < 2900 Then
         End If
     Punto_inial2(0) = Punto_final2(0): Punto_inial2(1) = Punto_final2(1): Punto_inial2(2) = Punto_final2(2)
     zPS_Gato_Tope = rutaps & "zPS_Gato_Tope_Planta.dwg"
-    Set blockRef = AcadModel.InsertBlock(Punto_inial2, zPS_Gato_Tope, Xs, Ys, Zs, ANG + PI)
+    Set blockRef = AcadModel.InsertBlock(Punto_inial2, zPS_Gato_Tope, Xs, Ys, Zs, ANG + pi)
     blockRef.Layer = "Pipeshor4S"
-    Set blockRef = AcadModel.InsertBlock(Punto_final2, M20x90, Xs, Ys, Zs, ANG + PI)
+    Set blockRef = AcadModel.InsertBlock(Punto_final2, M20x90, Xs, Ys, Zs, ANG + pi)
     blockRef.Layer = "Nonplot"
     blockRef.Update
         blockRef.Explode
@@ -2339,7 +2341,7 @@ If carga < 2900 Then
     blockRef.Layer = "Pipeshor4S"
 Else
     Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
-    PGato1(0) = Punto_inial(0) + 100 * Cos(ANG + PI): PGato1(1) = Punto_inial(1) + 100 * Sin(ANG + PI): PGato1(2) = Punto_inial(2)
+    PGato1(0) = Punto_inial(0) + 100 * Cos(ANG + pi): PGato1(1) = Punto_inial(1) + 100 * Sin(ANG + pi): PGato1(2) = Punto_inial(2)
     'dos chapones de 50 y 4 varillas 20x250
     Set blockRef = AcadModel.InsertBlock(Punto_final, Var20x250, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Nonplot"
@@ -2349,26 +2351,26 @@ Else
     blockRef.Layer = "Nonplot"
     Set blockRef = AcadModel.InsertBlock(Punto_final, Var20x250, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Nonplot"
-    Punto_inial(0) = Punto_inial(0) + l50 * Cos(ANG + PI): Punto_inial(1) = Punto_inial(1) + l50 * Sin(ANG + PI): Punto_inial(2) = Punto_inial(2)
+    Punto_inial(0) = Punto_inial(0) + l50 * Cos(ANG + pi): Punto_inial(1) = Punto_inial(1) + l50 * Sin(ANG + pi): Punto_inial(2) = Punto_inial(2)
     Set blockRef = AcadModel.InsertBlock(Punto_inial, PS_Placa50mm, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Pipeshor4S"
-    Punto_inial(0) = Punto_inial(0) + l50 * Cos(ANG + PI): Punto_inial(1) = Punto_inial(1) + l50 * Sin(ANG + PI): Punto_inial(2) = Punto_inial(2)
+    Punto_inial(0) = Punto_inial(0) + l50 * Cos(ANG + pi): Punto_inial(1) = Punto_inial(1) + l50 * Sin(ANG + pi): Punto_inial(2) = Punto_inial(2)
     Set blockRef = AcadModel.InsertBlock(Punto_inial, PS_Placa50mm, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Pipeshor4S"
     ' base del cajón
     basecajon = rutacajon & "cajonh_" & dato1 & ".dwg"
-    Set blockRef = AcadModel.InsertBlock(Punto_inial, basecajon, Xs, Ys, Zs, ANG + PI)
+    Set blockRef = AcadModel.InsertBlock(Punto_inial, basecajon, Xs, Ys, Zs, ANG + pi)
     blockRef.Layer = "Pipeshor4S"
-    Punto_final(0) = Punto_inial(0) + 810 * Cos(ANG + PI): Punto_final(1) = Punto_inial(1) + 810 * Sin(ANG + PI): Punto_final(2) = Punto_inial(2)
+    Punto_final(0) = Punto_inial(0) + 810 * Cos(ANG + pi): Punto_final(1) = Punto_inial(1) + 810 * Sin(ANG + pi): Punto_final(2) = Punto_inial(2)
     
     'nos vamos al final del codal a meter el giro y acercarnos al cajón, haya uno o dos fusibles
     Punto_inial2(0) = P1(0) + lgiro * Cos(ANG): Punto_inial2(1) = P1(1) + lgiro * Sin(ANG): Punto_inial2(2) = P1(2)
     Punto_final2(0) = Punto_inial2(0): Punto_final2(1) = Punto_inial2(1): Punto_final2(2) = Punto_inial2(2)
         If nfusible = 2 Then
             Punto_final2(0) = Punto_inial2(0) + lfusible * Cos(ANG): Punto_final2(1) = Punto_inial2(1) + lfusible * Sin(ANG): Punto_final(2) = Punto_inial2(2)
-            Set blockRef = AcadModel.InsertBlock(Punto_final2, GS_Fusible, Xs, Ys, Zs, ANG + PI)
+            Set blockRef = AcadModel.InsertBlock(Punto_final2, GS_Fusible, Xs, Ys, Zs, ANG + pi)
             blockRef.Layer = "Granshor"
-            Set blockRef = AcadModel.InsertBlock(Punto_inial2, M20x90, Xs, Ys, Zs, ANG + PI)
+            Set blockRef = AcadModel.InsertBlock(Punto_inial2, M20x90, Xs, Ys, Zs, ANG + pi)
             blockRef.Layer = "Nonplot"
             blockRef.Update
         blockRef.Explode
@@ -2379,7 +2381,7 @@ Else
     brazocajon = rutacajon & "modcajon_Planta.dwg"
     Set blockRef = AcadModel.InsertBlock(Punto_inial2, brazocajon, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Pipeshor4S"
-    Set blockRef = AcadModel.InsertBlock(Punto_final2, M20x90, Xs, Ys, Zs, ANG + PI)
+    Set blockRef = AcadModel.InsertBlock(Punto_final2, M20x90, Xs, Ys, Zs, ANG + pi)
     blockRef.Layer = "Nonplot"
     blockRef.Update
         blockRef.Explode
@@ -2412,7 +2414,7 @@ End If
 Eje1.Layer = "Nonplot"
 Loop
 
-terminar:
+Terminar:
 
 End Sub
 
@@ -2522,7 +2524,7 @@ Dim Punto_inial(0 To 2) As Double
 Dim Punto_final(0 To 2) As Double
 Dim Punto_inial2(0 To 2) As Double
 Dim Punto_final2(0 To 2) As Double
-Dim PI As Variant
+Dim pi As Variant
 Dim Eje1 As Object
 Dim Xs As Double
 Dim Ys As Double
@@ -2533,7 +2535,7 @@ Dim x5 As Double
 Dim y5 As Double
 Dim PGato1(0 To 2) As Double
 Dim PGato2(0 To 2) As Double
-Dim Distancia As Double
+Dim distancia As Double
 Dim P1(0 To 2) As Double
 Dim P2(0 To 2) As Double
 Dim dato1 As String
@@ -2557,7 +2559,7 @@ Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
 Set AcadModel = AcadDoc.ModelSpace
 Set AcadUtil = AcadDoc.Utility
 
-On Error GoTo terminar
+On Error GoTo Terminar
 repite = 1
 
 Ncapa = "Mega"
@@ -2571,7 +2573,7 @@ Set Gcapa = AcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 5
 
 'Valores fijos
-PI = 4 * Atn(1)
+pi = 4 * Atn(1)
 lgiro1 = 90
 lgiro2 = 90
 lfusible = 90
@@ -2614,7 +2616,7 @@ ElseIf tipoplaca1 = "PlacaMPCompacta" Then
 lgiro1 = 95
 rutapl1 = "PL_GCODAL_C_"
 Else
-GoTo terminar
+GoTo Terminar
 End If
 
 If tipoplaca2 = "" Or tipoplaca2 = "Cuña" Then
@@ -2627,7 +2629,7 @@ ElseIf tipoplaca2 = "PlacaMPCompacta" Then
 lgiro2 = 95
 rutapl2 = "PL_GCODAL_C_"
 Else
-GoTo terminar
+GoTo Terminar
 End If
 
 If dato4 = "Si" Or dato4 = "" Then
@@ -2635,7 +2637,7 @@ njack = 1
 ElseIf dato4 = "No" Then
 njack = 0
 Else
-GoTo terminar
+GoTo Terminar
 End If
 ljack = njack * 40
 lfija = (lgiro1 + lgiro2) + lfusible + (2 * l50) + lgatomin + ljack
@@ -2650,7 +2652,7 @@ dato2 = "Pshor_4S"
 capa = "Pipeshor4S"
 dato5 = "PS"
 Else
-GoTo terminar
+GoTo Terminar
 End If
 
 ruta1 = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\" & dato2 & "\"
@@ -2666,7 +2668,7 @@ ElseIf dato1 = "Alzado" Then
 dato1 = "alzado"
 plalz = "ALZ"
 Else
-GoTo terminar
+GoTo Terminar
 End If
 
 If dato2 = "Pshor_4S" Then
@@ -2687,23 +2689,23 @@ P2(0) = punto2(0): P2(1) = punto2(1): P2(2) = punto2(2)
 
 Set Eje1 = AcadModel.AddLine(P1, P2)
 ANG = AcadUtil.AngleFromXAxis(P1, P2)
-ANG2 = ANG + (PI / 2)
+ANG2 = ANG + (pi / 2)
 
 x = P2(0) - P1(0)
 y = P2(1) - P1(1)
 Xs = 1
 Ys = 1
 Zs = 1
-Distancia = Val(Sqr((x ^ 2 + y ^ 2)))
+distancia = Val(Sqr((x ^ 2 + y ^ 2)))
 
-If Distancia < lfija Then
-        MsgBox "Medida de puntal " & Distancia & "mm, menor que el mínimo necesario de " & lfija & "."""
-        GoTo terminar
+If distancia < lfija Then
+        MsgBox "Medida de puntal " & distancia & "mm, menor que el mínimo necesario de " & lfija & "."""
+        GoTo Terminar
 End If
 
 
 
-lpuntal = Distancia - lfija
+lpuntal = distancia - lfija
 n6000 = Fix(lpuntal / l6000)
 lpuntal = lpuntal - n6000 * l6000
 n4500 = Fix(lpuntal / l4500)
@@ -2735,7 +2737,7 @@ If dato2 = "Pshor_4S" Then
         n280 = Fix(lpuntal / l280)
         lpuntal = lpuntal - n280 * l280
     Else
-    GoTo terminar
+    GoTo Terminar
     End If
 ElseIf dato2 = "Pshor_4L" Then
     n560 = 0
@@ -2752,7 +2754,7 @@ ElseIf dato2 = "Pshor_4L" Then
         n280 = Fix(lpuntal / l280)
         lpuntal = lpuntal - n280 * l280
     Else
-    GoTo terminar
+    GoTo Terminar
     End If
 End If
 
@@ -3013,13 +3015,13 @@ blockRef.Layer = "Mega"
 PGato2(0) = Punto_inial(0): PGato2(1) = Punto_inial(1): PGato2(2) = Punto_inial(2)
 Punto_final(0) = Punto_inial(0): Punto_final(1) = Punto_inial(1): Punto_final(2) = Punto_inial(2)
 
-Set blockRef = AcadModel.InsertBlock(P2, MP_Giro2, Xs, Ys, Zs, ANG + PI)
+Set blockRef = AcadModel.InsertBlock(P2, MP_Giro2, Xs, Ys, Zs, ANG + pi)
 blockRef.Layer = "Mega"
 Punto_final2(0) = P2(0) - lgiro2 * Cos(ANG): Punto_final2(1) = P2(1) - lgiro2 * Sin(ANG): Punto_final2(2) = P2(2)
 
 If njack = 1 Then
     MP_Jack = ruta2 & "MshorJACKPLATE.dwg"
-    Set blockRef = AcadModel.InsertBlock(Punto_final2, MP_Jack, Xs, Ys, Zs, ANG + PI)
+    Set blockRef = AcadModel.InsertBlock(Punto_final2, MP_Jack, Xs, Ys, Zs, ANG + pi)
     blockRef.Layer = "Mega"
     Set blockRef = AcadModel.InsertBlock(Punto_final2, M20x110, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Nonplot"
@@ -3036,7 +3038,7 @@ ElseIf njack = 0 Then
         blockRef.Delete
 End If
 zMP_Base = ruta3 & "zMGBaseGato_naranja.dwg"
-Set blockRef = AcadModel.InsertBlock(Punto_final2, zMP_Base, Xs, Ys, Zs, ANG + PI)
+Set blockRef = AcadModel.InsertBlock(Punto_final2, zMP_Base, Xs, Ys, Zs, ANG + pi)
 blockRef.Layer = "Mega"
 PGato1(0) = Punto_final2(0): PGato1(1) = Punto_final2(1): PGato1(2) = Punto_final2(2)
 
@@ -3065,7 +3067,7 @@ objAcadDimAligned.Layer = "Dimension"
 
 Eje1.Layer = "Nonplot"
 
-terminar:
+Terminar:
 End Sub
 
 
