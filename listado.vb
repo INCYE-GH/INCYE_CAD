@@ -47,7 +47,7 @@ Public Sub listado()
         x2x = Left(numobra, 2)
         cod = Left(numobra, 8)
         cod = Right(cod, 6)
-        ruta = "C:\Users\" & Environ$("Username") & "\Incye\France - Projets\" & numobra & "\02 Plans\2_Nouveaux\"
+        ruta = "C:\Users\" & Environ$("Username") & "\Incye\France - Projets\" & numobra & "\02 Plans\2_Nouveaux\2_PDF\"
         listado = ruta & numobra & "_ListeDesPlans.xlsm"
         to1 = "C:\Users\" & Environ$("Username") & "\Incye\France - Projets\" & numobra & "\01 Info\" & numobra & ".xlsm"
         If Dir(listado) <> "" Then
@@ -71,7 +71,7 @@ Public Sub listado()
             x2x = Left(numobra, 2)
             cod = Left(numobra, 8)
             cod = Right(cod, 6)
-            ruta = "C:\Users\" & Environ$("Username") & "\Incye\France - Projets\" & numobra & "\02 Plans\2_Nouveaux\"
+            ruta = "C:\Users\" & Environ$("Username") & "\Incye\France - Projets\" & numobra & "\02 Plans\2_Nouveaux\2_PDF\"
             listado = ruta & numobra & "_ListeDesPlans.xlsm"
             to1 = "C:\Users\" & Environ$("Username") & "\Incye\France - Projets\" & numobra & "\01 Info\" & numobra & ".xlsm"
             If Dir(listado) <> "" Then
@@ -105,7 +105,7 @@ Public Sub listado()
             x2x = Left(numobra, 2)
             cod = Left(numobra, 8)
             cod = Right(cod, 6)
-            ruta = "C:\Users\" & Environ$("Username") & "\Incye\Proyectos - Documentos\" & siglas & "\" & numobra & "\02 Planos\2_Nuevos\"
+            ruta = "C:\Users\" & Environ$("Username") & "\Incye\Proyectos - Documentos\" & siglas & "\" & numobra & "\02 Planos\2_Nuevos\2_PDF\"
             listado = ruta & numobra & "_ListadoDePlanos.xlsm"
             to1 = "C:\Users\" & Environ$("Username") & "\Incye\Proyectos - Documentos\" & siglas & "\" & numobra & "\01 Info\" & numobra & ".xlsm"
             If Dir(listado) <> "" Then
@@ -372,8 +372,8 @@ Public Sub esp(listado As String, to1 As String, ruta As String, rellenar_inicio
         Dim fileName As String
         fileName = Left(ThisDrawing.Name, InStrRev(ThisDrawing.Name, ")"))
         
-        ws.Cells(1, 13).Value = "Nombre cajetín"
-        ws.Cells(primeraFilaVacia, 13).Value = fileName
+        'ws.Cells(1, 13).Value = "Nombre cajetín"
+        ws.Cells(primeraFilaVacia, 13).Value = nombreArchivo
     Next i
     
     
@@ -781,8 +781,8 @@ Public Sub fr(listado As String, to1 As String, ruta As String, rellenar_inicio 
         Dim fileName As String
         fileName = Left(ThisDrawing.Name, InStrRev(ThisDrawing.Name, ")"))
         
-        ws.Cells(1, 13).Value = "Nombre cajetín"
-        ws.Cells(primeraFilaVacia, 13).Value = fileName
+        'ws.Cells(1, 13).Value = "Nombre cajetín"
+        ws.Cells(primeraFilaVacia, 13).Value = nombreArchivo
     Next i
     
     
