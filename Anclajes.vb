@@ -39,8 +39,21 @@ Sub an()
         numero = "a"
         Do While IsNumeric(numero) = False
             numero = InputBox("Introduce el número de unidades", "NÚMERO DE UNIDADES", "1", 750, 750, "DEMO.HLP", 10)
-            If IsNumeric(numero) = False Then Respuesta = MsgBox("Debes introducir un número entero, inténtalo de nuevo", , "ERROR", "DEMO.HLP", 750)
-        Loop
+            'If IsNumeric(numero) = False Then Respuesta = MsgBox("Debes introducir un número entero, inténtalo de nuevo", , "ERROR", "DEMO.HLP", 750)
+        'Loop
+		
+		If numero = vbNullString Then
+			MsgBox "Operación cancelada."
+			Exit Sub ' Sale del subprocedimiento si se cancela la operación
+		End If
+
+		' Verifica si la entrada es un número entero
+		If Not IsNumeric(numero) Then
+			MsgBox "Debes introducir un número entero, inténtalo de nuevo", , "ERROR", "DEMO.HLP", 750
+			'Exit Sub ' Sale del subprocedimiento si la entrada no es un número
+		End If
+		
+		loop
 
         repite = 1
         Do While repite = 1
@@ -122,8 +135,22 @@ Sub an()
         numero = "a"
         Do While IsNumeric(numero) = False
             numero = InputBox("Introduce el número de unidades", "NÚMERO DE UNIDADES", "1", 750, 750, "DEMO.HLP", 10)
-            If IsNumeric(numero) = False Then Respuesta = MsgBox("Debes introducir un número entero, inténtalo de nuevo", , "ERROR", "DEMO.HLP", 750)
-        Loop
+            'If IsNumeric(numero) = False Then Respuesta = MsgBox("Debes introducir un número entero, inténtalo de nuevo", , "ERROR", "DEMO.HLP", 750)
+        'Loop
+		
+		
+		If numero = vbNullString Then
+			MsgBox "Operación cancelada."
+			Exit Sub ' Sale del subprocedimiento si se cancela la operación
+		End If
+
+		' Verifica si la entrada es un número entero
+		If Not IsNumeric(numero) Then
+			MsgBox "Debes introducir un número entero, inténtalo de nuevo", , "ERROR", "DEMO.HLP", 750
+			'Exit Sub ' Sale del subprocedimiento si la entrada no es un número
+		End If
+		
+		Loop
 
         repite = 1
         Do While repite = 1
