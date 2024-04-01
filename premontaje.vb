@@ -231,7 +231,7 @@ Inicio:
                 ' Definir el array con los nombres de los items para acotar
                 nombresItems = Array("PS_NUDO_PLANTA", "PS_NUDO_ALZADO", "GS_FUSIBLE_PLANTA", "GS_FUSIBLE_ALZADO", "MSHOR270PLA", "MSHOR270ALZ", "MSHOR180PLA", "MSHOR180ALZ", "MSHOR90PLAFUSIBLE", "MSHOR90PLA", "MSHOR90ALZFUSIBLE", "MSHOR90ALZ", "PS_GATO_PLANTA", "PS_GATO_ALZADO", "PS_PLACA35MM_ALZADO", "PS_PLACA35MM_PLANTA", "PS_PLACA50MM_ALZADO", "PS_PLACA50MM_PLANTA", "P6_CAJON_PLANTA", "P6_CONO", "P6_MACHO_PLANTA", "MGHUSILLOGATO", "CAJONH_ALZADO", "CAJONH_PLANTA", "MSHORJACKPLATE")
 
-				' Definir el array con los nombres de los items que no apareceran
+                ' Definir el array con los nombres de los items que no apareceran
                 nombresItems2 = Array("PLACAMP_C_DALZADO", "PLACAMP_C_IALZADO", "PLACAMP_C_PLANTA", "PLACAMP_C_SECCION", "PLACAMP_DALZADO", "PLACAMP_IALZADO", "PLACAMP_PLANTA", "PLACAMP_SECCION", "GS_GIRO_ALZADO", "GS_GIRO_PLANTA", "GS_PLACAANCLAJE_DALZADO", "GS_PLACAANCLAJE_IALZADO", "GS_PLACAANCLAJE_PLANTA", "GS_PLACACOMPACTA_DALZADO", "GS_PLACACOMPACTA_IALZADO", "GS_PLACACOMPACTA_PLANTA", "GS_PLACACOMPACTA_SECCION", "GS_GIRO80PLANTA", "GS_GIRO80ALZADO", "ANGGIRO", "MG_ANGULOGIROPLA", "MG_ANGULOGIROALZ", "PL_GCODAL_C_PLA", "PL_GCODAL_C_ALZ", "PL_GCODAL_PLA", "PL_GCODAL_ALZ", "MG_CUNAAZ_DALZADO", "MG_CUNAAZ_IALZADO", "MG_CUNAAZ_PLANTA", "MG_CUNANAR_DALZADO", "MG_CUNANAR_IALZADO", "MG_CUNANAR_PLANTA", "HGHUSILLOGATO", "GS_BULON80_ALZADO", "GS_BULON80_PLANTA", "GS_BULON120MM_ALZADO", "GS_BULON120MM_PLANTA")
 
                      'Verificar si el nombre está en el array
@@ -281,7 +281,7 @@ Inicio:
                             textEndPoint(2) = textEndPoint(2)
 
                             ' Calcular el ángulo de rotación en radianes (90 grados)
-                            rotationAngle = pi * 60 / 180                            
+                            rotationAngle = pi * 60 / 180
                                                         
                             Set newText2 = ThisDrawing.Blocks.Item(k).AddMText(textEndPoint, textHeight2, textoSinUltimasSeisLetras)
                                 newText2.Rotate textEndPoint, orientation
@@ -297,7 +297,7 @@ Inicio:
                               Set newLine = ThisDrawing.Blocks.Item(k).AddLine(insertionPoint2, leaderEndPoint)
                               newLine.Layer = "Dimension"
                                
-                    End If                     
+                    End If
 
                     ' Verificar si el nombre está en el array
                     If UBound(Filter(nombresItems, UCase(blockName))) > -1 Then
@@ -338,7 +338,7 @@ Inicio:
                                 
                                     If UCase(textoSinUltimasSeisLetras) = "CAJONH_" Then
                                         textoSinUltimasSeisLetras = "Cajón Pipeshor"
-                                    End If                                
+                                    End If
                                                             
                                 End If
                                 
@@ -471,7 +471,7 @@ Inicio:
                             textEndPoint(2) = textEndPoint(2)
 
                             ' Calcular el ángulo de rotación en radianes (90 grados)
-                            rotationAngle = pi * 60 / 180                            
+                            rotationAngle = pi * 60 / 180
                                                         
                             Set newText2 = ThisDrawing.Blocks.Item(k).AddMText(textEndPoint, textHeight2, textoSinUltimasSeisLetras)
                                 newText2.Rotate textEndPoint, orientation
@@ -485,7 +485,7 @@ Inicio:
                             
                             ' Crear una nueva línea con los puntos de inicio y final
                               Set newLine = ThisDrawing.Blocks.Item(k).AddLine(insertionPoint2, leaderEndPoint)
-                              newLine.Layer = "Dimension"                    
+                              newLine.Layer = "Dimension"
                     
                     ' Verificar si las últimas cinco letras del nombre del bloque son "planta"
                     ElseIf UCase(Right(blockName, 6)) = "PLANTA" Then
@@ -734,7 +734,7 @@ Sub CrearNuevaPestaña2()
     Set gcadDoc = GetObject(, "Gcad.Application").ActiveDocument
     Set GcadPaper = gcadDoc.PaperSpace
     Set blockRef = ThisDrawing.PaperSpace.InsertBlock(P, bloqueRuta, Xs, Ys, Zs, 0)
-    blockRef.Explode
+    'blockRef.Explode
 
     ThisDrawing.Regen True
     
@@ -838,6 +838,7 @@ Sub Textsup(orientation As Double, orientationa As Double, insertionPoint2() As 
     newLine.Layer = "Dimension"
     
 End Sub
+
 
 
 
