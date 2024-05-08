@@ -209,6 +209,7 @@ End If
 
 
 
+
 'Geometría:
 punto1 = AcadUtil.GetPoint(, "1º Punto: ")
 punto2 = AcadUtil.GetPoint(punto1, "2º Punto: ")
@@ -331,7 +332,6 @@ End If
 
     
     
-    
 Eje1.Erase
 Loop
 terminar:
@@ -374,10 +374,10 @@ Sub InsertDynamicBlock_2()
     On Error GoTo 0
     
     ' Si no se puede abrir el bloque, muestra un mensaje y sale
-    'If gcadBlock Is Nothing Then
-        'MsgBox "No se pudo encontrar el bloque especificado.", vbExclamation
-        'Exit Sub
-    'End If
+    ' If gcadBlock Is Nothing Then
+        ' MsgBox "No se pudo encontrar el bloque especificado.", vbExclamation
+        ' Exit Sub
+    ' End If
     
     ' Especifica el punto de inserción del bloque
     Dim insertPoint(0 To 2) As Double
@@ -404,6 +404,7 @@ Sub InsertDynamicBlock_2()
     
     ' Regenera el dibujo para que se muestren los cambios
     AcadDoc.Regen acAllViewports
+    
 
 End Sub
 
@@ -426,6 +427,7 @@ Sub InsertDynamicBlock()
     End If
     
     ' Verifica si hay documentos abiertos
+    
     If gcadApp.Documents.Count = 0 Then
         MsgBox "No hay documentos abiertos en gcad.", vbExclamation
         Exit Sub
@@ -468,3 +470,4 @@ Sub InsertDynamicBlock()
 End Sub
 
 
+' mano 
