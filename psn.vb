@@ -1,5 +1,5 @@
-''''''' Geometría para el cálculo del ajuste de los puntales pipeshor
 Option Explicit
+''''''' Geometría para el cálculo del ajuste de los puntales pipeshor
 
 ' falta cambiar el cajón de orientación y añadir la posibilidad de la proyección
 
@@ -395,8 +395,20 @@ UmbralMax1 = 100 * (PI / 180) ' Convertir 105 grados a radianes
 AnguloAbsoluto1 = Abs((DirPuntal + PI) - DirMuro2)
 
 If AnguloAbsoluto1 > UmbralMin1 And AnguloAbsoluto1 < UmbralMax1 Then
-    P1(0) = PB(0) + 85 * Cos(DirBulon2): P1(1) = PB(1) + 85 * Sin(DirBulon2): P1(2) = PB(2)
-    placaanc1 = "CompactaMP"
+    
+    Dim decisionGiro1 As String
+    kwordList = "GiroMP CompactaMP"
+    decisionGiro1 = ""
+    ThisDrawing.Utility.InitializeUserInput 0, kwordList
+    decisionGiro1 = ThisDrawing.Utility.GetKeyword(vbLf & "¿Qué prefieres usar?: [GiroMP/CompactaMP]")
+    If decisionGiro1 = "" Or decisionGiro1 = "GiroMP" Then
+        decisionGiro1 = "GiroMP"
+        P1(0) = PB(0) + 90 * Cos(DirBulon2): P1(1) = PB(1) + 90 * Sin(DirBulon2): P1(2) = PB(2)
+    Else
+        P1(0) = PB(0) + 85 * Cos(DirBulon2): P1(1) = PB(1) + 85 * Sin(DirBulon2): P1(2) = PB(2)
+    End If
+
+    placaanc1 = decisionGiro1
 Else
     kwordList = "Naranja Azul MP CompactaMP"
     placaanc1 = ""
@@ -435,8 +447,19 @@ AnguloAbsoluto2 = Abs(DirPuntal - DirMuro1)
 
 If AnguloAbsoluto2 > UmbralMin2 And AnguloAbsoluto2 < UmbralMax2 Then
     ' No pasa nada
-    P2(0) = PA(0) + 85 * Cos(DirBulon1): P2(1) = PA(1) + 85 * Sin(DirBulon1): P2(2) = PA(2)
-    placaanc2 = "CompactaMP"
+    
+    Dim decisionGiro2 As String
+    kwordList = "GiroMP CompactaMP"
+    decisionGiro2 = ""
+    ThisDrawing.Utility.InitializeUserInput 0, kwordList
+    decisionGiro2 = ThisDrawing.Utility.GetKeyword(vbLf & "¿Qué prefieres usar?: [GiroMP/CompactaMP]")
+    If decisionGiro2 = "" Or decisionGiro2 = "GiroMP" Then
+        decisionGiro2 = "GiroMP"
+        P2(0) = PA(0) + 90 * Cos(DirBulon1): P2(1) = PA(1) + 90 * Sin(DirBulon1): P2(2) = PA(2)
+    Else
+        P2(0) = PA(0) + 85 * Cos(DirBulon1): P2(1) = PA(1) + 85 * Sin(DirBulon1): P2(2) = PA(2)
+    End If
+    placaanc2 = decisionGiro2
 Else
     kwordList = "Naranja Azul MP CompactaMP"
     placaanc2 = ""
@@ -482,6 +505,9 @@ ElseIf placaanc1 = "MP" Then
 ElseIf placaanc1 = "CompactaMP" Then
     rutaplaca1 = rutacu & "PlacaMP_C_" & plcue2 & ".dwg"
     capa = "Mega"
+ElseIf placaanc1 = "GiroMP" Then
+    rutaplaca1 = rutacu & "GiroMP_" & plcue2 & ".dwg"
+    capa = "Mega"
 End If
 
 If placaanc2 = "Naranja" Or placaanc2 = "" Then
@@ -495,6 +521,9 @@ ElseIf placaanc2 = "MP" Then
     capa = "Mega"
 ElseIf placaanc2 = "CompactaMP" Then
     rutaplaca2 = rutacu & "PlacaMP_C_" & plcue1 & ".dwg"
+    capa = "Mega"
+ElseIf placaanc2 = "GiroMP" Then
+    rutaplaca2 = rutacu & "GiroMP_" & plcue1 & ".dwg"
     capa = "Mega"
 End If
 
@@ -610,6 +639,8 @@ If carga >= 750 And carga <= 1350 Then
             placa1 = "PlacaMPCompacta"
         ElseIf placaanc1 = "MP" Then
             placa1 = "PlacaMP"
+        ElseIf placaanc1 = "GiroMP" Then
+            placa1 = "Cuña"
         End If
         ' mandamos al pm la selección de placa 2
         If placaanc2 = "Naranja" Or placaanc2 = "Azul" Then
@@ -618,6 +649,8 @@ If carga >= 750 And carga <= 1350 Then
             placa2 = "PlacaMPCompacta"
         ElseIf placaanc2 = "MP" Then
             placa2 = "PlacaMP"
+        ElseIf placaanc2 = "GiroMP" Then
+            placa2 = "Cuña"
         End If
         ' mandamos al pm la selección de vista
         If dato1 = "Planta" Or dato1 = "" Then
@@ -634,6 +667,8 @@ If carga >= 750 And carga <= 1350 Then
 
         GoTo volver
     ElseIf Distancia > 12000 And Distancia <= 15000 Then
+    
+        Set b = ThisDrawing.Blocks.Add(PA, k)
         Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(PA, rutaplaca2, Xs, Ys, Zs, DirMuro1)
         blockRef.Layer = "Mega"
         Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(PB, rutaplaca1, Xs, Ys, Zs, DirMuro2)
@@ -678,6 +713,8 @@ If carga >= 750 And carga <= 1350 Then
             placa1 = "PlacaMPCompacta"
         ElseIf placaanc1 = "MP" Then
             placa1 = "PlacaMP"
+        ElseIf placaanc1 = "GiroMP" Then
+            placa1 = "Cuña"
         End If
         ' mandamos al pm la selección de placa 2
         If placaanc2 = "Naranja" Or placaanc2 = "Azul" Then
@@ -686,6 +723,8 @@ If carga >= 750 And carga <= 1350 Then
             placa2 = "PlacaMPCompacta"
         ElseIf placaanc2 = "MP" Then
             placa2 = "PlacaMP"
+        ElseIf placaanc2 = "GiroMP" Then
+            placa2 = "Cuña"
         End If
         ' mandamos al pm la selección de vista
         If dato1 = "Planta" Or dato1 = "" Then
@@ -898,7 +937,7 @@ ElseIf placaanc1 = "CompactaMP" Then
     Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, CuMPc, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Mega"
     Punto_inial(0) = Punto_inial(0) + 95 * Cos(ANG): Punto_inial(1) = Punto_inial(1) + 95 * Sin(ANG): Punto_inial(2) = Punto_inial(2)
-Else
+ElseIf placaanc1 = "GiroMP" Then
     Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, agiro, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Mega"
     Punto_inial(0) = Punto_inial(0) + 90 * Cos(ANG): Punto_inial(1) = Punto_inial(1) + 90 * Sin(ANG): Punto_inial(2) = Punto_inial(2)
@@ -1066,7 +1105,7 @@ ElseIf placaanc2 = "CompactaMP" Then
     Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, CuMPc, Xs, Ys, Zs, ANG + PI)
     blockRef.Layer = "Mega"
     Punto_final(0) = Punto_final(0) - 95 * Cos(ANG): Punto_final(1) = Punto_final(1) - 95 * Sin(ANG): Punto_final(2) = Punto_final(2)
-Else
+ElseIf placaanc2 = "GiroMP" Then
     Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, agiro, Xs, Ys, Zs, ANG + PI)
     blockRef.Layer = "Mega"
     Punto_final(0) = Punto_final(0) - 90 * Cos(ANG): Punto_final(1) = Punto_final(1) - 90 * Sin(ANG): Punto_final(2) = Punto_final(2)
@@ -1312,6 +1351,9 @@ Gcapa.color = 150
 Ncapa = "NoContable"
 Set Gcapa = AcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 40
+Ncapa = "Nonplot"
+Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Gcapa.color = 50
 
 'Valores fijos
 PI = 4 * Atn(1)
@@ -1403,21 +1445,29 @@ End If
 
 On Error GoTo terminar
 
-kwordList = "S L"
+kwordList = "S L PS6"
 dato2 = ""
 ThisDrawing.Utility.InitializeUserInput 0, kwordList
-dato2 = "Pshor_4" & ThisDrawing.Utility.GetKeyword(vbLf & "Introduce PS4S o PS4L: [S/L]")
+dato2 = ThisDrawing.Utility.GetKeyword(vbLf & "Introduce PS4S o PS4L: [S/L/PS6]")
 
-If dato2 = "Pshor_4L" Then
-capa = "Pipeshor4L"
-dato3 = "PL"
-ElseIf dato2 = "Pshor_4S" Or dato2 = "Pshor_4" Then
-dato2 = "Pshor_4S"
-capa = "Pipeshor4S"
-dato3 = "PS"
+If dato2 = "PS6" Then
 Else
-GoTo terminar
+    dato2 = "Pshor_4" & dato2
 End If
+
+
+    If dato2 = "Pshor_4L" Then
+    capa = "Pipeshor4L"
+    dato3 = "PL"
+    ElseIf dato2 = "Pshor_4S" Or dato2 = "Pshor_4" Then
+    dato2 = "Pshor_4S"
+    capa = "Pipeshor4S"
+    dato3 = "PS"
+    ElseIf dato2 = "PS6" Then
+    Else
+    GoTo terminar
+    End If
+
 
 ruta = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\" & dato2 & "\"
 ruta2 = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\TORNILLERIA\"
@@ -2011,7 +2061,10 @@ objAcadDimAligned.Update
 objAcadDimAligned.Layer = "Dimension"
 
 
-
+If dato2 = "PS6" Then
+    Call p6(P1, P2, carga, dato1, k)
+    GoTo enchufarp6
+End If
 
 
 'Introducir el bulón de 120 mm en los extremos siempre, ángulo de giro, fusible fijo y chapas de 50mm:
@@ -2520,7 +2573,7 @@ Else
 End If
 
 
-  
+enchufarp6:
 Set blockRef = ThisDrawing.ModelSpace.InsertBlock(PBloque, k, Xs, Ys, Zs, 0)
 blockRef.Layer = "NoContable"
 blockRef.Update
@@ -3236,6 +3289,965 @@ End Function
 
 
 
+
+
+
+
+
+
+
+
+
+Sub p6(punto1 As Variant, punto2 As Variant, carga As Double, vista As String, k As String)
+
+Dim rutaps As String, rutap6 As String, rutator As String, rutags As String, rutapl As String
+Dim AcadDoc As Object
+Dim AcadUtil As Object
+Dim AcadModel As Object
+Dim x As Double
+Dim y As Double
+Dim z As Double
+Dim M20x90_16 As String, M20x150_4 As String, M20x160_4 As String, Revisartornilleria As String, M30x100_16 As String, M20x90_4 As String
+Dim GS_Bulon120mm As String
+Dim GS_Giro As String
+Dim GS_Fusible As String
+Dim PS_280 As String, PS_560 As String
+Dim PS_750 As String, PS_nudo As String
+Dim PS_1500 As String
+Dim PS_3000 As String, P6_3000 As String
+Dim PS_4500 As String, P6_4500 As String
+Dim PS_6000 As String
+Dim P6_cono As String
+Dim PS_Husillo As String
+Dim PS_Placa50mm As String, PS_Placa35mm As String
+Dim zPS_Gato_Cono As String
+Dim zPS_Gato_Tope As String
+Dim PS_Gato As String
+Dim lgiro As Double
+Dim lfusible As Double
+Dim l280 As Double, l560 As Double
+Dim l750 As Double
+Dim l1500 As Double
+Dim l3000 As Double
+Dim l4500 As Double
+Dim l6000 As Double
+Dim l50 As Double, l35 As Double
+Dim l_tope As Double
+Dim l_conogato As Double
+Dim lfija As Double, lfija2 As Double
+Dim lpuntal As Double
+Dim lgatomin As Double, lcajonmin As Double
+Dim lmacho As Double, lcajon As Double
+Dim lcono As Double
+Dim n6000 As Integer
+Dim n4500 As Integer, n4500p6 As Integer
+Dim n3000 As Integer, n3000p6 As Integer
+Dim n1500 As Integer
+Dim n750 As Integer
+Dim n280 As Integer, n560 As Integer
+Dim nnudo As Integer
+Dim nfusible As Integer
+Dim n50 As Integer, n35 As Integer, ncono As Integer
+Dim nmacho As Integer, ncajon As Integer, ngiro As Integer, n As Integer, lchapones As Integer
+Dim blockRef As Object
+Dim repite As Double
+Dim Punto_inial(0 To 2) As Double
+Dim Punto_final(0 To 2) As Double
+Dim Punto_inial2(0 To 2) As Double
+Dim Punto_final2(0 To 2) As Double
+Dim PI As Variant
+Dim Eje1 As Object
+Dim Xs As Double
+Dim Ys As Double
+Dim Zs As Double
+Dim ANG As Double
+Dim Distancia As Double
+Dim P1(0 To 2) As Double
+Dim P2(0 To 2) As Double
+Dim dato1 As String, dato2 As String, dato3 As String, dato4 As String, dato5 As String, dato6 As String
+Dim capa As String
+Dim condicion As Boolean
+Dim kwordList As String
+Dim i As Integer
+Dim Ncapa As String
+Dim Gcapa As Object
+
+Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
+Set AcadModel = AcadDoc.ModelSpace
+Set AcadUtil = AcadDoc.Utility
+
+Ncapa = "NoContable"
+Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Gcapa.color = 40
+Ncapa = "Pipeshor4S"
+Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Gcapa.color = 7
+Ncapa = "Pipeshor6"
+Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Gcapa.color = 7
+Ncapa = "Pipeshor4L"
+Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Gcapa.color = 5
+Ncapa = "Nonplot"
+Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Gcapa.color = 50
+
+rutaps = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\Pshor_4S\"
+rutapl = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\Pshor_4L\"
+rutags = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\Gshor\"
+rutap6 = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\Pshor_6\"
+rutator = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\TORNILLERIA\"
+
+'Valores fijos
+PI = 4 * Atn(1)
+repite = 1
+lgiro = 205
+lcono = 375
+lfusible = 187.5
+l280 = 280
+l560 = 560
+l750 = 750
+l1500 = 1500
+l3000 = 3000
+l4500 = 4500
+l6000 = 6000
+l50 = 50
+l35 = 35
+l_tope = 325
+l_conogato = 170
+lgatomin = 620
+lcajonmin = 850
+lmacho = 290
+
+On Error GoTo terminar
+
+kwordList = "No Inicial Final Ambos"
+ThisDrawing.Utility.InitializeUserInput 0, kwordList
+dato1 = ThisDrawing.Utility.GetKeyword(vbLf & "¿Nudo en algún extremo?: [No/Inicial/Final/Ambos]")
+
+dato2 = vista
+
+'kwordList = "A B C D"
+dato4 = ""
+'ThisDrawing.Utility.InitializeUserInput 0, kwordList
+'dato4 = ThisDrawing.Utility.GetKeyword(vbLf & "A (giro y gato) B (machon y machón) C (giro y machón) D (giro y cajón + machón): [A/B/C/D]")
+
+If dato1 = "" Or dato1 = "No" Then
+nnudo = 0
+ElseIf dato1 = "Inicial" Or dato1 = "Final" Then
+nnudo = 1
+ElseIf dato1 = "Ambos" Then
+nnudo = 2
+Else
+GoTo terminar
+End If
+
+
+If dato2 = "" Or dato2 = "Planta" Then
+dato2 = "planta"
+dato6 = "pla"
+ElseIf dato2 = "Alzado" Then
+dato2 = "alzado"
+dato6 = "alz"
+Else
+GoTo terminar
+End If
+
+If (carga >= 1350) And (carga < 1500) Then
+    n35 = 0
+    n50 = 1
+ElseIf (carga >= 1500) And (carga < 2000) Then
+    n35 = 1
+    n50 = 1
+ElseIf (carga >= 2000) And (carga < 2900) Then
+    n35 = 0
+    n50 = 2
+ElseIf carga >= 2900 Then
+    n35 = 0
+    n50 = 5
+End If
+
+lchapones = (n35 * l35) + (n50 * l50)
+
+
+Dim M20x110_4 As String, M20x100A As String, Var20x250 As String
+M20x110_4 = rutator & "4M20X110.dwg"
+M20x100A = rutator & "4M20X100A.dwg"
+Var20x250 = rutator & "1VarM20X250.dwg"
+
+M20x90_16 = rutator & "16M20X90.dwg"
+M30x100_16 = rutator & "16M30X100.dwg"
+M20x150_4 = rutator & "4M20X150.dwg"
+M20x160_4 = rutator & "4M20X160.dwg"
+M20x90_4 = rutator & "4M20X90.dwg"
+Revisartornilleria = rutator & "4MetricasXrevisar.dwg"
+
+If dato4 = "" Or dato4 = "A" Then
+        
+    Do While repite = 1
+
+
+        'Geometría:
+        'punto1 = AcadUtil.GetPoint(, "1º Punto: ")
+        'punto2 = AcadUtil.GetPoint(punto1, "2º Punto: ")
+        P1(0) = punto1(0): P1(1) = punto1(1): P1(2) = punto1(2)
+        P2(0) = punto2(0): P2(1) = punto2(1): P2(2) = punto2(2)
+        
+'        Dim k As String, b As Object, entity As Object
+'        k = InputBox("Ingrese nombre: ")
+'
+'        If k = "" Then
+'nop:
+ '           MsgBox "Introduzca un nombre, por favor"
+ '           k = InputBox("Ingrese nombre: ")
+ '           If k = "" Then
+ '               GoTo nop
+ '           End If
+ '       End If
+ '
+ '       If BloqueExiste(k) Then
+ '           MsgBox "Ya existe un bloque con este nombre!"
+ '           Dim Respuesta As String
+ '           kwordList = "Sobreescribir Renombrar"
+ '           Respuesta = ""
+ '           ThisDrawing.Utility.InitializeUserInput 0, kwordList
+ '           Respuesta = ThisDrawing.Utility.GetKeyword(vbLf & "¿Qué deseas hacer?: [Sobreescribir/Renombrar]")
+'            '
+            'If Respuesta = "Sobreescribir" Or Respuesta = "" Then
+            '
+            ''    For Each entity In ThisDrawing.ModelSpace
+           '         If TypeOf entity Is AcadBlockReference Then
+          '              If entity.effectiveName = k Then
+         '                   entity.Delete
+        '                End If
+       '             'End If
+                'Next entity
+                        
+                    
+                
+                'ThisDrawing.Blocks.Item(k).Delete
+            'ElseIf Respuesta = "Renombrar" Then
+                'GoTo nop
+            'End If
+        'End If
+        
+        'Set b = ThisDrawing.Blocks.Add(punto1, k)
+        
+        'Set Eje1 = ThisDrawing.Blocks.Item(k).AddLine(P1, P2)
+        'Eje1.Layer = "Nonplot"
+        ANG = AcadUtil.AngleFromXAxis(P1, P2)
+
+        x = P2(0) - P1(0)
+        y = P2(1) - P1(1)
+        Xs = 1
+        Ys = 1
+        Zs = 1
+        Distancia = Val(Sqr((x ^ 2 + y ^ 2)))
+
+        lfija2 = InputBox("Introduce longitud en mm de tubo PS6: 3000/4500/6000...", "Longitud PS6", 4500)
+        If lfija2 Mod 1500 = 0 Then
+        n = (lfija2 / 1500) + 0
+            If n = 1 Then n = 2
+        lfija2 = n * 1500
+        ElseIf lfija2 Mod 1500 <> 0 Then
+        n = (lfija2 / 1500) + 1
+            If n = 1 Then n = 2
+        lfija2 = n * 1500
+        End If
+        
+        If n = 0 Then ncono = 0 Else ncono = 2
+        
+        If carga < 2900 Then
+            lfija = (2 * lgiro) + lfusible + lchapones + lgatomin + (ncono * lcono) + nnudo * l750 + lfija2
+        Else
+            lfija = (2 * lgiro) + lfusible + lchapones + lcajonmin + (ncono * lcono) + nnudo * l750 + lfija2
+        End If
+        
+        If Distancia < lfija Then
+        MsgBox "Medida de puntal " & Distancia & "mm, menor que el mínimo necesario de " & lfija & "."
+        GoTo terminar
+        End If
+        
+        If n Mod 3 = 0 Then
+        n3000p6 = 0
+        n4500p6 = n / 3
+        ElseIf (n - 2) Mod 3 = 0 Then
+        n3000p6 = 1
+        n4500p6 = (n - 2) / 3
+        ElseIf (n - 4) Mod 3 = 0 Then
+        n3000p6 = 2
+        n4500p6 = (n - 4) / 3
+        End If
+        
+        lpuntal = Distancia - lfija
+        
+        
+        Dim lpprueba As Double
+        lpprueba = lpuntal
+        'Dim carga As Double
+        
+        'carga = InputBox("introduzca carga")
+        
+        If carga < 2900 Then
+
+            lpuntal = lpuntal / 2
+            
+            n6000 = Fix(lpuntal / l6000)
+            lpuntal = lpuntal - n6000 * l6000
+            n4500 = Fix(lpuntal / l4500)
+            lpuntal = lpuntal - n4500 * l4500
+            n3000 = Fix(lpuntal / l3000)
+            lpuntal = lpuntal - n3000 * l3000
+            n1500 = Fix(lpuntal / l1500)
+            lpuntal = lpuntal - n1500 * l1500
+            n750 = Fix(lpuntal / l750)
+            lpuntal = lpuntal - n750 * l750
+            n560 = Fix(lpuntal / 560)
+            lpuntal = lpuntal - n560 * 560
+            n560 = n560 * 2
+    ' APERTURA DEL GATO ES DE 280
+            Select Case lpuntal
+            Case 0 To 115
+            ' se puede colocar el P6 en el medio
+            nfusible = 1
+            n280 = 0
+            Case 115 To 140
+            ' se puede colocar el P6 en el medio
+            nfusible = 2
+            n280 = 0
+            Case 140 To 280
+            ' ajustar el P6 para una de 280
+            nfusible = 2
+            n280 = 1
+            Case 280 To 385
+            ' ajustar el P6 para una más de 560
+            nfusible = 1
+            n560 = n560 + 1
+            n280 = 0
+            Case 385 To 470
+            ' ajustar el P6 para una más de 560
+            nfusible = 2
+            n560 = n560 + 1
+            n280 = 0
+            Case 470 To 510
+            ' ajustar el P6 para una más de 560 y una de 280
+            nfusible = 1
+            n560 = n560 + 1
+            n280 = 1
+            Case 510 To 560
+            ' ajustar el P6 para una más de 560 y una de 280
+            nfusible = 2
+            n560 = n560 + 1
+            n280 = 1
+            Case Else
+            MsgBox "Longitud no controlada " & lpuntal & "mm, fuera de rango, revisar código"
+            GoTo terminar
+            End Select
+                
+            
+        ElseIf carga >= 2900 Then
+        
+            ' yo lo que haría aquí es sacar el despiece completo
+            lpuntal = lpuntal / 2
+            
+            n6000 = Fix(lpuntal / l6000)
+            lpuntal = lpuntal - n6000 * l6000
+            n4500 = Fix(lpuntal / l4500)
+            lpuntal = lpuntal - n4500 * l4500
+            n3000 = Fix(lpuntal / l3000)
+            lpuntal = lpuntal - n3000 * l3000
+            n1500 = Fix(lpuntal / l1500)
+            lpuntal = lpuntal - n1500 * l1500
+            n750 = Fix(lpuntal / l750)
+            lpuntal = lpuntal - n750 * l750
+            n560 = Fix(lpuntal / 560)
+            lpuntal = lpuntal - n560 * 560
+            n560 = n560 * 2
+    ' REVISAR PORQUE LA APERTURA DEL CAJON ES DE 187!!!!
+    'REVISADO
+            Select Case lpuntal
+            Case 0 To 85
+            ' se puede colocar el P6 en el medio
+            nfusible = 1
+            Case 85 To 180
+            ' se puede colocar el P6 en el medio
+            nfusible = 2
+            Case 180 To 270
+            ' se puede colocar el P6 en el medio
+            nfusible = 3
+            Case 270 To 360
+            ' ajustar el P6 para una más de 560
+            nfusible = 1
+            n560 = n560 + 1
+            Case 360 To 460
+            ' ajustar el P6 para una más de 560
+            nfusible = 2
+            n560 = n560 + 1
+            Case 460 To 560
+            ' ajustar el P6 para una más de 560
+            nfusible = 3
+            n560 = n560 + 1
+            Case Else
+            MsgBox "Longitud no controlada " & lpuntal & "mm, fuera de rango, revisar código"
+            GoTo terminar
+            End Select
+        
+        
+        End If
+            
+        
+        
+        
+
+        'Introducir el bulón de 120 mm en los extremos siempre, ángulo de giro, fusible fijo:
+        GS_Bulon120mm = rutags & "GS_Bulon120mm_" & dato2 & ".dwg"
+        Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(P1, GS_Bulon120mm, Xs, Ys, Zs, ANG)
+        blockRef.Layer = "Granshor"
+        Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(P2, GS_Bulon120mm, Xs, Ys, Zs, ANG)
+        blockRef.Layer = "Granshor"
+        GS_Giro = rutags & "GS_Giro_" & dato2 & ".dwg"
+        Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(P1, GS_Giro, Xs, Ys, Zs, ANG)
+        blockRef.Layer = "Granshor"
+        Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(P2, GS_Giro, Xs, Ys, Zs, ANG + PI)
+        blockRef.Layer = "Granshor"
+
+        Punto_inial(0) = P1(0) + lgiro * Cos(ANG): Punto_inial(1) = P1(1) + lgiro * Sin(ANG): Punto_inial(2) = P1(2)
+        GS_Fusible = rutags & "GS_Fusible_" & dato2 & ".dwg"
+        Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, GS_Fusible, Xs, Ys, Zs, ANG)
+        blockRef.Layer = "Granshor"
+        Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, M20x90_4, Xs, Ys, Zs, ANG)
+        blockRef.Layer = "Nonplot"
+        
+        If nfusible = 3 Then
+                Punto_final(0) = Punto_inial(0) + lfusible * Cos(ANG): Punto_final(1) = Punto_inial(1) + lfusible * Sin(ANG): Punto_final(2) = Punto_inial(2)
+                Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, GS_Fusible, Xs, Ys, Zs, ANG)
+                blockRef.Layer = "Granshor"
+                Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, M20x90_4, Xs, Ys, Zs, ANG)
+                blockRef.Layer = "Nonplot"
+                Punto_final(0) = Punto_inial(0): Punto_final(1) = Punto_inial(1): Punto_final(2) = Punto_inial(2)
+        End If
+            
+        
+        '
+        Punto_final(0) = Punto_inial(0) + lfusible * Cos(ANG): Punto_final(1) = Punto_inial(1) + lfusible * Sin(ANG): Punto_final(2) = Punto_inial(2)
+
+        
+        If n50 > 0 Then
+                Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+                PS_Placa50mm = rutaps & "PS_Placa50mm_" & dato2 & ".dwg"
+                Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, PS_Placa50mm, Xs, Ys, Zs, ANG)
+                blockRef.Layer = "Pipeshor4S"
+                Punto_final(0) = Punto_inial(0) + l50 * Cos(ANG): Punto_final(1) = Punto_inial(1) + l50 * Sin(ANG): Punto_final(2) = Punto_inial(2)
+                n50 = n50 - 1
+        End If
+        
+        Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, M20x100A, Xs, Ys, Zs, ANG)
+        blockRef.Layer = "Nonplot"
+        
+        If n50 > 0 Then
+                Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+                PS_Placa50mm = rutaps & "PS_Placa50mm_" & dato2 & ".dwg"
+                Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, PS_Placa50mm, Xs, Ys, Zs, ANG)
+                blockRef.Layer = "Pipeshor4S"
+                Punto_final(0) = Punto_inial(0) + l50 * Cos(ANG): Punto_final(1) = Punto_inial(1) + l50 * Sin(ANG): Punto_final(2) = Punto_inial(2)
+                n50 = n50 - 1
+        End If
+        
+        If n50 > 0 Then
+                Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+                PS_Placa50mm = rutaps & "PS_Placa50mm_" & dato2 & ".dwg"
+                Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, PS_Placa50mm, Xs, Ys, Zs, ANG)
+                blockRef.Layer = "Pipeshor4S"
+                Punto_final(0) = Punto_inial(0) + l50 * Cos(ANG): Punto_final(1) = Punto_inial(1) + l50 * Sin(ANG): Punto_final(2) = Punto_inial(2)
+                n50 = n50 - 1
+        End If
+        
+        If n35 > 0 Then
+                Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+                PS_Placa35mm = rutaps & "PS_Placa35mm_" & dato2 & ".dwg"
+                Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, PS_Placa35mm, Xs, Ys, Zs, ANG)
+                blockRef.Layer = "Pipeshor4S"
+                Punto_final(0) = Punto_inial(0) + l35 * Cos(ANG): Punto_final(1) = Punto_inial(1) + l35 * Sin(ANG): Punto_final(2) = Punto_inial(2)
+        End If
+        
+
+        If (carga >= 1350) And (carga < 1500) Then
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, M20x110_4, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+        ElseIf (carga >= 1500) And (carga < 2000) Then
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, M20x150_4, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+        ElseIf (carga >= 2000) And (carga < 2900) Then
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, M20x150_4, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+        ElseIf carga >= 2900 Then
+            ' varillas no?
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, Var20x250, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, Var20x250, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, Var20x250, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, Var20x250, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+        End If
+
+
+        If n280 > 0 Then
+            Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+            PS_280 = rutapl & "PL_280_" & dato2 & ".dwg"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, PS_280, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Pipeshor4L"
+            Punto_final(0) = Punto_inial(0) + l280 * Cos(ANG): Punto_final(1) = Punto_inial(1) + l280 * Sin(ANG): Punto_final(2) = Punto_inial(2)
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, M20x90_16, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+            '
+            '
+            '
+        End If
+
+        If n560 > 1 Then
+            Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+            PS_560 = rutaps & "PS_560.dwg"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, PS_560, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Pipeshor4S"
+            Punto_final(0) = Punto_inial(0) + l560 * Cos(ANG): Punto_final(1) = Punto_inial(1) + l560 * Sin(ANG): Punto_final(2) = Punto_inial(2)
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, M20x90_16, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+            '
+            '
+            '
+        End If
+        
+        If n750 > 0 Then
+            Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+            PS_750 = rutaps & "PS_750_" & dato2 & ".dwg"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, PS_750, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Pipeshor4S"
+            Punto_final(0) = Punto_inial(0) + l750 * Cos(ANG): Punto_final(1) = Punto_inial(1) + l750 * Sin(ANG): Punto_final(2) = Punto_inial(2)
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, M20x90_16, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+            '
+            '
+            '
+        End If
+
+ 
+        If n1500 > 0 Then
+            Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+            PS_1500 = rutaps & "PS_1500_" & dato2 & ".dwg"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, PS_1500, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Pipeshor4S"
+            Punto_final(0) = Punto_inial(0) + l1500 * Cos(ANG): Punto_final(1) = Punto_inial(1) + l1500 * Sin(ANG): Punto_final(2) = Punto_inial(2)
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, M20x90_16, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+            '
+            '
+        End If   '
+            
+        If n3000 > 0 Then
+            Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+            PS_3000 = rutaps & "PS_3000_" & dato2 & ".dwg"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, PS_3000, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Pipeshor4S"
+            Punto_final(0) = Punto_inial(0) + l3000 * Cos(ANG): Punto_final(1) = Punto_inial(1) + l3000 * Sin(ANG): Punto_final(2) = Punto_inial(2)
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, M20x90_16, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+            '
+            '
+            '
+        End If
+
+
+
+        If n4500 > 0 Then
+            Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+            PS_4500 = rutaps & "PS_4500_" & dato2 & ".dwg"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, PS_4500, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Pipeshor4S"
+            Punto_final(0) = Punto_inial(0) + l4500 * Cos(ANG): Punto_final(1) = Punto_inial(1) + l4500 * Sin(ANG): Punto_final(2) = Punto_inial(2)
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, M20x90_16, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+            '
+            '
+            '
+        End If
+        
+        If (n6000 / 2) > 0 Then
+            i = 0
+            Do While i < (n6000 / 2)
+                Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+                PS_6000 = rutaps & "PS_6000_" & dato2 & ".dwg"
+                Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, PS_6000, Xs, Ys, Zs, ANG)
+                blockRef.Layer = "Pipeshor4S"
+                Punto_final(0) = Punto_inial(0) + l6000 * Cos(ANG): Punto_final(1) = Punto_inial(1) + l6000 * Sin(ANG): Punto_final(2) = Punto_inial(2)
+                Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, M20x90_16, Xs, Ys, Zs, ANG)
+                blockRef.Layer = "Nonplot"
+                '
+                '
+                '
+                i = i + 1
+            Loop
+        End If
+        
+        If dato1 = "Ambos" Or dato1 = "Inicial" Then
+            Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+            Punto_final(0) = Punto_inial(0) + l750 * Cos(ANG): Punto_final(1) = Punto_inial(1) + l750 * Sin(ANG): Punto_final(2) = Punto_inial(2)
+            PS_nudo = rutaps & "PS_nudo_" & dato2 & ".dwg"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, PS_nudo, Xs, Ys, Zs, ANG + PI)
+            blockRef.Layer = "Pipeshor4S"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, M20x90_16, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+            '
+            '
+            '
+        End If
+        
+        If n > 0 Then
+            Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+            P6_cono = rutap6 & "P6_cono.dwg"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, P6_cono, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Pipeshor6"
+            Punto_final(0) = Punto_inial(0) + lcono * Cos(ANG): Punto_final(1) = Punto_inial(1) + lcono * Sin(ANG): Punto_final(2) = Punto_inial(2)
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, M30x100_16, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+            '
+            '
+            '
+        End If
+
+        If n3000p6 > 0 Then
+            Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+            P6_3000 = rutap6 & "P6_3000_" & dato2 & ".dwg"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, P6_3000, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Pipeshor6"
+            Punto_final(0) = Punto_inial(0) + l3000 * Cos(ANG): Punto_final(1) = Punto_inial(1) + l3000 * Sin(ANG): Punto_final(2) = Punto_inial(2)
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, M30x100_16, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+            '
+            '
+            '
+        End If
+
+        If n4500p6 > 0 Then
+            i = 0
+            Do While i < n4500p6
+            Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+            P6_4500 = rutap6 & "P6_4500_" & dato2 & ".dwg"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, P6_4500, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Pipeshor6"
+            Punto_final(0) = Punto_inial(0) + l4500 * Cos(ANG): Punto_final(1) = Punto_inial(1) + l4500 * Sin(ANG): Punto_final(2) = Punto_inial(2)
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, M30x100_16, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+            '
+            '
+            '
+            i = i + 1
+            Loop
+        End If
+
+        If n3000p6 = 2 Then
+            Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+            P6_3000 = rutap6 & "P6_3000_" & dato2 & ".dwg"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, P6_3000, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Pipeshor6"
+            Punto_final(0) = Punto_inial(0) + l3000 * Cos(ANG): Punto_final(1) = Punto_inial(1) + l3000 * Sin(ANG): Punto_final(2) = Punto_inial(2)
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, M30x100_16, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+            '
+            '
+            '
+        End If
+
+        If n > 0 Then
+            Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+            Punto_final(0) = Punto_inial(0) + lcono * Cos(ANG): Punto_final(1) = Punto_inial(1) + lcono * Sin(ANG): Punto_final(2) = Punto_inial(2)
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, P6_cono, Xs, Ys, Zs, ANG + PI)
+            blockRef.Layer = "Pipeshor6"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, M20x90_16, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+            '
+            '
+            '
+        End If
+
+        If dato1 = "Ambos" Or dato1 = "Final" Then
+            Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+            PS_nudo = rutaps & "PS_nudo_" & dato2 & ".dwg"
+            'Set BlockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, PS_nudo, Xs, Ys, Zs, ANG)
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, PS_nudo, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Pipeshor4S"
+            Punto_final(0) = Punto_inial(0) + l750 * Cos(ANG): Punto_final(1) = Punto_inial(1) + l750 * Sin(ANG): Punto_final(2) = Punto_inial(2)
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, M20x90_16, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+            '
+            '
+            '
+        End If
+
+        If (n6000 / 2) > 0 Then
+            i = 0
+            Do While i < (n6000 / 2)
+                Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+                PS_6000 = rutaps & "PS_6000_" & dato2 & ".dwg"
+                Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, PS_6000, Xs, Ys, Zs, ANG)
+                blockRef.Layer = "Pipeshor4S"
+                Punto_final(0) = Punto_inial(0) + l6000 * Cos(ANG): Punto_final(1) = Punto_inial(1) + l6000 * Sin(ANG): Punto_final(2) = Punto_inial(2)
+                Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, M20x90_16, Xs, Ys, Zs, ANG)
+                blockRef.Layer = "Nonplot"
+                '
+                '
+                '
+                i = i + 1
+            Loop
+        End If
+        
+        If n4500 > 0 Then
+            Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+            PS_4500 = rutaps & "PS_4500_" & dato2 & ".dwg"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, PS_4500, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Pipeshor4S"
+            Punto_final(0) = Punto_inial(0) + l4500 * Cos(ANG): Punto_final(1) = Punto_inial(1) + l4500 * Sin(ANG): Punto_final(2) = Punto_inial(2)
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, M20x90_16, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+            '
+            '
+            '
+        End If
+
+        If n3000 > 0 Then
+            Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+            PS_3000 = rutaps & "PS_3000_" & dato2 & ".dwg"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, PS_3000, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Pipeshor4S"
+            Punto_final(0) = Punto_inial(0) + l3000 * Cos(ANG): Punto_final(1) = Punto_inial(1) + l3000 * Sin(ANG): Punto_final(2) = Punto_inial(2)
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, M20x90_16, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+            '
+            '
+            '
+        End If
+        
+        If n1500 > 0 Then
+            Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+            PS_1500 = rutaps & "PS_1500_" & dato2 & ".dwg"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, PS_1500, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Pipeshor4S"
+            Punto_final(0) = Punto_inial(0) + l1500 * Cos(ANG): Punto_final(1) = Punto_inial(1) + l1500 * Sin(ANG): Punto_final(2) = Punto_inial(2)
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, M20x90_16, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+            '
+            '
+        End If   '
+
+        If n750 > 0 Then
+            Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+            PS_750 = rutaps & "PS_750_" & dato2 & ".dwg"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, PS_750, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Pipeshor4S"
+            Punto_final(0) = Punto_inial(0) + l750 * Cos(ANG): Punto_final(1) = Punto_inial(1) + l750 * Sin(ANG): Punto_final(2) = Punto_inial(2)
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, M20x90_16, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+            '
+            '
+            '
+        End If
+        
+        If n560 > 0 Then
+            Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+            PS_560 = rutaps & "PS_560.dwg"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, PS_560, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Pipeshor4S"
+            Punto_final(0) = Punto_inial(0) + l560 * Cos(ANG): Punto_final(1) = Punto_inial(1) + l560 * Sin(ANG): Punto_final(2) = Punto_inial(2)
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, M20x90_16, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+            '
+            '
+            '
+        End If
+        
+        If n560 > 2 Then
+            Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+            PS_560 = rutaps & "PS_560.dwg"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, PS_560, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Pipeshor4S"
+            Punto_final(0) = Punto_inial(0) + l560 * Cos(ANG): Punto_final(1) = Punto_inial(1) + l560 * Sin(ANG): Punto_final(2) = Punto_inial(2)
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, M20x90_16, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+            '
+            '
+            '
+        End If
+        
+        If carga > 2900 Then
+            blockRef.Delete
+        End If
+        ' Aquí vamos a meter el gato si la carga es < 2900 y el cajón pipeshor si es mayor a 2900
+        
+        If carga < 2900 Then
+            Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+            zPS_Gato_Cono = rutaps & "zPS_Gato_Cono_" & dato2 & ".dwg"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, zPS_Gato_Cono, Xs, Ys, Zs, ANG + PI)
+            blockRef.Layer = "Pipeshor4S"
+            Punto_final(0) = Punto_inial(0) + l_conogato * Cos(ANG): Punto_final(1) = Punto_inial(1) + l_conogato * Sin(ANG): Punto_final(2) = Punto_inial(2)
+    
+            Punto_inial2(0) = P2(0) - lgiro * Cos(ANG): Punto_inial2(1) = P2(1) - lgiro * Sin(ANG): Punto_inial2(2) = P2(2)
+            Punto_final2(0) = Punto_inial2(0): Punto_final2(1) = Punto_inial2(1): Punto_final2(2) = Punto_inial2(2)
+            If nfusible = 2 Then
+                Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial2, GS_Fusible, Xs, Ys, Zs, ANG + PI)
+                blockRef.Layer = "Granshor"
+                Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial2, M20x90_4, Xs, Ys, Zs, ANG + PI)
+                blockRef.Layer = "Nonplot"
+                '
+                '
+                '
+                Punto_final2(0) = Punto_inial2(0) - lfusible * Cos(ANG): Punto_final2(1) = Punto_inial2(1) - lfusible * Sin(ANG): Punto_final(2) = Punto_inial2(2)
+            End If
+            If nfusible = 3 Then
+                Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial2, GS_Fusible, Xs, Ys, Zs, ANG + PI)
+                blockRef.Layer = "Granshor"
+                Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial2, M20x90_4, Xs, Ys, Zs, ANG + PI)
+                blockRef.Layer = "Nonplot"
+                '
+                '
+                '
+                Punto_final2(0) = Punto_inial2(0) - lfusible * Cos(ANG): Punto_final2(1) = Punto_inial2(1) - lfusible * Sin(ANG): Punto_final(2) = Punto_inial2(2)
+                Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial2, GS_Fusible, Xs, Ys, Zs, ANG + PI)
+                blockRef.Layer = "Granshor"
+                Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial2, M20x90_4, Xs, Ys, Zs, ANG + PI)
+                blockRef.Layer = "Nonplot"
+                '
+                '
+                '
+                Punto_final2(0) = Punto_inial2(0) - lfusible * Cos(ANG): Punto_final2(1) = Punto_inial2(1) - lfusible * Sin(ANG): Punto_final(2) = Punto_inial2(2)
+            
+            
+            End If
+            
+            
+            
+            Punto_inial2(0) = Punto_final2(0): Punto_inial2(1) = Punto_final2(1): Punto_inial2(2) = Punto_final2(2)
+            zPS_Gato_Tope = rutaps & "zPS_Gato_Tope_" & dato2 & ".dwg"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial2, zPS_Gato_Tope, Xs, Ys, Zs, ANG + PI)
+            blockRef.Layer = "Pipeshor4S"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial2, M20x90_4, Xs, Ys, Zs, ANG + PI)
+            blockRef.Layer = "Nonplot"
+            '
+            '
+            '
+            Punto_final2(0) = Punto_inial2(0) - l_tope * Cos(ANG): Punto_final2(1) = Punto_inial2(1) - l_tope * Sin(ANG): Punto_final(2) = Punto_inial2(2)
+    
+    
+            Punto_inial(0) = (Punto_final(0) + Punto_final2(0)) / 2: Punto_inial(1) = (Punto_final(1) + Punto_final2(1)) / 2: Punto_inial(2) = (Punto_final(2) + Punto_final2(2)) / 2
+    
+            PS_Gato = rutaps & "PS_Gato_" & dato2 & ".dwg"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, PS_Gato, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Pipeshor4S"
+        Else
+            Dim rutacajon As String, basecajon As String, brazocajon As String
+            rutacajon = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\Cajon hidraulico\"
+
+        ' aquí toca meter el cajón más todos los complementos que harían falta
+            Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+            'PGato1(0) = Punto_inial(0) + 100 * Cos(ANG + PI): PGato1(1) = Punto_inial(1) + 100 * Sin(ANG + PI): PGato1(2) = Punto_inial(2)
+            'dos chapones de 50 y 4 varillas 20x250
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, Var20x250, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, Var20x250, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, Var20x250, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, Var20x250, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Nonplot"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, PS_Placa50mm, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Pipeshor4S"
+            Punto_inial(0) = Punto_inial(0) + l50 * Cos(ANG): Punto_inial(1) = Punto_inial(1) + l50 * Sin(ANG): Punto_inial(2) = Punto_inial(2)
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, PS_Placa50mm, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Pipeshor4S"
+            Punto_inial(0) = Punto_inial(0) + l50 * Cos(ANG): Punto_inial(1) = Punto_inial(1) + l50 * Sin(ANG): Punto_inial(2) = Punto_inial(2)
+            
+            ' base del cajón
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, M20x90_16, Xs, Ys, Zs, ANG + PI)
+            blockRef.Layer = "Nonplot"
+            basecajon = rutacajon & "cajonh_" & dato6 & ".dwg"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, basecajon, Xs, Ys, Zs, ANG)
+            blockRef.Layer = "Pipeshor4S"
+            Punto_final(0) = Punto_inial(0) + 810 * Cos(ANG): Punto_final(1) = Punto_inial(1) + 810 * Sin(ANG): Punto_final(2) = Punto_inial(2)
+                    
+            Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
+            
+            
+            'nos vamos al final del codal a meter el giro y acercarnos al cajón, haya uno o dos fusibles
+            Punto_inial2(0) = P2(0) + lgiro * Cos(ANG + PI): Punto_inial2(1) = P2(1) + lgiro * Sin(ANG + PI): Punto_inial2(2) = P2(2)
+            Punto_final2(0) = Punto_inial2(0): Punto_final2(1) = Punto_inial2(1): Punto_final2(2) = Punto_inial2(2)
+                If nfusible >= 2 Then
+                    Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial2, M20x90_4, Xs, Ys, Zs, ANG + PI)
+                    blockRef.Layer = "Nonplot"
+                    Punto_final2(0) = Punto_inial2(0) + lfusible * Cos(ANG + PI): Punto_final2(1) = Punto_inial2(1) + lfusible * Sin(ANG + PI): Punto_final(2) = Punto_inial2(2)
+                    Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final2, GS_Fusible, Xs, Ys, Zs, ANG)
+                    blockRef.Layer = "Granshor"
+                End If
+                'If nfusible = 3 Then
+                    'Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial2, M20x90_4, Xs, Ys, Zs, ANG + PI)
+                    'blockRef.Layer = "Nonplot"
+                    'Punto_final2(0) = Punto_inial2(0) + lfusible * Cos(ANG + PI): Punto_final2(1) = Punto_inial2(1) + lfusible * Sin(ANG + PI): Punto_final(2) = Punto_inial2(2)
+                    'Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final2, GS_Fusible, Xs, Ys, Zs, ANG)
+                    'blockRef.Layer = "Granshor"
+                'End If
+            Punto_inial2(0) = Punto_final2(0): Punto_inial2(1) = Punto_final2(1): Punto_inial2(2) = Punto_final2(2)
+            'metemos aquí el cajón hidráulico
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final2, M20x90_4, Xs, Ys, Zs, ANG + PI)
+            blockRef.Layer = "Nonplot"
+            brazocajon = rutacajon & "modcajon_Planta.dwg"
+            Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial2, brazocajon, Xs, Ys, Zs, ANG + PI)
+            blockRef.Layer = "Pipeshor4S"
+            
+            
+        
+        End If
+    
+        'Set blockRef = ThisDrawing.ModelSpace.InsertBlock(punto1, k, Xs, Ys, Zs, 0)
+        'blockRef.Layer = "NoContable"
+    
+    Eje1.Layer = "Nonplot"
+    Loop
+
+
+ElseIf dato4 = "B" Then
+
+
+
+
+
+
+ElseIf dato4 = "C" Then
+
+
+
+
+
+ElseIf dato4 = "D" Then
+
+
+
+
+
+
+Else
+GoTo terminar
+End If
+
+
+
+
+
+
+
+
+
+
+terminar:
+End Sub
 
 
 

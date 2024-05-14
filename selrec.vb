@@ -51,7 +51,7 @@ Sub selrec()
         ' Contar los bloques seleccionados y obtener la capa asociada
         Call CountBlocks2(ss, blockDict, noContableDict, excelWorkbook, excelWorksheet)
 
-        ' Eliminar el conjunto de selección
+        ' Eliminar el conjunto de selección 
         ss.Delete
 
         ' Activar la aplicación de Excel
@@ -144,15 +144,6 @@ Private Sub WriteToExcel2(ByVal excelWorksheet As Object, ByVal blockDict As Obj
         i = i + 1
     Next key
 End Sub
-
-
-
-
-
-
-
-
-
 
 
 
@@ -285,26 +276,6 @@ Private Sub WriteToExcel(ByVal excelWorksheet As Object, ByVal blockDict As Obje
         i = i + 1
     Next key
 End Sub
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
