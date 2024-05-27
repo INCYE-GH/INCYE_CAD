@@ -1,7 +1,7 @@
-Public Sub WDP(blockRef As AcadBlockReference)
+Public Sub WDP(blockRef As GcadBlockReference)
 
 Dim properties As Variant
-Dim acDinamicProperty As AcadDynamicBlockReferenceProperty
+Dim acDinamicProperty As GcadDynamicBlockReferenceProperty
 properties = blockRef.GetDynamicBlockProperties
 
 For j = LBound(properties) To UBound(properties)
@@ -15,9 +15,9 @@ End Sub
 
 Public Sub listado()
 
-    Dim element As AcadObject
-    Dim block As AcadBlockReference
-    Dim att As AcadAttributeReference
+    Dim element As GcadObject
+    Dim block As GcadBlockReference
+    Dim att As GcadAttributeReference
     Dim varatt As Variant
     Dim n As Integer
     Dim r As Integer
@@ -116,7 +116,7 @@ Public Sub listado()
                 rellenar_inicio = "si"
                 'generar el archivo basándonos en el español
                 Set objFSO = CreateObject("Scripting.FileSystemObject")
-                objFSO.CopyFile "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\13_Formacion\23XXXX_MACROS\Listado_de_planos.xlsm", listado
+                objFSO.CopyFile "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\13_Formacion\23XXXX_MACROS\Listado\Listado_de_planos.xlsm", listado
             End If
         End If
     End If
@@ -131,9 +131,9 @@ End Sub
 
 Public Sub esp(listado As String, to1 As String, ruta As String, rellenar_inicio As String)
 
-    Dim element As AcadObject
-    Dim block As AcadBlockReference
-    Dim att As AcadAttributeReference
+    Dim element As GcadObject
+    Dim block As GcadBlockReference
+    Dim att As GcadAttributeReference
     Dim varatt As Variant
     Dim n As Integer
     Dim r As Integer
@@ -154,7 +154,7 @@ Public Sub esp(listado As String, to1 As String, ruta As String, rellenar_inicio
 
     nombreArchivo = ThisDrawing.Name
 
-    On Error GoTo Terminar
+    On Error GoTo terminar
     
     Set excelApp = CreateObject("Excel.Application")
     excelApp.Visible = False ' Set to False if you don't want Excel to be visible
@@ -202,7 +202,7 @@ Public Sub esp(listado As String, to1 As String, ruta As String, rellenar_inicio
         layoutName = layoutArray(i - 1)
     
         'Get layout
-        Dim layout As AcadLayout
+        Dim layout As GcadLayout
         Set layout = ThisDrawing.Layouts(layoutName)
         identificador = Left(layoutName, 1)
         If identificador = "0" Then
@@ -333,7 +333,7 @@ Public Sub esp(listado As String, to1 As String, ruta As String, rellenar_inicio
                     End If
                     If element.effectiveName = "status_sp" And element.IsDynamicBlock Then
                         Dim properties As Variant
-                        Dim acDinamicProperty As AcadDynamicBlockReferenceProperty
+                        Dim acDinamicProperty As GcadDynamicBlockReferenceProperty
                         properties = element.GetDynamicBlockProperties
                         For t = LBound(properties) To UBound(properties)
                             Set acDynamicProperty = properties(t)
@@ -367,7 +367,7 @@ Public Sub esp(listado As String, to1 As String, ruta As String, rellenar_inicio
  
         Else
             MsgBox "Asegúrate de introducir bien el nombre de las pestañas"
-            GoTo Terminar
+            GoTo terminar
         End If
         Dim fileName As String
         fileName = Left(ThisDrawing.Name, InStrRev(ThisDrawing.Name, ")"))
@@ -516,7 +516,7 @@ Public Sub esp(listado As String, to1 As String, ruta As String, rellenar_inicio
             t01.Close (False)
         Else
             MsgBox "Comprueba que el T01 tenga el nombre adecuado y vuelve a lanzarlo."
-            GoTo Terminar
+            GoTo terminar
         End If
     Else
     End If
@@ -527,7 +527,7 @@ Public Sub esp(listado As String, to1 As String, ruta As String, rellenar_inicio
     'identificador = Left(nplano, 1)
     wb.Save
     MsgBox "Planos inlcuidos en el Listado correctamente."
-Terminar:
+terminar:
     
     wb.Close (False)
     excelApp.Quit
@@ -540,9 +540,9 @@ End Sub
 
 Public Sub fr(listado As String, to1 As String, ruta As String, rellenar_inicio As String)
 
-    Dim element As AcadObject
-    Dim block As AcadBlockReference
-    Dim att As AcadAttributeReference
+    Dim element As GcadObject
+    Dim block As GcadBlockReference
+    Dim att As GcadAttributeReference
     Dim varatt As Variant
     Dim n As Integer
     Dim r As Integer
@@ -563,7 +563,7 @@ Public Sub fr(listado As String, to1 As String, ruta As String, rellenar_inicio 
 
     nombreArchivo = ThisDrawing.Name
 
-    On Error GoTo Terminar
+    On Error GoTo terminar
     
     Set excelApp = CreateObject("Excel.Application")
     excelApp.Visible = False ' Set to False if you don't want Excel to be visible
@@ -611,7 +611,7 @@ Public Sub fr(listado As String, to1 As String, ruta As String, rellenar_inicio 
         layoutName = layoutArray(i - 1)
     
         'Get layout
-        Dim layout As AcadLayout
+        Dim layout As GcadLayout
         Set layout = ThisDrawing.Layouts(layoutName)
         identificador = Left(layoutName, 1)
         If identificador = "0" Then
@@ -742,7 +742,7 @@ Public Sub fr(listado As String, to1 As String, ruta As String, rellenar_inicio 
                     End If
                     If element.effectiveName = "status_sp-fr" And element.IsDynamicBlock Then
                         Dim properties As Variant
-                        Dim acDinamicProperty As AcadDynamicBlockReferenceProperty
+                        Dim acDinamicProperty As GcadDynamicBlockReferenceProperty
                         properties = element.GetDynamicBlockProperties
                         For t = LBound(properties) To UBound(properties)
                             Set acDynamicProperty = properties(t)
@@ -776,7 +776,7 @@ Public Sub fr(listado As String, to1 As String, ruta As String, rellenar_inicio 
  
         Else
             MsgBox "Asegúrate de introducir bien el nombre de las pestañas"
-            GoTo Terminar
+            GoTo terminar
         End If
         Dim fileName As String
         fileName = Left(ThisDrawing.Name, InStrRev(ThisDrawing.Name, ")"))
@@ -924,7 +924,7 @@ Public Sub fr(listado As String, to1 As String, ruta As String, rellenar_inicio 
             t01.Close (False)
         Else
             MsgBox "Comprueba que el T01 tenga el nombre adecuado y vuelve a lanzarlo."
-            GoTo Terminar
+            GoTo terminar
         End If
     Else
     End If
@@ -937,7 +937,7 @@ Public Sub fr(listado As String, to1 As String, ruta As String, rellenar_inicio 
     wb.Save
     MsgBox "Planos inlcuidos en el Listado correctamente."
     
-Terminar:
+terminar:
     wb.Close (False)
     excelApp.Quit
     Set excelApp = Nothing

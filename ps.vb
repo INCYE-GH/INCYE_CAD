@@ -3,9 +3,9 @@ Option Explicit
 Sub ps()
 Dim ruta As String, rutaps As String, rutapl As String, rutags As String
 Dim ruta2 As String
-Dim AcadDoc As Object
-Dim AcadUtil As Object
-Dim AcadModel As Object
+Dim GcadDoc As Object
+Dim GcadUtil As Object
+Dim GcadModel As Object
 Dim punto1 As Variant
 Dim punto2 As Variant
 Dim x As Double
@@ -76,24 +76,30 @@ Dim kwordList As String
 Dim i As Integer
 Dim Ncapa As String
 Dim Gcapa As Object
-Dim k As String, b As acadBlock, entity As Object
+Dim k As String, b As GcadBlock, entity As Object
 
-Dim longitud As String, orientacion As String
+Dim longitud As String, orientacion As String, Pinicio0 As String, Pinicio1 As String, Pinicio2 As String, PreMon As String
 
 
-Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
-Set AcadModel = ThisDrawing.ModelSpace
-Set AcadUtil = AcadDoc.Utility
+Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+Set GcadModel = ThisDrawing.ModelSpace
+Set GcadUtil = GcadDoc.Utility
 
 Ncapa = "Pipeshor4S"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 7
 Ncapa = "Pipeshor4L"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 5
 Ncapa = "Granshor"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 150
+Ncapa = "Nonplot"
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
+Gcapa.color = 50
+Ncapa = "NoContable"
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
+Gcapa.color = 40
 
 'Valores fijos
 PI = 4 * Atn(1)
@@ -150,21 +156,20 @@ End If
 
 Do While repite = 1
 'Geometría:
-punto1 = AcadUtil.GetPoint(, "1º Punto: ")
-punto2 = AcadUtil.GetPoint(punto1, "2º Punto: ")
+punto1 = GcadUtil.GetPoint(, "1º Punto: ")
+punto2 = GcadUtil.GetPoint(punto1, "2º Punto: ")
 P1(0) = punto1(0): P1(1) = punto1(1): P1(2) = punto1(2)
 P2(0) = punto2(0): P2(1) = punto2(1): P2(2) = punto2(2)
 
+Pinicio0 = CStr(P1(0))
+Pinicio1 = CStr(P1(1))
+Pinicio2 = CStr(P1(2))
 
+nop:
 k = InputBox("Ingrese nombre: ")
 
 If k = "" Then
-nop:
-    MsgBox "Introduzca un nombre, por favor"
-    k = InputBox("Ingrese nombre: ")
-    If k = "" Then
-        GoTo nop
-    End If
+    k = GenerarNombreAleatorio(30)
 End If
     
 If BloqueExiste(k) Then
@@ -177,7 +182,7 @@ If BloqueExiste(k) Then
     If Respuesta = "Sobreescribir" Or Respuesta = "" Then
     
         For Each entity In ThisDrawing.ModelSpace
-            If TypeOf entity Is AcadBlockReference Then
+            If TypeOf entity Is GcadBlockReference Then
                 If entity.effectiveName = k Then
                     entity.Delete
                 End If
@@ -192,12 +197,15 @@ If BloqueExiste(k) Then
     End If
 End If
 
+Dim check As Double
+check = Len(k)
+
 Set b = ThisDrawing.Blocks.Add(punto1, k)
 
 Set Eje1 = ThisDrawing.Blocks.Item(k).AddLine(P1, P2)
 Eje1.Layer = "Nonplot"
-ANG = AcadUtil.AngleFromXAxis(P1, P2)
-Direcc = AcadUtil.AngleFromXAxis(P1, P2)
+ANG = GcadUtil.AngleFromXAxis(P1, P2)
+Direcc = GcadUtil.AngleFromXAxis(P1, P2)
 
 x = P2(0) - P1(0)
 y = P2(1) - P1(1)
@@ -206,7 +214,7 @@ Ys = 1
 Zs = 1
 Distancia = Val(Sqr((x ^ 2 + y ^ 2)))
 
-longitud = CStr(Distancia)
+Longitud = CStr(Distancia)
 orientacion = CStr(ANG)
 
 If Distancia < lfija Then
@@ -460,15 +468,33 @@ ElseIf dato3 = "PS" Then
     End If
 End If
         
-Dim orientacionatt As AcadAttribute
-Set orientacionatt = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Orientacion", orientacion)
-        
-Dim longitudatt As AcadAttribute
+PreMon = ""
+Dim NamePre As GcadAttribute
+Set NamePre = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "NombrePremontaje", PreMon)
+
+Dim longitudatt As GcadAttribute
 Set longitudatt = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Longitud", longitud)
+        
+Dim orientacionatt As GcadAttribute
+Set orientacionatt = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Orientacion", orientacion)
            
+Dim cooordenadainicio0 As GcadAttribute
+Set cooordenadainicio0 = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Coordenada0", Pinicio0)
+        
+Dim cooordenadainicio1 As GcadAttribute
+Set cooordenadainicio1 = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Coordenada1", Pinicio1)
+        
+Dim cooordenadainicio2 As GcadAttribute
+Set cooordenadainicio2 = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Coordenada2", Pinicio2)           
         
 Set blockRef = ThisDrawing.ModelSpace.InsertBlock(punto1, k, Xs, Ys, Zs, 0)
-blockRef.Layer = "NoContable"
+
+If check = 30 Then
+    blockRef.Explode
+    blockRef.Delete
+Else
+    blockRef.Layer = "NoContable"
+End If
         
 Eje1.Layer = "Nonplot"
 Loop
@@ -476,14 +502,10 @@ Loop
 'Set blockRef = ThisDrawing.ModelSpace.InsertBlock(punto1, b, Xs, Ys, Zs, ANG)
 'blockRef.Layer = "Pipeshor4L"
 
-
-
 ThisDrawing.Regen acAllViewports
 
 terminar:
 End Sub
-
-
 
 Function BloqueExiste(blockNamedelet As String) As Boolean
     ' Función para verificar si un bloque existe en la colección
@@ -500,5 +522,20 @@ Function BloqueExiste(blockNamedelet As String) As Boolean
     Next blk
 End Function
 
+Function GenerarNombreAleatorio(Longitud As Integer) As String
+    Dim i As Integer
+    Dim Nombre As String
+    Dim Caracter As String
+    Dim Rango As String
 
+    Rango = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    
+    Nombre = ""
+    For i = 1 To Longitud
+        Caracter = Mid(Rango, Int((Len(Rango) * Rnd) + 1), 1)
+        Nombre = Nombre & Caracter
+    Next i
+    
+    GenerarNombreAleatorio = Nombre
+End Function
 

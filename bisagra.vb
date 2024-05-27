@@ -5,27 +5,27 @@ Sub bisagra()
     
     Dim blockRef As Object
     
-    Set gcadDoc = GetObject(, "Gcad.Application").ActiveDocument
-    Set gcadModel = gcadDoc.ModelSpace
-    Set gcadUtil = gcadDoc.Utility
+    Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+    Set GcadModel = GcadDoc.ModelSpace
+    Set GcadUtil = GcadDoc.Utility
     
     Ncapa = "Mega"
-    Set Gcapa = gcadDoc.Layers.Add(Ncapa)
+    Set Gcapa = GcadDoc.Layers.Add(Ncapa)
     Gcapa.color = 30
     Ncapa = "Granshor"
-    Set Gcapa = gcadDoc.Layers.Add(Ncapa)
+    Set Gcapa = GcadDoc.Layers.Add(Ncapa)
     Gcapa.color = 150
     Ncapa = "Pipeshor4S"
-    Set Gcapa = gcadDoc.Layers.Add(Ncapa)
+    Set Gcapa = GcadDoc.Layers.Add(Ncapa)
     Gcapa.color = 7
     Ncapa = "Pipeshor6"
-    Set Gcapa = gcadDoc.Layers.Add(Ncapa)
+    Set Gcapa = GcadDoc.Layers.Add(Ncapa)
     Gcapa.color = 7
     Ncapa = "Pipeshor4L"
-    Set Gcapa = gcadDoc.Layers.Add(Ncapa)
+    Set Gcapa = GcadDoc.Layers.Add(Ncapa)
     Gcapa.color = 5
     Ncapa = "Slims"
-    Set Gcapa = gcadDoc.Layers.Add(Ncapa)
+    Set Gcapa = GcadDoc.Layers.Add(Ncapa)
     Gcapa.color = 30
     
     Dim intPoint As Variant
@@ -151,8 +151,8 @@ Sub bisagra()
         PB(0) = puntoInicioLinea2(0): PB(1) = puntoInicioLinea2(1): PB(2) = puntoInicioLinea2(2)
 
         'Obtener el angulo de las lineas
-        DirMuro1 = gcadUtil.AngleFromXAxis(PA, PP1)
-        DirMuro2 = gcadUtil.AngleFromXAxis(PB, PP1)
+        DirMuro1 = GcadUtil.AngleFromXAxis(PA, PP1)
+        DirMuro2 = GcadUtil.AngleFromXAxis(PB, PP1)
 
         If Abs(DirMuro2 - DirMuro1) > PI Then
         
@@ -162,8 +162,8 @@ Sub bisagra()
             PA(0) = PB(0): PA(1) = PB(1): PA(2) = PB(2)
             PB(0) = Ptemp(0): PB(1) = Ptemp(1): PB(2) = Ptemp(2)
         
-            DirMuro1 = gcadUtil.AngleFromXAxis(PA, PP1)
-            DirMuro2 = gcadUtil.AngleFromXAxis(PB, PP1)
+            DirMuro1 = GcadUtil.AngleFromXAxis(PA, PP1)
+            DirMuro2 = GcadUtil.AngleFromXAxis(PB, PP1)
             
             End If
         
@@ -173,8 +173,8 @@ Sub bisagra()
         PA(0) = PB(0): PA(1) = PB(1): PA(2) = PB(2)
         PB(0) = Ptemp(0): PB(1) = Ptemp(1): PB(2) = Ptemp(2)
         
-        DirMuro1 = gcadUtil.AngleFromXAxis(PA, PP1)
-        DirMuro2 = gcadUtil.AngleFromXAxis(PB, PP1)
+        DirMuro1 = GcadUtil.AngleFromXAxis(PA, PP1)
+        DirMuro2 = GcadUtil.AngleFromXAxis(PB, PP1)
         
                 
         End If
@@ -276,10 +276,10 @@ Sub bisagra()
             v450jr3000 = rutaperf & "Incye_450JR_3000_AL.dwg"
             v600jr4000 = rutaperf & "Incye_600JR_4000_AL.dwg"
             v600n4000 = rutaperf & "Incye_600_4000_AL.dwg"
-            Mpshor450 = rutamp & "Mshor450ALZ.dwg"
-            Mpshor270 = rutamp & "Mshor270ALZ.dwg"
-            Mpshor180 = rutamp & "Mshor180ALZ.dwg"
-            Mpshor90 = rutamp & "Mshor90ALZ.dwg"
+            Mpshor450 = rutamp & "Mshor450PLA.dwg"
+            Mpshor270 = rutamp & "Mshor270PLA.dwg"
+            Mpshor180 = rutamp & "Mshor180PLA.dwg"
+            Mpshor90 = rutamp & "Mshor90PLA.dwg"
             
             On Error GoTo terminar
             
@@ -291,12 +291,14 @@ Sub bisagra()
             Set blockRef = doc.ModelSpace.InsertBlock(Esqa, pr, Xs, Ys, Zs, DirMuro1 + PI)
             blockRef.Layer = "Perfiles INCYE"
             
-            M30x100_2 = ruta2 & "2-M30x100{10.9}.dwg"
-            M30x100_3 = ruta2 & "3-M30x100{10.9}.dwg"
-            M20x130_6 = ruta2 & "6-M20x130.dwg"
-            M20x90_10 = ruta2 & "10-M20x90.dwg"
-            M20x130_12 = ruta2 & "12-M20x130.dwg"
-            M20x90_6 = ruta2 & "6-M20x90.dwg"
+            M30x100_2 = ruta2 & "2M30X100{10.9}.dwg"
+            M30x100_3 = ruta2 & "3M30X100{10.9}.dwg"
+            M20x130_6 = ruta2 & "6M20x130.dwg"
+            M20x90_10 = ruta2 & "10M20X90.dwg"
+            Dim M20x90_8 As String
+            M20x90_8 = ruta2 & "8M20X90.dwg"
+            M20x130_12 = ruta2 & "12M20x130.dwg"
+            M20x90_6 = ruta2 & "6M20X90.dwg"
             
             'Ubicacion tornillo en junta reforzada
             Esqt(0) = Esqa(0) + 290 * Cos(DirMuro1a): Esqt(1) = Esqa(1) + 290 * Sin(DirMuro1a): Esqt(2) = Esqa(2)
@@ -320,7 +322,7 @@ Sub bisagra()
         kwordList = "Triple Simple"
         ThisDrawing.Utility.InitializeUserInput 0, kwordList
         alma450 = ThisDrawing.Utility.GetKeyword(vbLf & "Alma?: [Triple/Simple]")
-        Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_2, Xs, Ys, Zs, DirMuro1 + PI)
+        Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_2, Xs, Ys, Zs, DirMuro1 + PI)
         blockRef.Layer = "Nonplot"
         blockRef.Update
         blockRef.Explode
@@ -330,7 +332,7 @@ Sub bisagra()
             'Inserccion primer perfil obligatorio
             Set blockRef = doc.ModelSpace.InsertBlock(Esqa, v450jr4500, Xs, Ys, Zs, DirMuro1 + PI)
             blockRef.Layer = "Perfiles INCYE"
-            Set blockRef = gcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
+            Set blockRef = GcadModel.InsertBlock(Esqa, M20x90_8, Xs, Ys, Zs, DirMuro1 + PI)
             blockRef.Layer = "Nonplot"
             blockRef.Update
             blockRef.Explode
@@ -350,49 +352,49 @@ Sub bisagra()
             n3000 = Fix(lperfil / lP3000)
             lperfil = lperfil - n3000 * lP3000
             Mp450 = Fix(lperfil / lMp450)
-                    Mp270 = Fix(lperfil / lMp270)
-                    Mp180 = Fix(lperfil / lMp180)
-                    Mp90 = Fix(lperfil / lMp90)
+            Mp270 = Fix(lperfil / lMp270)
+            Mp180 = Fix(lperfil / lMp180)
+            Mp90 = Fix(lperfil / lMp90)
             
             If ni15000 > 0 Then
                     i = 0
                     Do While i < ni15000
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v450jr6000, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v450jr6000, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqa(0) = Esqa(0) - lP6000 * Cos(DirMuro1): Esqa(1) = Esqa(1) - lP6000 * Sin(DirMuro1): Esqa(2) = Esqa(2)
                     Esqt(0) = Esqt(0) - lP6000 * Cos(DirMuro1): Esqt(1) = Esqt(1) - lP6000 * Sin(DirMuro1): Esqt(2) = Esqt(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Set blockRef = doc.ModelSpace.InsertBlock(Esqa, v450jr4500, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqa(0) = Esqa(0) - lP4500 * Cos(DirMuro1): Esqa(1) = Esqa(1) - lP4500 * Sin(DirMuro1): Esqa(2) = Esqa(2)
                     Esqt(0) = Esqt(0) - lP4500 * Cos(DirMuro1): Esqt(1) = Esqt(1) - lP4500 * Sin(DirMuro1): Esqt(2) = Esqt(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Set blockRef = doc.ModelSpace.InsertBlock(Esqa, v450jr4500, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -407,28 +409,28 @@ Sub bisagra()
             If ni10500 > 0 Then
                     i = 0
                     Do While i < ni10500
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v450jr6000, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v450jr6000, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqa(0) = Esqa(0) - lP6000 * Cos(DirMuro1): Esqa(1) = Esqa(1) - lP6000 * Sin(DirMuro1): Esqa(2) = Esqa(2)
                     Esqt(0) = Esqt(0) - lP6000 * Cos(DirMuro1): Esqt(1) = Esqt(1) - lP6000 * Sin(DirMuro1): Esqt(2) = Esqt(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Set blockRef = doc.ModelSpace.InsertBlock(Esqa, v450jr4500, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -441,15 +443,15 @@ Sub bisagra()
             End If
             
             If n6000 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v450jr6000, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v450jr6000, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqa(0) = Esqa(0) - lP6000 * Cos(DirMuro1): Esqa(1) = Esqa(1) - lP6000 * Sin(DirMuro1): Esqa(2) = Esqa(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -459,15 +461,15 @@ Sub bisagra()
                 End If
         
                 If n4500 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v450jr4500, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v450jr4500, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqa(0) = Esqa(0) - lP4500 * Cos(DirMuro1): Esqa(1) = Esqa(1) - lP4500 * Sin(DirMuro1): Esqa(2) = Esqa(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -477,15 +479,15 @@ Sub bisagra()
                 End If
                 
             If n3000 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v450jr3000, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v450jr3000, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqa(0) = Esqa(0) - lP3000 * Cos(DirMuro1): Esqa(1) = Esqa(1) - lP3000 * Sin(DirMuro1): Esqa(2) = Esqa(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -494,7 +496,7 @@ Sub bisagra()
                 End If
                 
                 'Nivelar Megapro
-                            Esqa(0) = Esqa(0) - 110 * Cos(DirMuro1a): Esqa(1) = Esqa(1) - 110 * Sin(DirMuro1a): Esqa(2) = Esqa(2)
+                            Esqa(0) = Esqa(0) - 100 * Cos(DirMuro1a): Esqa(1) = Esqa(1) - 100 * Sin(DirMuro1a): Esqa(2) = Esqa(2)
                         
                             Call MegaproLadoA(Esqa, DirMuro1, Mp90, Mp180, Mp270, Mp450, lperfil)
         
@@ -503,7 +505,7 @@ Sub bisagra()
             'Inserccion primer perfil obligatorio
             Set blockRef = doc.ModelSpace.InsertBlock(Esqa, v450SAjr4500, Xs, Ys, Zs, DirMuro1 + PI)
             blockRef.Layer = "Perfiles INCYE"
-            Set blockRef = gcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
+            Set blockRef = GcadModel.InsertBlock(Esqa, M20x90_8, Xs, Ys, Zs, DirMuro1 + PI)
             blockRef.Layer = "Nonplot"
             blockRef.Update
             blockRef.Explode
@@ -530,42 +532,42 @@ Sub bisagra()
             If ni15000 > 0 Then
                     i = 0
                     Do While i < ni15000
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v450SAjr6000, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v450SAjr6000, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqa(0) = Esqa(0) - lP6000 * Cos(DirMuro1): Esqa(1) = Esqa(1) - lP6000 * Sin(DirMuro1): Esqa(2) = Esqa(2)
                     Esqt(0) = Esqt(0) - lP6000 * Cos(DirMuro1): Esqt(1) = Esqt(1) - lP6000 * Sin(DirMuro1): Esqt(2) = Esqt(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Set blockRef = doc.ModelSpace.InsertBlock(Esqa, v450SAjr4500, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqa(0) = Esqa(0) - lP4500 * Cos(DirMuro1): Esqa(1) = Esqa(1) - lP4500 * Sin(DirMuro1): Esqa(2) = Esqa(2)
                     Esqt(0) = Esqt(0) - lP4500 * Cos(DirMuro1): Esqt(1) = Esqt(1) - lP4500 * Sin(DirMuro1): Esqt(2) = Esqt(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Set blockRef = doc.ModelSpace.InsertBlock(Esqa, v450SAjr4500, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -580,28 +582,28 @@ Sub bisagra()
             If ni10500 > 0 Then
                     i = 0
                     Do While i < ni10500
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v450SAjr6000, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v450SAjr6000, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqa(0) = Esqa(0) - lP6000 * Cos(DirMuro1): Esqa(1) = Esqa(1) - lP6000 * Sin(DirMuro1): Esqa(2) = Esqa(2)
                     Esqt(0) = Esqt(0) - lP6000 * Cos(DirMuro1): Esqt(1) = Esqt(1) - lP6000 * Sin(DirMuro1): Esqt(2) = Esqt(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Set blockRef = doc.ModelSpace.InsertBlock(Esqa, v450SAjr4500, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -614,15 +616,15 @@ Sub bisagra()
             End If
             
             If n6000 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v450SAjr6000, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v450SAjr6000, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqa(0) = Esqa(0) - lP6000 * Cos(DirMuro1): Esqa(1) = Esqa(1) - lP6000 * Sin(DirMuro1): Esqa(2) = Esqa(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -632,15 +634,15 @@ Sub bisagra()
                 End If
         
             If n4500 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v450SAjr4500, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v450SAjr4500, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqa(0) = Esqa(0) - lP4500 * Cos(DirMuro1): Esqa(1) = Esqa(1) - lP4500 * Sin(DirMuro1): Esqa(2) = Esqa(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -650,15 +652,15 @@ Sub bisagra()
                 End If
                 
             If n3000 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v450SAjr3000, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v450SAjr3000, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x90_10, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqa(0) = Esqa(0) - lP3000 * Cos(DirMuro1): Esqa(1) = Esqa(1) - lP3000 * Sin(DirMuro1): Esqa(2) = Esqa(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -667,7 +669,7 @@ Sub bisagra()
                 End If
                 
                 'Nivelar Megapro
-                            Esqa(0) = Esqa(0) - 110 * Cos(DirMuro1a): Esqa(1) = Esqa(1) - 110 * Sin(DirMuro1a): Esqa(2) = Esqa(2)
+                            Esqa(0) = Esqa(0) - 100 * Cos(DirMuro1a): Esqa(1) = Esqa(1) - 100 * Sin(DirMuro1a): Esqa(2) = Esqa(2)
                         
                             Call MegaproLadoA(Esqa, DirMuro1, Mp90, Mp180, Mp270, Mp450, lperfil)
             
@@ -687,13 +689,13 @@ Sub bisagra()
             'Inserccion primer perfil obligatorio
             Set blockRef = doc.ModelSpace.InsertBlock(Esqa, v600jr4000, Xs, Ys, Zs, DirMuro1 + PI)
             blockRef.Layer = "Perfiles INCYE"
-            Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_12, Xs, Ys, Zs, DirMuro1 + PI)
+            Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_12, Xs, Ys, Zs, DirMuro1 + PI)
             blockRef.Layer = "Nonplot"
             blockRef.Update
             blockRef.Explode
             blockRef.Delete
             Esqt(0) = Esqt(0) + 150 * Cos(DirMuro1a): Esqt(1) = Esqt(1) + 150 * Sin(DirMuro1a): Esqt(2) = Esqt(2)
-            Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_2, Xs, Ys, Zs, DirMuro1 + PI)
+            Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_2, Xs, Ys, Zs, DirMuro1 + PI)
             blockRef.Layer = "Nonplot"
             blockRef.Update
             blockRef.Explode
@@ -713,15 +715,15 @@ Sub bisagra()
             If n4100 > 0 Then
                     i = 0
                     Do While i < n4100
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v600jr4000, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v600jr4000, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_12, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_12, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqa(0) = Esqa(0) - lP4100 * Cos(DirMuro1): Esqa(1) = Esqa(1) - lP4100 * Sin(DirMuro1): Esqa(2) = Esqa(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -733,7 +735,7 @@ Sub bisagra()
             End If
             
             'Nivelar Megapro
-                            Esqa(0) = Esqa(0) - 110 * Cos(DirMuro1a): Esqa(1) = Esqa(1) - 110 * Sin(DirMuro1a): Esqa(2) = Esqa(2)
+                            Esqa(0) = Esqa(0) - 100 * Cos(DirMuro1a): Esqa(1) = Esqa(1) - 100 * Sin(DirMuro1a): Esqa(2) = Esqa(2)
                         
                             Call MegaproLadoA(Esqa, DirMuro1, Mp90, Mp180, Mp270, Mp450, lperfil)
             
@@ -750,7 +752,7 @@ Sub bisagra()
             'Inserccion primer perfil obligatorio
             Set blockRef = doc.ModelSpace.InsertBlock(Esqa, v600n4000, Xs, Ys, Zs, DirMuro1 + PI)
             blockRef.Layer = "Perfiles INCYE"
-            Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_12, Xs, Ys, Zs, DirMuro1 + PI)
+            Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_12, Xs, Ys, Zs, DirMuro1 + PI)
             blockRef.Layer = "Nonplot"
             blockRef.Update
                     blockRef.Explode
@@ -768,9 +770,9 @@ Sub bisagra()
             If n4030 > 0 Then
                     i = 0
                     Do While i < n4030
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v600n4000, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v600n4000, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_12, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_12, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -821,7 +823,7 @@ Sub bisagra()
             ThisDrawing.Utility.InitializeUserInput 0, kwordList
             lon = ThisDrawing.Utility.GetKeyword(vbLf & "Longitud?: [3070/4570/6070]")
             Esqt(0) = Esqt(0) + 150 * Cos(DirMuro2a): Esqt(1) = Esqt(1) + 150 * Sin(DirMuro2a): Esqt(2) = Esqt(2)
-            Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_2, Xs, Ys, Zs, DirMuro2)
+            Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_2, Xs, Ys, Zs, DirMuro2)
             blockRef.Layer = "Nonplot"
             blockRef.Update
                     blockRef.Explode
@@ -829,7 +831,7 @@ Sub bisagra()
             
             If lon = "3070" Then
             'Inserccion primer perfil obligatorio
-                Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                     blockRef.Explode
@@ -850,19 +852,19 @@ Sub bisagra()
                 If n3070 > 0 Then
                     i = 0
                     Do While i < n3070
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqt(0) = Esqt(0) - lP3070JR * Cos(DirMuro2): Esqt(1) = Esqt(1) - lP3070JR * Sin(DirMuro2): Esqt(2) = Esqt(2)
                     Esqb(0) = Esqb(0) - lP3070JR * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP3070JR * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v300jr3070, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v300jr3070, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
                     i = i + 1
                     Loop
@@ -870,7 +872,7 @@ Sub bisagra()
                 End If
                 
                 'Nivelar Megapro
-                            Esqb(0) = Esqb(0) + 10 * Cos(DirMuro2a): Esqb(1) = Esqb(1) + 10 * Sin(DirMuro2a): Esqb(2) = Esqb(2)
+                            'Esqb(0) = Esqb(0) + Cos(DirMuro2a): Esqb(1) = Esqb(1) + 10 * Sin(DirMuro2a): Esqb(2) = Esqb(2)
                         
                             Call MegaproLadoB(Esqb, DirMuro2, Mp90, Mp180, Mp270, Mp450, lperfil)
             
@@ -879,7 +881,7 @@ Sub bisagra()
             ElseIf lon = "4570" Then
             
             'Inserccion primer perfil obligatorio
-                Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                     blockRef.Explode
@@ -902,43 +904,43 @@ Sub bisagra()
                 If n4570 > 0 Then
                     i = 0
                     Do While i < n4570
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqt(0) = Esqt(0) - lP4570JR * Cos(DirMuro2): Esqt(1) = Esqt(1) - lP4570JR * Sin(DirMuro2): Esqt(2) = Esqt(2)
                     Esqb(0) = Esqb(0) - lP4570JR * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP4570JR * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v300jr4570, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v300jr4570, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
                     i = i + 1
                     Loop
                 End If
                 
                 If n3070 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqb(0) = Esqb(0) - lP3070JR * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP3070JR * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v300jr3070, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v300jr3070, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
                                         
                 End If
                 
                 'Nivelar Megapro
-                            Esqb(0) = Esqb(0) + 10 * Cos(DirMuro2a): Esqb(1) = Esqb(1) + 10 * Sin(DirMuro2a): Esqb(2) = Esqb(2)
+                            'Esqb(0) = Esqb(0) + 10 * Cos(DirMuro2a): Esqb(1) = Esqb(1) + 10 * Sin(DirMuro2a): Esqb(2) = Esqb(2)
                         
                             Call MegaproLadoB(Esqb, DirMuro2, Mp90, Mp180, Mp270, Mp450, lperfil)
             
@@ -946,7 +948,7 @@ Sub bisagra()
             ElseIf lon = "6070" Then
             
             'Inserccion primer perfil obligatorio
-                Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                     blockRef.Explode
@@ -972,19 +974,19 @@ Sub bisagra()
                 If n6070 > 0 Then
                     i = 0
                     Do While i < n6070
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqt(0) = Esqt(0) - lP6070JR * Cos(DirMuro2): Esqt(1) = Esqt(1) - lP6070JR * Sin(DirMuro2): Esqt(2) = Esqt(2)
                     Esqb(0) = Esqb(0) - lP6070JR * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP6070JR * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v300jr6070, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v300jr6070, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
                     i = i + 1
                     Loop
@@ -992,42 +994,42 @@ Sub bisagra()
                 End If
                 
                 If n4570 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqt(0) = Esqt(0) - lP4570JR * Cos(DirMuro2): Esqt(1) = Esqt(1) - lP4570JR * Sin(DirMuro2): Esqt(2) = Esqt(2)
                     Esqb(0) = Esqb(0) - lP4570JR * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP4570JR * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v300jr4570, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v300jr4570, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
                     
                 End If
                 
                 If n3070 > 0 Then
-                Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
+                Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqb(0) = Esqb(0) - lP3070JR * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP3070JR * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v300jr3070, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v300jr3070, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
                                         
                 End If
                 
                 'Nivelar Megapro
-                            Esqb(0) = Esqb(0) + 10 * Cos(DirMuro2a): Esqb(1) = Esqb(1) + 10 * Sin(DirMuro2a): Esqb(2) = Esqb(2)
+                            'Esqb(0) = Esqb(0) + 10 * Cos(DirMuro2a): Esqb(1) = Esqb(1) + 10 * Sin(DirMuro2a): Esqb(2) = Esqb(2)
                         
                             Call MegaproLadoB(Esqb, DirMuro2, Mp90, Mp180, Mp270, Mp450, lperfil)
             End If
@@ -1046,7 +1048,7 @@ Sub bisagra()
             If lon = "6000" Then
             
             'Inserccion primer perfil obligatorio
-                Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                     blockRef.Explode
@@ -1074,13 +1076,13 @@ Sub bisagra()
                 If n6000 > 0 Then
                     i = 0
                     Do While i < n6000
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqb(0) = Esqb(0) - lP6000 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP6000 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v300n6000, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v300n6000, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
                     i = i + 1
                     Loop
@@ -1088,62 +1090,62 @@ Sub bisagra()
                 End If
                 
                 If n4500 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqb(0) = Esqb(0) - lP4500 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP4500 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v300n4500, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v300n4500, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
                     
                 End If
                 
                 If n3000 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqb(0) = Esqb(0) - lP3000 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP3000 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v300n3000, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v300n3000, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
                     
                 End If
                     
                 If n1500 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqb(0) = Esqb(0) - lP1500 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP1500 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v300n1500, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v300n1500, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
                 
                 End If
                 
                 If n900 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqb(0) = Esqb(0) - lP900 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP900 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v300n900, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v300n900, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
                 
                 End If
                 
                 'Nivelar Megapro
-                            Esqb(0) = Esqb(0) + 10 * Cos(DirMuro2a): Esqb(1) = Esqb(1) + 10 * Sin(DirMuro2a): Esqb(2) = Esqb(2)
+                            'Esqb(0) = Esqb(0) + 10 * Cos(DirMuro2a): Esqb(1) = Esqb(1) + 10 * Sin(DirMuro2a): Esqb(2) = Esqb(2)
                         
                             Call MegaproLadoB(Esqb, DirMuro2, Mp90, Mp180, Mp270, Mp450, lperfil)
             
             ElseIf lon = "4500" Then
             
             'Inserccion primer perfil obligatorio
-                Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                     blockRef.Explode
@@ -1169,13 +1171,13 @@ Sub bisagra()
                 If n4500 > 0 Then
                     i = 0
                     Do While i < n4500
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqb(0) = Esqb(0) - lP4500 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP4500 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v300n4500, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v300n4500, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
                     i = i + 1
                     Loop
@@ -1183,50 +1185,50 @@ Sub bisagra()
                 End If
                 
                 If n3000 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqb(0) = Esqb(0) - lP3000 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP3000 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v300n3000, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v300n3000, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
                                         
                 End If
                     
                 If n1500 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqb(0) = Esqb(0) - lP1500 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP1500 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v300n1500, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v300n1500, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
                                     
                 End If
                 
                 If n900 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqb(0) = Esqb(0) - lP900 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP900 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v300n900, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v300n900, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
                                     
                 End If
                 
                 'Nivelar Megapro
-                            Esqb(0) = Esqb(0) + 10 * Cos(DirMuro2a): Esqb(1) = Esqb(1) + 10 * Sin(DirMuro2a): Esqb(2) = Esqb(2)
+                            'Esqb(0) = Esqb(0) + 10 * Cos(DirMuro2a): Esqb(1) = Esqb(1) + 10 * Sin(DirMuro2a): Esqb(2) = Esqb(2)
                         
                             Call MegaproLadoB(Esqb, DirMuro2, Mp90, Mp180, Mp270, Mp450, lperfil)
             
             ElseIf lon = "3000" Then
             
             'Inserccion primer perfil obligatorio
-                Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                     blockRef.Explode
@@ -1250,13 +1252,13 @@ Sub bisagra()
                 If n3000 > 0 Then
                     i = 0
                     Do While i < n3000
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqb(0) = Esqb(0) - lP3000 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP3000 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v300n3000, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v300n3000, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
                     i = i + 1
                     Loop
@@ -1264,38 +1266,38 @@ Sub bisagra()
                 End If
                 
                 If n1500 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqb(0) = Esqb(0) - lP1500 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP1500 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v300n1500, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v300n1500, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
                                     
                 End If
                 
                 If n900 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqb(0) = Esqb(0) - lP900 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP900 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v300n900, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v300n900, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
                                     
                 End If
                 
                 'Nivelar Megapro
-                            Esqb(0) = Esqb(0) + 10 * Cos(DirMuro2a): Esqb(1) = Esqb(1) + 10 * Sin(DirMuro2a): Esqb(2) = Esqb(2)
+                            'Esqb(0) = Esqb(0) + 10 * Cos(DirMuro2a): Esqb(1) = Esqb(1) + 10 * Sin(DirMuro2a): Esqb(2) = Esqb(2)
                         
                             Call MegaproLadoB(Esqb, DirMuro2, Mp90, Mp180, Mp270, Mp450, lperfil)
                         
             ElseIf lon = "1500" Then
             
             'Inserccion primer perfil obligatorio
-                Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                     blockRef.Explode
@@ -1317,13 +1319,13 @@ Sub bisagra()
                 If n1500 > 0 Then
                     i = 0
                     Do While i < n1500
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqb(0) = Esqb(0) - lP1500 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP1500 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v300n1500, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v300n1500, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
                     i = i + 1
                     Loop
@@ -1331,18 +1333,18 @@ Sub bisagra()
                 End If
                             
                 If n900 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqb(0) = Esqb(0) - lP900 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP900 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v300n900, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v300n900, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
                 End If
                 
                 'Nivelar Megapro
-                            Esqb(0) = Esqb(0) + 10 * Cos(DirMuro2a): Esqb(1) = Esqb(1) + 10 * Sin(DirMuro2a): Esqb(2) = Esqb(2)
+                            'Esqb(0) = Esqb(0) + 10 * Cos(DirMuro2a): Esqb(1) = Esqb(1) + 10 * Sin(DirMuro2a): Esqb(2) = Esqb(2)
                         
                             Call MegaproLadoB(Esqb, DirMuro2, Mp90, Mp180, Mp270, Mp450, lperfil)
             
@@ -1351,7 +1353,7 @@ Sub bisagra()
             ElseIf lon = "900" Then
             
             'Inserccion primer perfil obligatorio
-                Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                     blockRef.Explode
@@ -1371,13 +1373,13 @@ Sub bisagra()
                 If n900 > 0 Then
                     i = 0
                     Do While i < n900
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_6, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqb(0) = Esqb(0) - lP900 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP900 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v300n900, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v300n900, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
                     i = i + 1
                     Loop
@@ -1385,7 +1387,7 @@ Sub bisagra()
                 End If
                 
                 'Nivelar Megapro
-                            Esqb(0) = Esqb(0) + 10 * Cos(DirMuro2a): Esqb(1) = Esqb(1) + 10 * Sin(DirMuro2a): Esqb(2) = Esqb(2)
+                            'Esqb(0) = Esqb(0) + 10 * Cos(DirMuro2a): Esqb(1) = Esqb(1) + 10 * Sin(DirMuro2a): Esqb(2) = Esqb(2)
                         
                             Call MegaproLadoB(Esqb, DirMuro2, Mp90, Mp180, Mp270, Mp450, lperfil)
                             
@@ -1401,7 +1403,7 @@ Sub bisagra()
         kwordList = "Triple Simple"
         ThisDrawing.Utility.InitializeUserInput 0, kwordList
         alma450 = ThisDrawing.Utility.GetKeyword(vbLf & "Alma?: [Triple/Simple]")
-        Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_2, Xs, Ys, Zs, DirMuro2)
+        Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_2, Xs, Ys, Zs, DirMuro2)
         blockRef.Layer = "Nonplot"
         blockRef.Update
                     blockRef.Explode
@@ -1409,7 +1411,7 @@ Sub bisagra()
         If alma450 = "Triple" Or alma450 = "" Then
         
             'Inserccion primer perfil obligatorio
-            Set blockRef = gcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
+            Set blockRef = GcadModel.InsertBlock(Esqb, M20x90_8, Xs, Ys, Zs, DirMuro2)
             blockRef.Layer = "Nonplot"
             blockRef.Update
                     blockRef.Explode
@@ -1438,26 +1440,26 @@ Sub bisagra()
             If ni15000 > 0 Then
                     i = 0
                     Do While i < ni15000
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqt(0) = Esqt(0) - lP6000 * Cos(DirMuro2): Esqt(1) = Esqt(1) - lP6000 * Sin(DirMuro2): Esqt(2) = Esqt(2)
                     Esqb(0) = Esqb(0) - lP6000 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP6000 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v450jr6000, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v450jr6000, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -1466,12 +1468,12 @@ Sub bisagra()
                     Esqb(0) = Esqb(0) - lP4500 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP4500 * Sin(DirMuro2): Esqb(2) = Esqb(2)
                     Set blockRef = doc.ModelSpace.InsertBlock(Esqb, v450jr4500, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -1488,26 +1490,26 @@ Sub bisagra()
             If ni10500 > 0 Then
                     i = 0
                     Do While i < ni10500
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqt(0) = Esqt(0) - lP6000 * Cos(DirMuro2): Esqt(1) = Esqt(1) - lP6000 * Sin(DirMuro2): Esqt(2) = Esqt(2)
                     Esqb(0) = Esqb(0) - lP6000 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP6000 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v450jr6000, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v450jr6000, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -1522,15 +1524,15 @@ Sub bisagra()
             End If
             
             If n6000 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqb(0) = Esqb(0) - lP6000 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP6000 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v450jr6000, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v450jr6000, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -1540,15 +1542,15 @@ Sub bisagra()
                 End If
         
             If n4500 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqb(0) = Esqb(0) - lP4500 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP4500 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v450jr4500, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v450jr4500, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -1558,15 +1560,15 @@ Sub bisagra()
                 End If
                 
             If n3000 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqb(0) = Esqb(0) - lP3000 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP3000 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v450jr3000, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v450jr3000, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -1576,14 +1578,14 @@ Sub bisagra()
                 End If
                 
                 'Nivelar Megapro
-                            Esqb(0) = Esqb(0) + 110 * Cos(DirMuro2a): Esqb(1) = Esqb(1) + 110 * Sin(DirMuro2a): Esqb(2) = Esqb(2)
+                            Esqb(0) = Esqb(0) + 100 * Cos(DirMuro2a): Esqb(1) = Esqb(1) + 100 * Sin(DirMuro2a): Esqb(2) = Esqb(2)
                         
                             Call MegaproLadoB(Esqb, DirMuro2, Mp90, Mp180, Mp270, Mp450, lperfil)
             
         ElseIf alma450 = "Simple" Then
             
             'Inserccion primer perfil obligatorio
-            Set blockRef = gcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
+            Set blockRef = GcadModel.InsertBlock(Esqb, M20x90_8, Xs, Ys, Zs, DirMuro2)
             blockRef.Layer = "Nonplot"
             blockRef.Update
                     blockRef.Explode
@@ -1612,26 +1614,26 @@ Sub bisagra()
             If ni15000 > 0 Then
                     i = 0
                     Do While i < ni15000
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqt(0) = Esqt(0) - lP6000 * Cos(DirMuro2): Esqt(1) = Esqt(1) - lP6000 * Sin(DirMuro2): Esqt(2) = Esqt(2)
                     Esqb(0) = Esqb(0) - lP6000 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP6000 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v450SAjr6000, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v450SAjr6000, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -1640,12 +1642,12 @@ Sub bisagra()
                     Esqb(0) = Esqb(0) - lP4500 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP4500 * Sin(DirMuro2): Esqb(2) = Esqb(2)
                     Set blockRef = doc.ModelSpace.InsertBlock(Esqb, v450SAjr4500, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -1662,26 +1664,26 @@ Sub bisagra()
             If ni10500 > 0 Then
                     i = 0
                     Do While i < ni10500
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqt(0) = Esqt(0) - lP6000 * Cos(DirMuro2): Esqt(1) = Esqt(1) - lP6000 * Sin(DirMuro2): Esqt(2) = Esqt(2)
                     Esqb(0) = Esqb(0) - lP6000 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP6000 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v450SAjr6000, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v450SAjr6000, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -1696,15 +1698,15 @@ Sub bisagra()
             End If
             
             If n6000 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqb(0) = Esqb(0) - lP6000 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP6000 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v450SAjr6000, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v450SAjr6000, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -1714,15 +1716,15 @@ Sub bisagra()
                 End If
         
             If n4500 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqb(0) = Esqb(0) - lP4500 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP4500 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v450SAjr4500, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v450SAjr4500, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -1732,15 +1734,15 @@ Sub bisagra()
                 End If
                 
             If n3000 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x90_10, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqb(0) = Esqb(0) - lP3000 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP3000 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v450SAjr3000, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v450SAjr3000, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -1750,7 +1752,7 @@ Sub bisagra()
                 End If
                 
                 'Nivelar Megapro
-                            Esqb(0) = Esqb(0) + 110 * Cos(DirMuro2a): Esqb(1) = Esqb(1) + 110 * Sin(DirMuro2a): Esqb(2) = Esqb(2)
+                            Esqb(0) = Esqb(0) + 100 * Cos(DirMuro2a): Esqb(1) = Esqb(1) + 100 * Sin(DirMuro2a): Esqb(2) = Esqb(2)
                         
                             Call MegaproLadoB(Esqb, DirMuro2, Mp90, Mp180, Mp270, Mp450, lperfil)
             
@@ -1769,7 +1771,7 @@ Sub bisagra()
         End If
             
             'Inserccion primer perfil obligatorio
-            Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_12, Xs, Ys, Zs, DirMuro2)
+            Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_12, Xs, Ys, Zs, DirMuro2)
             blockRef.Layer = "Nonplot"
             blockRef.Update
                     blockRef.Explode
@@ -1778,7 +1780,7 @@ Sub bisagra()
             Set blockRef = doc.ModelSpace.InsertBlock(Esqb, v600jr4000, Xs, Ys, Zs, DirMuro2)
             blockRef.Layer = "Perfiles INCYE"
             Esqt(0) = Esqt(0) - 150 * Cos(DirMuro2a): Esqt(1) = Esqt(1) - 150 * Sin(DirMuro2a): Esqt(2) = Esqt(2)
-            Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_2, Xs, Ys, Zs, DirMuro2)
+            Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_2, Xs, Ys, Zs, DirMuro2)
             blockRef.Layer = "Nonplot"
             blockRef.Update
                     blockRef.Explode
@@ -1796,19 +1798,19 @@ Sub bisagra()
             If n4100 > 0 Then
                     i = 0
                     Do While i < n4100
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_12, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_12, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqt(0) = Esqt(0) - lP4100 * Cos(DirMuro2): Esqt(1) = Esqt(1) - lP4100 * Sin(DirMuro2): Esqt(2) = Esqt(2)
                     Esqb(0) = Esqb(0) - lP4100 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP4100 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v600jr4000, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v600jr4000, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
                     i = i + 1
                     Loop
@@ -1816,7 +1818,7 @@ Sub bisagra()
             End If
                 
                 'Nivelar Megapro
-                            Esqb(0) = Esqb(0) + 110 * Cos(DirMuro2a): Esqb(1) = Esqb(1) + 110 * Sin(DirMuro2a): Esqb(2) = Esqb(2)
+                            Esqb(0) = Esqb(0) + 100 * Cos(DirMuro2a): Esqb(1) = Esqb(1) + 100 * Sin(DirMuro2a): Esqb(2) = Esqb(2)
                         
                             Call MegaproLadoB(Esqb, DirMuro2, Mp90, Mp180, Mp270, Mp450, lperfil)
             
@@ -1831,7 +1833,7 @@ Sub bisagra()
             Esqb(0) = Esqb(0) - 50 * Cos(DirMuro2a): Esqb(1) = Esqb(1) - 50 * Sin(DirMuro2a): Esqb(2) = Esqb(2)
             
             'Inserccion primer perfil obligatorio
-            Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_12, Xs, Ys, Zs, DirMuro2)
+            Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_12, Xs, Ys, Zs, DirMuro2)
             blockRef.Layer = "Nonplot"
             blockRef.Update
                     blockRef.Explode
@@ -1851,13 +1853,13 @@ Sub bisagra()
             If n4030 > 0 Then
                     i = 0
                     Do While i < n4030
-                    Set blockRef = gcadModel.InsertBlock(Esqb, M20x130_12, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, M20x130_12, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqb(0) = Esqb(0) - lP4030 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lP4030 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqb, v600n4000, Xs, Ys, Zs, DirMuro2)
+                    Set blockRef = GcadModel.InsertBlock(Esqb, v600n4000, Xs, Ys, Zs, DirMuro2)
                     blockRef.Layer = "Perfiles INCYE"
                     i = i + 1
                     Loop
@@ -1889,27 +1891,27 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
     
     Dim blockRef As Object
     
-    Set gcadDoc = GetObject(, "Gcad.Application").ActiveDocument
-    Set gcadModel = gcadDoc.ModelSpace
-    Set gcadUtil = gcadDoc.Utility
+    Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+    Set GcadModel = GcadDoc.ModelSpace
+    Set GcadUtil = GcadDoc.Utility
     
     Ncapa = "Mega"
-    Set Gcapa = gcadDoc.Layers.Add(Ncapa)
+    Set Gcapa = GcadDoc.Layers.Add(Ncapa)
     Gcapa.color = 30
     Ncapa = "Granshor"
-    Set Gcapa = gcadDoc.Layers.Add(Ncapa)
+    Set Gcapa = GcadDoc.Layers.Add(Ncapa)
     Gcapa.color = 150
     Ncapa = "Pipeshor4S"
-    Set Gcapa = gcadDoc.Layers.Add(Ncapa)
+    Set Gcapa = GcadDoc.Layers.Add(Ncapa)
     Gcapa.color = 7
     Ncapa = "Pipeshor6"
-    Set Gcapa = gcadDoc.Layers.Add(Ncapa)
+    Set Gcapa = GcadDoc.Layers.Add(Ncapa)
     Gcapa.color = 7
     Ncapa = "Pipeshor4L"
-    Set Gcapa = gcadDoc.Layers.Add(Ncapa)
+    Set Gcapa = GcadDoc.Layers.Add(Ncapa)
     Gcapa.color = 5
     Ncapa = "Slims"
-    Set Gcapa = gcadDoc.Layers.Add(Ncapa)
+    Set Gcapa = GcadDoc.Layers.Add(Ncapa)
     Gcapa.color = 30
 
     Dim intPoint As Variant
@@ -2025,17 +2027,17 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
             v450jr3000 = rutaperf & "Incye_450JR_3000_AL.dwg"
             v600jr4000 = rutaperf & "Incye_600JR_4000_AL.dwg"
             v600n4000 = rutaperf & "Incye_600_4000_AL.dwg"
-            Mpshor450 = rutamp & "Mshor450ALZ.dwg"
-            Mpshor270 = rutamp & "Mshor270ALZ.dwg"
-            Mpshor180 = rutamp & "Mshor180ALZ.dwg"
-            Mpshor90 = rutamp & "Mshor90ALZ.dwg"
+            Mpshor450 = rutamp & "Mshor450PLA.dwg"
+            Mpshor270 = rutamp & "Mshor270PLA.dwg"
+            Mpshor180 = rutamp & "Mshor180PLA.dwg"
+            Mpshor90 = rutamp & "Mshor90PLA.dwg"
             
-            M30x100_2 = ruta2 & "2-M30x100{10.9}.dwg"
-            M30x100_3 = ruta2 & "3-M30x100{10.9}.dwg"
-            M20x130_6 = ruta2 & "6-M20x130.dwg"
-            M20x90_10 = ruta2 & "10-M20x90.dwg"
-            M20x130_12 = ruta2 & "12-M20x130.dwg"
-            M20x90_6 = ruta2 & "6-M20x90.dwg"
+            M30x100_2 = ruta2 & "2M30X100{10.9}.dwg"
+            M30x100_3 = ruta2 & "3M30X100{10.9}.dwg"
+            M20x130_6 = ruta2 & "6M20x130.dwg"
+            M20x90_10 = ruta2 & "10M20X90.dwg"
+            M20x130_12 = ruta2 & "12M20x130.dwg"
+            M20x90_6 = ruta2 & "6M20X90.dwg"
     
             lfija = lbisagra + lP900 + 80
             
@@ -2055,12 +2057,12 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                 ThisDrawing.Utility.InitializeUserInput 0, kwordList
                 lon = ThisDrawing.Utility.GetKeyword(vbLf & "Longitud?: [3070/4570/6070]")
                 Esqt(0) = Esqt(0) - 150 * Cos(DirMuro1a): Esqt(1) = Esqt(1) - 150 * Sin(DirMuro1a): Esqt(2) = Esqt(2)
-                Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_2, Xs, Ys, Zs, DirMuro1 + PI)
+                Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_2, Xs, Ys, Zs, DirMuro1 + PI)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
-                Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
+                Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                     blockRef.Explode
@@ -2084,15 +2086,15 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                         If n3070 > 0 Then
                         i = 0
                         Do While i < n3070
-                        Set blockRef = gcadModel.InsertBlock(Esqa, v300jr3070, Xs, Ys, Zs, DirMuro1 + PI)
+                        Set blockRef = GcadModel.InsertBlock(Esqa, v300jr3070, Xs, Ys, Zs, DirMuro1 + PI)
                         blockRef.Layer = "Perfiles INCYE"
-                        Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
+                        Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
                         blockRef.Layer = "Nonplot"
                         blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                         Esqa(0) = Esqa(0) - lP3070JR * Cos(DirMuro1): Esqa(1) = Esqa(1) - lP3070JR * Sin(DirMuro1): Esqa(2) = Esqa(2)
-                        Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
+                        Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
                         blockRef.Layer = "Nonplot"
                         blockRef.Update
                     blockRef.Explode
@@ -2104,7 +2106,7 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                         End If
                         
                             'Nivelar Megapro
-                            Esqa(0) = Esqa(0) - 10 * Cos(DirMuro1a): Esqa(1) = Esqa(1) - 10 * Sin(DirMuro1a): Esqa(2) = Esqa(2)
+                            'Esqa(0) = Esqa(0) - 10 * Cos(DirMuro1a): Esqa(1) = Esqa(1) - 10 * Sin(DirMuro1a): Esqa(2) = Esqa(2)
                                             
                             Call MegaproLadoA(Esqa, DirMuro1, Mp90, Mp180, Mp270, Mp450, lperfil)
             
@@ -2129,15 +2131,15 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                     If n4570 > 0 Then
                     i = 0
                     Do While i < n4570
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v300jr4570, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v300jr4570, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqa(0) = Esqa(0) - lP4570JR * Cos(DirMuro1): Esqa(1) = Esqa(1) - lP4570JR * Sin(DirMuro1): Esqa(2) = Esqa(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -2148,15 +2150,15 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                     End If
                 
                     If n3070 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v300jr3070, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v300jr3070, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqa(0) = Esqa(0) - lP3070JR * Cos(DirMuro1): Esqa(1) = Esqa(1) - lP3070JR * Sin(DirMuro1): Esqa(2) = Esqa(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -2165,7 +2167,7 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                     End If
                     
                     'Nivelar Megapro
-                            Esqa(0) = Esqa(0) - 10 * Cos(DirMuro1a): Esqa(1) = Esqa(1) - 10 * Sin(DirMuro1a): Esqa(2) = Esqa(2)
+                            'Esqa(0) = Esqa(0) - 10 * Cos(DirMuro1a): Esqa(1) = Esqa(1) - 10 * Sin(DirMuro1a): Esqa(2) = Esqa(2)
                         
                             Call MegaproLadoA(Esqa, DirMuro1, Mp90, Mp180, Mp270, Mp450, lperfil)
             
@@ -2192,15 +2194,15 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                     If n6070 > 0 Then
                     i = 0
                     Do While i < n6070
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v300jr6070, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v300jr6070, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqa(0) = Esqa(0) - lP6070JR * Cos(DirMuro1): Esqa(1) = Esqa(1) - lP6070JR * Sin(DirMuro1): Esqa(2) = Esqa(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -2212,15 +2214,15 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                     End If
                 
                     If n4570 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v300jr4570, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v300jr4570, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqa(0) = Esqa(0) - lP4570JR * Cos(DirMuro1): Esqa(1) = Esqa(1) - lP4570JR * Sin(DirMuro1): Esqa(2) = Esqa(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -2231,15 +2233,15 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                     End If
                 
                     If n3070 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v300jr3070, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v300jr3070, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                     Esqa(0) = Esqa(0) - lP3070JR * Cos(DirMuro1): Esqa(1) = Esqa(1) - lP3070JR * Sin(DirMuro1): Esqa(2) = Esqa(2)
-                    Set blockRef = gcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqt, M30x100_3, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -2248,7 +2250,7 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                     End If
                     
                     'Nivelar Megapro
-                            Esqa(0) = Esqa(0) - 10 * Cos(DirMuro1a): Esqa(1) = Esqa(1) - 10 * Sin(DirMuro1a): Esqa(2) = Esqa(2)
+                            'Esqa(0) = Esqa(0) - 10 * Cos(DirMuro1a): Esqa(1) = Esqa(1) - 10 * Sin(DirMuro1a): Esqa(2) = Esqa(2)
                         
                             Call MegaproLadoA(Esqa, DirMuro1, Mp90, Mp180, Mp270, Mp450, lperfil)
             
@@ -2270,7 +2272,7 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
             'Inserccion primer perfil obligatorio
                 Set blockRef = doc.ModelSpace.InsertBlock(Esqa, v300n6000, Xs, Ys, Zs, DirMuro1 + PI)
                 blockRef.Layer = "Perfiles INCYE"
-                Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
+                Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                     blockRef.Explode
@@ -2296,9 +2298,9 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                 If n6000 > 0 Then
                     i = 0
                     Do While i < n6000
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v300n6000, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v300n6000, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -2310,9 +2312,9 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                 End If
                 
                 If n4500 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v300n4500, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v300n4500, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -2322,9 +2324,9 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                 End If
                 
                 If n3000 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v300n3000, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v300n3000, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -2334,9 +2336,9 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                 End If
                     
                 If n1500 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v300n1500, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v300n1500, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -2346,9 +2348,9 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                 End If
                 
                 If n900 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v300n900, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v300n900, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -2358,7 +2360,7 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                 End If
                 
                 'Nivelar Megapro
-                            Esqa(0) = Esqa(0) - 10 * Cos(DirMuro1a): Esqa(1) = Esqa(1) - 10 * Sin(DirMuro1a): Esqa(2) = Esqa(2)
+                            'Esqa(0) = Esqa(0) - 10 * Cos(DirMuro1a): Esqa(1) = Esqa(1) - 10 * Sin(DirMuro1a): Esqa(2) = Esqa(2)
                         
                             Call MegaproLadoA(Esqa, DirMuro1, Mp90, Mp180, Mp270, Mp450, lperfil)
             
@@ -2367,7 +2369,7 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
             'Inserccion primer perfil obligatorio
                 Set blockRef = doc.ModelSpace.InsertBlock(Esqa, v300n4500, Xs, Ys, Zs, DirMuro1 + PI)
                 blockRef.Layer = "Perfiles INCYE"
-                Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
+                Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                     blockRef.Explode
@@ -2391,9 +2393,9 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                 If n4500 > 0 Then
                     i = 0
                     Do While i < n4500
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v300n4500, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v300n4500, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -2405,9 +2407,9 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                 End If
                 
                 If n3000 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v300n3000, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v300n3000, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -2417,9 +2419,9 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                 End If
                     
                 If n1500 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v300n1500, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v300n1500, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -2429,9 +2431,9 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                 End If
                 
                 If n900 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v300n900, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v300n900, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -2441,7 +2443,7 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                 End If
                 
                 'Nivelar Megapro
-                            Esqa(0) = Esqa(0) - 10 * Cos(DirMuro1a): Esqa(1) = Esqa(1) - 10 * Sin(DirMuro1a): Esqa(2) = Esqa(2)
+                            'Esqa(0) = Esqa(0) - 10 * Cos(DirMuro1a): Esqa(1) = Esqa(1) - 10 * Sin(DirMuro1a): Esqa(2) = Esqa(2)
                         
                             Call MegaproLadoA(Esqa, DirMuro1, Mp90, Mp180, Mp270, Mp450, lperfil)
                         
@@ -2450,7 +2452,7 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
             'Inserccion primer perfil obligatorio
                 Set blockRef = doc.ModelSpace.InsertBlock(Esqa, v300n3000, Xs, Ys, Zs, DirMuro1 + PI)
                 blockRef.Layer = "Perfiles INCYE"
-                Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
+                Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                     blockRef.Explode
@@ -2472,9 +2474,9 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                 If n3000 > 0 Then
                     i = 0
                     Do While i < n3000
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v300n3000, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v300n3000, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -2486,9 +2488,9 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                 End If
                 
                 If n1500 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v300n1500, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v300n1500, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -2498,9 +2500,9 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                 End If
                 
                 If n900 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v300n900, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v300n900, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -2510,7 +2512,7 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                 End If
                 
                 'Nivelar Megapro
-                            Esqa(0) = Esqa(0) - 10 * Cos(DirMuro1a): Esqa(1) = Esqa(1) - 10 * Sin(DirMuro1a): Esqa(2) = Esqa(2)
+                            'Esqa(0) = Esqa(0) - 10 * Cos(DirMuro1a): Esqa(1) = Esqa(1) - 10 * Sin(DirMuro1a): Esqa(2) = Esqa(2)
                         
                             Call MegaproLadoA(Esqa, DirMuro1, Mp90, Mp180, Mp270, Mp450, lperfil)
             
@@ -2519,7 +2521,7 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
             'Inserccion primer perfil obligatorio
                 Set blockRef = doc.ModelSpace.InsertBlock(Esqa, v300n1500, Xs, Ys, Zs, DirMuro1 + PI)
                 blockRef.Layer = "Perfiles INCYE"
-                Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
+                Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                     blockRef.Explode
@@ -2539,9 +2541,9 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                 If n1500 > 0 Then
                     i = 0
                     Do While i < n1500
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v300n1500, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v300n1500, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -2553,9 +2555,9 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                 End If
                             
                 If n900 > 0 Then
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v300n900, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v300n900, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -2565,7 +2567,7 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                 End If
                 
                 'Nivelar Megapro
-                            Esqa(0) = Esqa(0) - 10 * Cos(DirMuro1a): Esqa(1) = Esqa(1) - 10 * Sin(DirMuro1a): Esqa(2) = Esqa(2)
+                            'Esqa(0) = Esqa(0) - 10 * Cos(DirMuro1a): Esqa(1) = Esqa(1) - 10 * Sin(DirMuro1a): Esqa(2) = Esqa(2)
                         
                             Call MegaproLadoA(Esqa, DirMuro1, Mp90, Mp180, Mp270, Mp450, lperfil)
                         
@@ -2574,7 +2576,7 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
             'Inserccion primer perfil obligatorio
                 Set blockRef = doc.ModelSpace.InsertBlock(Esqa, v300n900, Xs, Ys, Zs, DirMuro1 + PI)
                 blockRef.Layer = "Perfiles INCYE"
-                Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
+                Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                     blockRef.Explode
@@ -2592,9 +2594,9 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                 If n900 > 0 Then
                     i = 0
                     Do While i < n900
-                    Set blockRef = gcadModel.InsertBlock(Esqa, v300n900, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, v300n900, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Perfiles INCYE"
-                    Set blockRef = gcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
+                    Set blockRef = GcadModel.InsertBlock(Esqa, M20x130_6, Xs, Ys, Zs, DirMuro1 + PI)
                     blockRef.Layer = "Nonplot"
                     blockRef.Update
                     blockRef.Explode
@@ -2606,7 +2608,7 @@ Sub HEB300MuroA(Esqa() As Double, DirMuro1a As Double, Esqt() As Double, DirMuro
                 End If
                 
                 'Nivelar Megapro
-                            Esqa(0) = Esqa(0) - 10 * Cos(DirMuro1a): Esqa(1) = Esqa(1) - 10 * Sin(DirMuro1a): Esqa(2) = Esqa(2)
+                            'Esqa(0) = Esqa(0) - 10 * Cos(DirMuro1a): Esqa(1) = Esqa(1) - 10 * Sin(DirMuro1a): Esqa(2) = Esqa(2)
                         
                             Call MegaproLadoA(Esqa, DirMuro1, Mp90, Mp180, Mp270, Mp450, lperfil)
             
@@ -2626,9 +2628,9 @@ Sub MegaproLadoA(Esqa() As Double, DirMuro1 As Double, Mp90 As Integer, Mp180 As
     
     Dim blockRef As Object
     
-    Set gcadDoc = GetObject(, "Gcad.Application").ActiveDocument
-    Set gcadModel = gcadDoc.ModelSpace
-    Set gcadUtil = gcadDoc.Utility
+    Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+    Set GcadModel = GcadDoc.ModelSpace
+    Set GcadUtil = GcadDoc.Utility
        
     Dim Xs As Double
     Dim Ys As Double
@@ -2653,12 +2655,12 @@ Sub MegaproLadoA(Esqa() As Double, DirMuro1 As Double, Mp90 As Integer, Mp180 As
             Ys = 1
             Zs = 1
             
-            Mpshor450 = rutamp & "Mshor450ALZ.dwg"
-            Mpshor270 = rutamp & "Mshor270ALZ.dwg"
-            Mpshor180 = rutamp & "Mshor180ALZ.dwg"
-            Mpshor90 = rutamp & "Mshor90ALZ.dwg"
+            Mpshor450 = rutamp & "Mshor450PLA.dwg"
+            Mpshor270 = rutamp & "Mshor270PLA.dwg"
+            Mpshor180 = rutamp & "Mshor180PLA.dwg"
+            Mpshor90 = rutamp & "Mshor90PLA.dwg"
             
-            M20x90_6 = ruta2 & "6-M20x90.dwg"
+            M20x90_6 = ruta2 & "6M20X90.dwg"
                     
             Mp450 = Fix(lperfil / lMp450)
             Mp270 = Fix(lperfil / lMp270)
@@ -2667,9 +2669,9 @@ Sub MegaproLadoA(Esqa() As Double, DirMuro1 As Double, Mp90 As Integer, Mp180 As
 
                             If Mp450 > 0 Then
                         
-                            Set blockRef = gcadModel.InsertBlock(Esqa, Mpshor450, Xs, Ys, Zs, DirMuro1 + PI)
+                            Set blockRef = GcadModel.InsertBlock(Esqa, Mpshor450, Xs, Ys, Zs, DirMuro1 + PI)
                             blockRef.Layer = "Mega"
-                            Set blockRef = gcadModel.InsertBlock(Esqa, M20x90_6, Xs, Ys, Zs, DirMuro1 + PI)
+                            Set blockRef = GcadModel.InsertBlock(Esqa, M20x90_6, Xs, Ys, Zs, DirMuro1 + PI)
                             blockRef.Layer = "Nonplot"
                             blockRef.Update
                     blockRef.Explode
@@ -2677,9 +2679,9 @@ Sub MegaproLadoA(Esqa() As Double, DirMuro1 As Double, Mp90 As Integer, Mp180 As
                             
                             ElseIf Mp270 > 0 Then
                         
-                            Set blockRef = gcadModel.InsertBlock(Esqa, Mpshor270, Xs, Ys, Zs, DirMuro1 + PI)
+                            Set blockRef = GcadModel.InsertBlock(Esqa, Mpshor270, Xs, Ys, Zs, DirMuro1 + PI)
                             blockRef.Layer = "Mega"
-                            Set blockRef = gcadModel.InsertBlock(Esqa, M20x90_6, Xs, Ys, Zs, DirMuro1 + PI)
+                            Set blockRef = GcadModel.InsertBlock(Esqa, M20x90_6, Xs, Ys, Zs, DirMuro1 + PI)
                             blockRef.Layer = "Nonplot"
                             blockRef.Update
                     blockRef.Explode
@@ -2687,9 +2689,9 @@ Sub MegaproLadoA(Esqa() As Double, DirMuro1 As Double, Mp90 As Integer, Mp180 As
                             
                             ElseIf Mp180 > 0 Then
                         
-                            Set blockRef = gcadModel.InsertBlock(Esqa, Mpshor180, Xs, Ys, Zs, DirMuro1 + PI)
+                            Set blockRef = GcadModel.InsertBlock(Esqa, Mpshor180, Xs, Ys, Zs, DirMuro1 + PI)
                             blockRef.Layer = "Mega"
-                            Set blockRef = gcadModel.InsertBlock(Esqa, M20x90_6, Xs, Ys, Zs, DirMuro1 + PI)
+                            Set blockRef = GcadModel.InsertBlock(Esqa, M20x90_6, Xs, Ys, Zs, DirMuro1 + PI)
                             blockRef.Layer = "Nonplot"
                             blockRef.Update
                     blockRef.Explode
@@ -2697,9 +2699,9 @@ Sub MegaproLadoA(Esqa() As Double, DirMuro1 As Double, Mp90 As Integer, Mp180 As
                             
                             ElseIf Mp90 > 0 Then
                         
-                            Set blockRef = gcadModel.InsertBlock(Esqa, Mpshor90, Xs, Ys, Zs, DirMuro1 + PI)
+                            Set blockRef = GcadModel.InsertBlock(Esqa, Mpshor90, Xs, Ys, Zs, DirMuro1 + PI)
                             blockRef.Layer = "Mega"
-                            Set blockRef = gcadModel.InsertBlock(Esqa, M20x90_6, Xs, Ys, Zs, DirMuro1 + PI)
+                            Set blockRef = GcadModel.InsertBlock(Esqa, M20x90_6, Xs, Ys, Zs, DirMuro1 + PI)
                             blockRef.Layer = "Nonplot"
                             blockRef.Update
                     blockRef.Explode
@@ -2719,9 +2721,9 @@ Sub MegaproLadoB(Esqb() As Double, DirMuro2 As Double, Mp90 As Integer, Mp180 As
     
     Dim blockRef As Object
     
-    Set gcadDoc = GetObject(, "Gcad.Application").ActiveDocument
-    Set gcadModel = gcadDoc.ModelSpace
-    Set gcadUtil = gcadDoc.Utility
+    Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+    Set GcadModel = GcadDoc.ModelSpace
+    Set GcadUtil = GcadDoc.Utility
        
     Dim Xs As Double
     Dim Ys As Double
@@ -2746,12 +2748,12 @@ Sub MegaproLadoB(Esqb() As Double, DirMuro2 As Double, Mp90 As Integer, Mp180 As
             Ys = 1
             Zs = 1
             
-            Mpshor450 = rutamp & "Mshor450ALZ.dwg"
-            Mpshor270 = rutamp & "Mshor270ALZ.dwg"
-            Mpshor180 = rutamp & "Mshor180ALZ.dwg"
-            Mpshor90 = rutamp & "Mshor90ALZ.dwg"
+            Mpshor450 = rutamp & "Mshor450PLA.dwg"
+            Mpshor270 = rutamp & "Mshor270PLA.dwg"
+            Mpshor180 = rutamp & "Mshor180PLA.dwg"
+            Mpshor90 = rutamp & "Mshor90PLA.dwg"
             
-            M20x90_6 = ruta2 & "6-M20x90.dwg"
+            M20x90_6 = ruta2 & "6M20X90.dwg"
                     
             Mp450 = Fix(lperfil / lMp450)
             Mp270 = Fix(lperfil / lMp270)
@@ -2759,43 +2761,43 @@ Sub MegaproLadoB(Esqb() As Double, DirMuro2 As Double, Mp90 As Integer, Mp180 As
             Mp90 = Fix(lperfil / lMp90)
             
                             If Mp450 > 0 Then
-                            Set blockRef = gcadModel.InsertBlock(Esqb, M20x90_6, Xs, Ys, Zs, DirMuro2)
+                            Set blockRef = GcadModel.InsertBlock(Esqb, M20x90_6, Xs, Ys, Zs, DirMuro2)
                             blockRef.Layer = "Nonplot"
                             blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                             Esqb(0) = Esqb(0) - lMp450 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lMp450 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                            Set blockRef = gcadModel.InsertBlock(Esqb, Mpshor450, Xs, Ys, Zs, DirMuro2)
+                            Set blockRef = GcadModel.InsertBlock(Esqb, Mpshor450, Xs, Ys, Zs, DirMuro2)
                             blockRef.Layer = "Mega"
                         
                             ElseIf Mp270 > 0 Then
-                            Set blockRef = gcadModel.InsertBlock(Esqb, M20x90_6, Xs, Ys, Zs, DirMuro2)
+                            Set blockRef = GcadModel.InsertBlock(Esqb, M20x90_6, Xs, Ys, Zs, DirMuro2)
                             blockRef.Layer = "Nonplot"
                             blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                             Esqb(0) = Esqb(0) - lMp270 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lMp270 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                            Set blockRef = gcadModel.InsertBlock(Esqb, Mpshor270, Xs, Ys, Zs, DirMuro2)
+                            Set blockRef = GcadModel.InsertBlock(Esqb, Mpshor270, Xs, Ys, Zs, DirMuro2)
                             blockRef.Layer = "Mega"
                         
                             ElseIf Mp180 > 0 Then
-                            Set blockRef = gcadModel.InsertBlock(Esqb, M20x90_6, Xs, Ys, Zs, DirMuro2)
+                            Set blockRef = GcadModel.InsertBlock(Esqb, M20x90_6, Xs, Ys, Zs, DirMuro2)
                             blockRef.Layer = "Nonplot"
                             blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                             Esqb(0) = Esqb(0) - lMp180 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lMp180 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                            Set blockRef = gcadModel.InsertBlock(Esqb, Mpshor180, Xs, Ys, Zs, DirMuro2)
+                            Set blockRef = GcadModel.InsertBlock(Esqb, Mpshor180, Xs, Ys, Zs, DirMuro2)
                             blockRef.Layer = "Mega"
                         
                             ElseIf Mp90 > 0 Then
-                            Set blockRef = gcadModel.InsertBlock(Esqb, M20x90_6, Xs, Ys, Zs, DirMuro2)
+                            Set blockRef = GcadModel.InsertBlock(Esqb, M20x90_6, Xs, Ys, Zs, DirMuro2)
                             blockRef.Layer = "Nonplot"
                             blockRef.Update
                     blockRef.Explode
                     blockRef.Delete
                             Esqb(0) = Esqb(0) - lMp90 * Cos(DirMuro2): Esqb(1) = Esqb(1) - lMp90 * Sin(DirMuro2): Esqb(2) = Esqb(2)
-                            Set blockRef = gcadModel.InsertBlock(Esqb, Mpshor90, Xs, Ys, Zs, DirMuro2)
+                            Set blockRef = GcadModel.InsertBlock(Esqb, Mpshor90, Xs, Ys, Zs, DirMuro2)
                             blockRef.Layer = "Mega"
                         
                             End If

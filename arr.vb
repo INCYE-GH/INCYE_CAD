@@ -1,6 +1,6 @@
 Sub arr()
 
-Dim AcadDoc As Object, AcadUtil As Object, AcadModel As Object, Eje1 As Object, blockRef As Object
+Dim GcadDoc As Object, GcadUtil As Object, GcadModel As Object, Eje1 As Object, blockRef As Object
 Dim x As Double, y As Double, z As Double, Xs As Double, Ys As Double, Zs As Double, ANG As Double, lpuntal As Double, lregulacion As Double
 Dim vista As String
 Dim Punto_inicial(0 To 2) As Double, Punto_final(0 To 2) As Double, Punto_inicial2(0 To 2) As Double, Punto_final2(0 To 2) As Double, Punto_aux1(0 To 2) As Double, Punto_aux2(0 To 2) As Double, P1(0 To 2) As Double, P2(0 To 2) As Double
@@ -11,9 +11,11 @@ Dim PI As Variant, Distancia As Double
 Dim PuntoM(0 To 2) As Double, husillo_c As String, cuerpo_c As String
 
 
-Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
-Set AcadModel = AcadDoc.ModelSpace
-Set AcadUtil = AcadDoc.Utility
+Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+Set GcadModel = GcadDoc.ModelSpace
+Set GcadUtil = GcadDoc.Utility
+
+On Error GoTo terminar
 
 kwordList = "RapidTie Tubo"
 vista = ""
@@ -22,14 +24,14 @@ vista = ThisDrawing.Utility.GetKeyword(vbLf & "¿Con qué vas a arriostrar?: [Ra
 
 If vista = "RapidTie" Or vista = "" Then
     Call rtie
-    GoTo Terminar
+    GoTo terminar
 ElseIf vista = "Tubo" Then
     Call tubo
     'MsgBox "Aún no disponible... Estamos en ello ;)"
-    GoTo Terminar
+    GoTo terminar
 End If
 
-Terminar:
+terminar:
 End Sub
 
 '------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -40,7 +42,7 @@ End Sub
 
 Sub rtie()
 
-Dim AcadDoc As Object, AcadUtil As Object, AcadModel As Object, Eje1 As Object, blockRef As Object
+Dim GcadDoc As Object, GcadUtil As Object, GcadModel As Object, Eje1 As Object, blockRef As Object
 Dim x As Double, y As Double, z As Double, Xs As Double, Ys As Double, Zs As Double, ANG As Double, lpuntal As Double, lregulacion As Double
 Dim rutatensor As String
 Dim Punto_inicial(0 To 2) As Double, Punto_final(0 To 2) As Double, Punto_inicial2(0 To 2) As Double, Punto_final2(0 To 2) As Double, Punto_aux1(0 To 2) As Double, Punto_aux2(0 To 2) As Double, P1(0 To 2) As Double, P2(0 To 2) As Double
@@ -55,24 +57,24 @@ Dim torple1(0 To 2) As Double, torple2(0 To 2) As Double, tormar1up(0 To 2) As D
 Dim rtie As String, plalz As String, rutator As String, tor1 As String, tor2 As String
 
 
-Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
-Set AcadModel = AcadDoc.ModelSpace
-Set AcadUtil = AcadDoc.Utility
+Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+Set GcadModel = GcadDoc.ModelSpace
+Set GcadUtil = GcadDoc.Utility
 
 Ncapa = "Mega"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 Ncapa = "Lolashor"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 Ncapa = "Slims"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 
 rutartie = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\RTie\"
 rutator = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\TORNILLERIA\"
 
-On Error GoTo Terminar
+On Error GoTo terminar
 
 ' preguntas -------------------------------------------------------
 
@@ -98,8 +100,8 @@ ElseIf vista = "Alzado" Then
 End If
 
 
-        tor1 = rutator & "1-M20X40.dwg"
-        tor2 = rutator & "1-M20X40.dwg"
+        tor1 = rutator & "1M20X40.dwg"
+        tor2 = rutator & "1M20X40.dwg"
 
 
 
@@ -119,8 +121,8 @@ repite = 1
 Do While repite = 1
 
 
-punto1 = AcadUtil.GetPoint(, "1º Punto: ")
-punto2 = AcadUtil.GetPoint(punto1, "2º Punto: ")
+punto1 = GcadUtil.GetPoint(, "1º Punto: ")
+punto2 = GcadUtil.GetPoint(punto1, "2º Punto: ")
 
 Dim lrt As Double
 
@@ -129,8 +131,8 @@ PI = 4 * Atn(1)
 P1(0) = punto1(0): P1(1) = punto1(1): P1(2) = punto1(2)
 P2(0) = punto2(0): P2(1) = punto2(1): P2(2) = punto2(2)
 
-Set Eje1 = AcadModel.AddLine(P1, P2)
-ANG = AcadUtil.AngleFromXAxis(P1, P2)
+Set Eje1 = GcadModel.AddLine(P1, P2)
+ANG = GcadUtil.AngleFromXAxis(P1, P2)
 
 x = P2(0) - P1(0)
 y = P2(1) - P1(1)
@@ -245,10 +247,10 @@ insRT(0) = ExtRT1(0) + (Dfinal / 2) * Cos(ANG): insRT(1) = ExtRT1(1) + (Dfinal /
 
 ' insertamos en el medio la rapid tie que sea necesaria
 rtie = rutartie & "RTie" & lrt & ".dwg"
-Set blockRef = AcadModel.InsertBlock(insRT, rtie, Xs, Ys, Zs, ANG)
+Set blockRef = GcadModel.InsertBlock(insRT, rtie, Xs, Ys, Zs, ANG)
 blockRef.Layer = "AM"
 If nrt = "Doble" Then
-    Set blockRef = AcadModel.InsertBlock(insRT, rtie, Xs, Ys, Zs, ANG)
+    Set blockRef = GcadModel.InsertBlock(insRT, rtie, Xs, Ys, Zs, ANG)
     blockRef.Layer = "AM"
 End If
 
@@ -287,45 +289,45 @@ End If
 If ext1 = "Pletina" Then
     If plalz = "pl" Then
         torple1(0) = Punto_inicial(0) - 25.5 * Cos(ANG + (PI / 2)): torple1(1) = Punto_inicial(1) - 25.5 * Sin(ANG + (PI / 2)): torple1(2) = Punto_inicial(2)
-        Set blockRef = AcadModel.InsertBlock(torple1, tor1, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(torple1, tor1, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Nonplot"
         blockRef.Update
         blockRef.Explode
         blockRef.Delete
     Else
-        Set blockRef = AcadModel.InsertBlock(Punto_inicial, tor1, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inicial, tor1, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Nonplot"
     End If
     
     If nrt = "Doble" Then
         If plalz = "pl" Then
             torple1(0) = Punto_inicial(0) - 25.5 * Cos(ANG + (PI / 2)): torple1(1) = Punto_inicial(1) - 25.5 * Sin(ANG + (PI / 2)): torple1(2) = Punto_inicial(2)
-            Set blockRef = AcadModel.InsertBlock(torple1, tor1, Xs, Ys, Zs, ANG)
+            Set blockRef = GcadModel.InsertBlock(torple1, tor1, Xs, Ys, Zs, ANG)
             blockRef.Layer = "Nonplot"
             blockRef.Update
             blockRef.Explode
             blockRef.Delete
         Else
-            Set blockRef = AcadModel.InsertBlock(Punto_inicial, tor1, Xs, Ys, Zs, ANG)
+            Set blockRef = GcadModel.InsertBlock(Punto_inicial, tor1, Xs, Ys, Zs, ANG)
             blockRef.Layer = "Nonplot"
         End If
     End If
     
-        Set blockRef = AcadModel.InsertBlock(Punto_inicial, pletina, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inicial, pletina, Xs, Ys, Zs, ANG)
         blockRef.Layer = "AM"
     
     
     If nrt = "Doble" Then
-        Set blockRef = AcadModel.InsertBlock(Punto_inicial, pletina, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inicial, pletina, Xs, Ys, Zs, ANG)
         blockRef.Layer = "AM"
     End If
     
     Punto_inicial(0) = Punto_inicial(0) + 375 * Cos(ANG): Punto_inicial(1) = Punto_inicial(1) + 375 * Sin(ANG): Punto_inicial(2) = Punto_inicial(2)
-    Set blockRef = AcadModel.InsertBlock(Punto_inicial, TuercaH, Xs, Ys, Zs, ANG)
+    Set blockRef = GcadModel.InsertBlock(Punto_inicial, TuercaH, Xs, Ys, Zs, ANG)
     blockRef.Layer = "AM"
 
     If nrt = "Doble" Then
-        Set blockRef = AcadModel.InsertBlock(Punto_inicial, TuercaH, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inicial, TuercaH, Xs, Ys, Zs, ANG)
         blockRef.Layer = "AM"
     End If
     
@@ -335,69 +337,69 @@ ElseIf ext1 = "AdaptMarsella" Then
 
     If plalz = "pl" Then
             tormar1up(0) = Punto_inicial(0) + 140 * Cos(ANG + (PI / 2)): tormar1up(1) = Punto_inicial(1) + 140 * Sin(ANG + (PI / 2)): tormar1up(2) = Punto_inicial(2)
-            Set blockRef = AcadModel.InsertBlock(tormar1up, tor1, Xs, Ys, Zs, ANG)
+            Set blockRef = GcadModel.InsertBlock(tormar1up, tor1, Xs, Ys, Zs, ANG)
             blockRef.Layer = "Nonplot"
             blockRef.Update
             blockRef.Explode
             blockRef.Delete
             
             tormar1down(0) = Punto_inicial(0) - 140 * Cos(ANG + (PI / 2)): tormar1down(1) = Punto_inicial(1) - 140 * Sin(ANG + (PI / 2)): tormar1down(2) = Punto_inicial(2)
-            Set blockRef = AcadModel.InsertBlock(tormar1down, tor1, Xs, Ys, Zs, ANG)
+            Set blockRef = GcadModel.InsertBlock(tormar1down, tor1, Xs, Ys, Zs, ANG)
             blockRef.Layer = "Nonplot"
             blockRef.Update
             blockRef.Explode
             blockRef.Delete
     Else
-            Set blockRef = AcadModel.InsertBlock(Punto_inicial, tor1, Xs, Ys, Zs, ANG)
+            Set blockRef = GcadModel.InsertBlock(Punto_inicial, tor1, Xs, Ys, Zs, ANG)
             blockRef.Layer = "Nonplot"
-            Set blockRef = AcadModel.InsertBlock(Punto_inicial, tor1, Xs, Ys, Zs, ANG)
+            Set blockRef = GcadModel.InsertBlock(Punto_inicial, tor1, Xs, Ys, Zs, ANG)
             blockRef.Layer = "Nonplot"
     End If
     
-    Set blockRef = AcadModel.InsertBlock(Punto_inicial, AMarsella, Xs, Ys, Zs, ANG)
+    Set blockRef = GcadModel.InsertBlock(Punto_inicial, AMarsella, Xs, Ys, Zs, ANG)
     blockRef.Layer = "AM"
     Punto_inicial(0) = Punto_inicial(0) + 255 * Cos(ANG): Punto_inicial(1) = Punto_inicial(1) + 255 * Sin(ANG): Punto_inicial(2) = Punto_inicial(2)
-    Set blockRef = AcadModel.InsertBlock(Punto_inicial, TuercaH, Xs, Ys, Zs, ANG)
+    Set blockRef = GcadModel.InsertBlock(Punto_inicial, TuercaH, Xs, Ys, Zs, ANG)
     blockRef.Layer = "AM"
 
 ElseIf ext1 = "Cojinete" Then
 
-    Set blockRef = AcadModel.InsertBlock(Punto_inicial, cojinete_I, Xs, Ys, Zs, ANG)
+    Set blockRef = GcadModel.InsertBlock(Punto_inicial, cojinete_I, Xs, Ys, Zs, ANG)
     blockRef.Layer = "AM"
     Punto_inicial(0) = Punto_inicial(0) - 25 * Cos(ANG): Punto_inicial(1) = Punto_inicial(1) - 25 * Sin(ANG): Punto_inicial(2) = Punto_inicial(2)
-    Set blockRef = AcadModel.InsertBlock(Punto_inicial, TuercaH, Xs, Ys, Zs, ANG)
+    Set blockRef = GcadModel.InsertBlock(Punto_inicial, TuercaH, Xs, Ys, Zs, ANG)
     blockRef.Layer = "AM"
 
 ElseIf ext1 = "Plato80" Then
 
-    Set blockRef = AcadModel.InsertBlock(Punto_inicial, plato80i, Xs, Ys, Zs, ANG)
+    Set blockRef = GcadModel.InsertBlock(Punto_inicial, plato80i, Xs, Ys, Zs, ANG)
     blockRef.Layer = "AM"
     Punto_inicial(0) = Punto_inicial(0) - 20 * Cos(ANG): Punto_inicial(1) = Punto_inicial(1) - 20 * Sin(ANG): Punto_inicial(2) = Punto_inicial(2)
-    Set blockRef = AcadModel.InsertBlock(Punto_inicial, TuercaA, Xs, Ys, Zs, ANG + PI)
+    Set blockRef = GcadModel.InsertBlock(Punto_inicial, TuercaA, Xs, Ys, Zs, ANG + PI)
     blockRef.Layer = "AM"
 
 ElseIf ext1 = "Plato110" Then
 
-    Set blockRef = AcadModel.InsertBlock(Punto_inicial, plato110i, Xs, Ys, Zs, ANG)
+    Set blockRef = GcadModel.InsertBlock(Punto_inicial, plato110i, Xs, Ys, Zs, ANG)
     blockRef.Layer = "AM"
     Punto_inicial(0) = Punto_inicial(0) - 20 * Cos(ANG): Punto_inicial(1) = Punto_inicial(1) - 20 * Sin(ANG): Punto_inicial(2) = Punto_inicial(2)
-    Set blockRef = AcadModel.InsertBlock(Punto_inicial, TuercaA, Xs, Ys, Zs, ANG + PI)
+    Set blockRef = GcadModel.InsertBlock(Punto_inicial, TuercaA, Xs, Ys, Zs, ANG + PI)
     blockRef.Layer = "AM"
 
 ElseIf ext1 = "Plato160" Then
 
-    Set blockRef = AcadModel.InsertBlock(Punto_inicial, plato160, Xs, Ys, Zs, ANG)
+    Set blockRef = GcadModel.InsertBlock(Punto_inicial, plato160, Xs, Ys, Zs, ANG)
     blockRef.Layer = "AM"
     Punto_inicial(0) = Punto_inicial(0) - 48 * Cos(ANG): Punto_inicial(1) = Punto_inicial(1) - 48 * Sin(ANG): Punto_inicial(2) = Punto_inicial(2)
-    Set blockRef = AcadModel.InsertBlock(Punto_inicial, TuercaArt, Xs, Ys, Zs, ANG)
+    Set blockRef = GcadModel.InsertBlock(Punto_inicial, TuercaArt, Xs, Ys, Zs, ANG)
     blockRef.Layer = "AM"
 
 ElseIf ext1 = "Canal-Arandela" Then
 
-    Set blockRef = AcadModel.InsertBlock(Punto_inicial, canalar, Xs, Ys, Zs, ANG)
+    Set blockRef = GcadModel.InsertBlock(Punto_inicial, canalar, Xs, Ys, Zs, ANG)
     blockRef.Layer = "AM"
     Punto_inicial(0) = Punto_inicial(0) - 25 * Cos(ANG): Punto_inicial(1) = Punto_inicial(1) - 25 * Sin(ANG): Punto_inicial(2) = Punto_inicial(2)
-    Set blockRef = AcadModel.InsertBlock(Punto_inicial, TuercaH, Xs, Ys, Zs, ANG)
+    Set blockRef = GcadModel.InsertBlock(Punto_inicial, TuercaH, Xs, Ys, Zs, ANG)
     blockRef.Layer = "AM"
 
 ElseIf ext1 = "Libre" Then
@@ -412,13 +414,13 @@ End If
 If ext2 = "Pletina" Then
     If plalz = "pl" Then
         torple2(0) = Punto_final(0) - 25.5 * Cos(ANG + (PI / 2)): torple2(1) = Punto_final(1) - 25.5 * Sin(ANG + (PI / 2)): torple2(2) = Punto_final(2)
-        Set blockRef = AcadModel.InsertBlock(torple2, tor2, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(torple2, tor2, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Nonplot"
         blockRef.Update
         blockRef.Explode
         blockRef.Delete
     Else
-        Set blockRef = AcadModel.InsertBlock(Punto_final, tor2, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_final, tor2, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Nonplot"
         blockRef.Update
         blockRef.Explode
@@ -427,13 +429,13 @@ If ext2 = "Pletina" Then
 
     If nrt = "Doble" Then
         If plalz = "pl" Then
-            Set blockRef = AcadModel.InsertBlock(torple2, tor2, Xs, Ys, Zs, ANG)
+            Set blockRef = GcadModel.InsertBlock(torple2, tor2, Xs, Ys, Zs, ANG)
             blockRef.Layer = "Nonplot"
             blockRef.Update
             blockRef.Explode
             blockRef.Delete
         Else
-            Set blockRef = AcadModel.InsertBlock(Punto_final, tor2, Xs, Ys, Zs, ANG)
+            Set blockRef = GcadModel.InsertBlock(Punto_final, tor2, Xs, Ys, Zs, ANG)
             blockRef.Layer = "Nonplot"
             blockRef.Update
             blockRef.Explode
@@ -442,21 +444,21 @@ If ext2 = "Pletina" Then
     End If
 
     Punto_final(0) = Punto_final(0) - 470 * Cos(ANG): Punto_final(1) = Punto_final(1) - 470 * Sin(ANG): Punto_final(2) = Punto_final(2)
-    Set blockRef = AcadModel.InsertBlock(Punto_final, pletinad, Xs, Ys, Zs, ANG)
+    Set blockRef = GcadModel.InsertBlock(Punto_final, pletinad, Xs, Ys, Zs, ANG)
     blockRef.Layer = "AM"
     
     If nrt = "Doble" Then
-        Set blockRef = AcadModel.InsertBlock(Punto_final, pletinad, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_final, pletinad, Xs, Ys, Zs, ANG)
         blockRef.Layer = "AM"
     End If
     
     
     Punto_final(0) = Punto_final(0) + 95 * Cos(ANG): Punto_final(1) = Punto_final(1) + 95 * Sin(ANG): Punto_final(2) = Punto_final(2)
-    Set blockRef = AcadModel.InsertBlock(Punto_final, TuercaH, Xs, Ys, Zs, (ANG + PI))
+    Set blockRef = GcadModel.InsertBlock(Punto_final, TuercaH, Xs, Ys, Zs, (ANG + PI))
     blockRef.Layer = "AM"
     
     If nrt = "Doble" Then
-        Set blockRef = AcadModel.InsertBlock(Punto_final, TuercaH, Xs, Ys, Zs, (ANG + PI))
+        Set blockRef = GcadModel.InsertBlock(Punto_final, TuercaH, Xs, Ys, Zs, (ANG + PI))
         blockRef.Layer = "AM"
     End If
     
@@ -465,69 +467,69 @@ ElseIf ext2 = "AdaptMarsella" Then
 
     If plalz = "pl" Then
         tormar2up(0) = Punto_final(0) + 140 * Cos(ANG + (PI / 2)): tormar2up(1) = Punto_final(1) + 140 * Sin(ANG + (PI / 2)): tormar2up(2) = Punto_final(2)
-        Set blockRef = AcadModel.InsertBlock(tormar2up, tor1, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(tormar2up, tor1, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Nonplot"
         blockRef.Update
         blockRef.Explode
         blockRef.Delete
         
         tormar2down(0) = Punto_final(0) - 140 * Cos(ANG + (PI / 2)): tormar2down(1) = Punto_final(1) - 140 * Sin(ANG + (PI / 2)): tormar2down(2) = Punto_final(2)
-        Set blockRef = AcadModel.InsertBlock(tormar2down, tor1, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(tormar2down, tor1, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Nonplot"
         blockRef.Update
         blockRef.Explode
         blockRef.Delete
     Else
-        Set blockRef = AcadModel.InsertBlock(Punto_final, tor1, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_final, tor1, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Nonplot"
-        Set blockRef = AcadModel.InsertBlock(Punto_final, tor1, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_final, tor1, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Nonplot"
     End If
 
-    Set blockRef = AcadModel.InsertBlock(Punto_final, AMarsella, Xs, Ys, Zs, (ANG + PI))
+    Set blockRef = GcadModel.InsertBlock(Punto_final, AMarsella, Xs, Ys, Zs, (ANG + PI))
     blockRef.Layer = "AM"
     Punto_final(0) = Punto_final(0) - 255 * Cos(ANG): Punto_final(1) = Punto_final(1) - 255 * Sin(ANG): Punto_final(2) = Punto_final(2)
-    Set blockRef = AcadModel.InsertBlock(Punto_final, TuercaH, Xs, Ys, Zs, (ANG + PI))
+    Set blockRef = GcadModel.InsertBlock(Punto_final, TuercaH, Xs, Ys, Zs, (ANG + PI))
     blockRef.Layer = "AM"
 
 ElseIf ext2 = "Cojinete" Then
 
-    Set blockRef = AcadModel.InsertBlock(Punto_final, cojinete_D, Xs, Ys, Zs, ANG)
+    Set blockRef = GcadModel.InsertBlock(Punto_final, cojinete_D, Xs, Ys, Zs, ANG)
     blockRef.Layer = "AM"
     Punto_final(0) = Punto_final(0) + 25 * Cos(ANG): Punto_final(1) = Punto_final(1) + 25 * Sin(ANG): Punto_final(2) = Punto_final(2)
-    Set blockRef = AcadModel.InsertBlock(Punto_final, TuercaH, Xs, Ys, Zs, (ANG + PI))
+    Set blockRef = GcadModel.InsertBlock(Punto_final, TuercaH, Xs, Ys, Zs, (ANG + PI))
     blockRef.Layer = "AM"
 
 ElseIf ext2 = "Plato80" Then
 
-    Set blockRef = AcadModel.InsertBlock(Punto_final, plato80d, Xs, Ys, Zs, ANG)
+    Set blockRef = GcadModel.InsertBlock(Punto_final, plato80d, Xs, Ys, Zs, ANG)
     blockRef.Layer = "AM"
     Punto_final(0) = Punto_final(0) + 20 * Cos(ANG): Punto_final(1) = Punto_final(1) + 20 * Sin(ANG): Punto_final(2) = Punto_final(2)
-    Set blockRef = AcadModel.InsertBlock(Punto_final, TuercaA, Xs, Ys, Zs, (ANG))
+    Set blockRef = GcadModel.InsertBlock(Punto_final, TuercaA, Xs, Ys, Zs, (ANG))
     blockRef.Layer = "AM"
 
 ElseIf ext2 = "Plato110" Then
 
-    Set blockRef = AcadModel.InsertBlock(Punto_final, plato110d, Xs, Ys, Zs, ANG)
+    Set blockRef = GcadModel.InsertBlock(Punto_final, plato110d, Xs, Ys, Zs, ANG)
     blockRef.Layer = "AM"
     Punto_final(0) = Punto_final(0) + 20 * Cos(ANG): Punto_final(1) = Punto_final(1) + 20 * Sin(ANG): Punto_final(2) = Punto_final(2)
-    Set blockRef = AcadModel.InsertBlock(Punto_final, TuercaA, Xs, Ys, Zs, (ANG))
+    Set blockRef = GcadModel.InsertBlock(Punto_final, TuercaA, Xs, Ys, Zs, (ANG))
     blockRef.Layer = "AM"
 
 ElseIf ext2 = "Plato160" Then
 
-    Set blockRef = AcadModel.InsertBlock(Punto_final, plato160, Xs, Ys, Zs, ANG + PI)
+    Set blockRef = GcadModel.InsertBlock(Punto_final, plato160, Xs, Ys, Zs, ANG + PI)
     blockRef.Layer = "AM"
     Punto_final(0) = Punto_final(0) + 48 * Cos(ANG): Punto_final(1) = Punto_final(1) + 48 * Sin(ANG): Punto_final(2) = Punto_final(2)
-    Set blockRef = AcadModel.InsertBlock(Punto_final, TuercaArt, Xs, Ys, Zs, (ANG + PI))
+    Set blockRef = GcadModel.InsertBlock(Punto_final, TuercaArt, Xs, Ys, Zs, (ANG + PI))
     blockRef.Layer = "AM"
 
 ElseIf ext2 = "Canal-Arandela" Then
 
-    Set blockRef = AcadModel.InsertBlock(Punto_final, canalar, Xs, Ys, Zs, ANG + PI)
+    Set blockRef = GcadModel.InsertBlock(Punto_final, canalar, Xs, Ys, Zs, ANG + PI)
     blockRef.Layer = "AM"
     Punto_final(0) = Punto_final(0) + 25 * Cos(ANG): Punto_final(1) = Punto_final(1) + 25 * Sin(ANG): Punto_final(2) = Punto_final(2)
-    Set blockRef = AcadModel.InsertBlock(Punto_final, TuercaH, Xs, Ys, Zs, (ANG + PI))
+    Set blockRef = GcadModel.InsertBlock(Punto_final, TuercaH, Xs, Ys, Zs, (ANG + PI))
     blockRef.Layer = "AM"
 
 ElseIf ext2 = "Libre" Then
@@ -535,7 +537,7 @@ ElseIf ext2 = "Libre" Then
 End If
 Loop
 
-Terminar:
+terminar:
 End Sub
 
 
@@ -543,7 +545,7 @@ End Sub
 Sub tubo()
 
 
-Dim AcadDoc As Object, AcadUtil As Object, AcadModel As Object, Eje1 As Object, blockRef As Object
+Dim GcadDoc As Object, GcadUtil As Object, GcadModel As Object, Eje1 As Object, blockRef As Object
 Dim x As Double, y As Double, z As Double, Xs As Double, Ys As Double, Zs As Double, ANG As Double, lpuntal As Double, lregulacion As Double
 Dim rutatubo As String
 Dim Punto_inicial(0 To 2) As Double, Punto_final(0 To 2) As Double, Punto_inicial2(0 To 2) As Double, Punto_final2(0 To 2) As Double, Punto_aux1(0 To 2) As Double, Punto_aux2(0 To 2) As Double, P1(0 To 2) As Double, P2(0 To 2) As Double
@@ -558,24 +560,24 @@ Dim torple1(0 To 2) As Double, torple2(0 To 2) As Double, tormar1up(0 To 2) As D
 Dim rtubo As String, plalz As String, rutator As String, tor1 As String, tor2 As String, lt As Double
 Dim grapa1 As String, grapa2 As String
 
-Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
-Set AcadModel = AcadDoc.ModelSpace
-Set AcadUtil = AcadDoc.Utility
+Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+Set GcadModel = GcadDoc.ModelSpace
+Set GcadUtil = GcadDoc.Utility
 
 Ncapa = "Mega"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 Ncapa = "Lolashor"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 Ncapa = "Slims"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 
 rutatubo = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\Grapas-Auxiliares\"
 rutator = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\TORNILLERIA\"
 
-On Error GoTo Terminar
+On Error GoTo terminar
 
 ' preguntas -------------------------------------------------------
 
@@ -626,8 +628,8 @@ repite = 1
 'COMIENZA Bucle
 Do While repite = 1
 
-punto1 = AcadUtil.GetPoint(, "1º Punto: ")
-punto2 = AcadUtil.GetPoint(punto1, "2º Punto: ")
+punto1 = GcadUtil.GetPoint(, "1º Punto: ")
+punto2 = GcadUtil.GetPoint(punto1, "2º Punto: ")
 
 Dim lrt As Double
 
@@ -638,8 +640,8 @@ PI = 4 * Atn(1)
 P1(0) = punto1(0): P1(1) = punto1(1): P1(2) = punto1(2)
 P2(0) = punto2(0): P2(1) = punto2(1): P2(2) = punto2(2)
 
-'Set Eje1 = AcadModel.AddLine(P1, P2)
-ANG = AcadUtil.AngleFromXAxis(P1, P2)
+'Set Eje1 = GcadModel.AddLine(P1, P2)
+ANG = GcadUtil.AngleFromXAxis(P1, P2)
 
 x = P2(0) - P1(0)
 y = P2(1) - P1(1)
@@ -687,22 +689,22 @@ PuntoM(0) = Punto_inicial(0) + (Distancia / 2) * Cos(ANG): PuntoM(1) = Punto_ini
 
 
 rtubo = rutatubo & "TuboArr" & lt & ".dwg"
-Set blockRef = AcadModel.InsertBlock(PuntoM, rtubo, Xs, Ys, Zs, ANG)
+Set blockRef = GcadModel.InsertBlock(PuntoM, rtubo, Xs, Ys, Zs, ANG)
 blockRef.Layer = "AM"
 
 If ext1 = "Libre" Then
 Else
-    Set blockRef = AcadModel.InsertBlock(Punto_inicial, grapa1, Xs, Ys, Zs, ANG)
+    Set blockRef = GcadModel.InsertBlock(Punto_inicial, grapa1, Xs, Ys, Zs, ANG)
     blockRef.Layer = "AM"
 End If
 
 If ext2 = "Libre" Then
 Else
-    Set blockRef = AcadModel.InsertBlock(Punto_final, grapa2, Xs, Ys, Zs, ANG)
+    Set blockRef = GcadModel.InsertBlock(Punto_final, grapa2, Xs, Ys, Zs, ANG)
     blockRef.Layer = "AM"
 End If
 
 Loop
 
-Terminar:
+terminar:
 End Sub

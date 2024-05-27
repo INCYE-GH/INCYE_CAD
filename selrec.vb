@@ -1,6 +1,6 @@
 Sub selrec()
-    Dim obj As AcadEntity
-    Dim blk As AcadBlockReference
+    Dim obj As GcadEntity
+    Dim blk As GcadBlockReference
     Dim blockName As String
     Dim blockDict As Object
     Set blockDict = CreateObject("Scripting.Dictionary")
@@ -34,7 +34,7 @@ Sub selrec()
 
     ' Verificar si estamos en el espacio modelo
     If ThisDrawing.ActiveSpace = acModelSpace Then
-        Dim ss As AcadSelectionSet
+        Dim ss As GcadSelectionSet
         On Error Resume Next
         Set ss = ThisDrawing.SelectionSets("SS1")
         On Error GoTo 0
@@ -51,7 +51,7 @@ Sub selrec()
         ' Contar los bloques seleccionados y obtener la capa asociada
         Call CountBlocks2(ss, blockDict, noContableDict, excelWorkbook, excelWorksheet)
 
-        ' Eliminar el conjunto de selección 
+        ' Eliminar el conjunto de selección
         ss.Delete
 
         ' Activar la aplicación de Excel
@@ -63,20 +63,20 @@ Sub selrec()
 terminar:
 End Sub
 
-Private Sub CountBlocks2(ByVal ss As AcadSelectionSet, ByRef blockDict As Object, ByRef noContableDict As Object, ByVal excelWorkbook As Object, ByVal excelWorksheet As Object)
-    Dim obj As AcadEntity
-    Dim blk As AcadBlockReference
-    Dim blkdef As acadBlock
+Private Sub CountBlocks2(ByVal ss As GcadSelectionSet, ByRef blockDict As Object, ByRef noContableDict As Object, ByVal excelWorkbook As Object, ByVal excelWorksheet As Object)
+    Dim obj As GcadEntity
+    Dim blk As GcadBlockReference
+    Dim blkdef As GcadBlock
     Dim blockName As String
     Dim innername As String
     Dim innerlayer As String
-    Dim entity As AcadEntity
+    Dim entity As GcadEntity
     Dim tempArray As Variant
     Dim newWorksheet As Object
     Dim miscWS As Object
 
     For Each obj In ss
-        If TypeOf obj Is AcadBlockReference Then
+        If TypeOf obj Is GcadBlockReference Then
             Set blk = obj
             Set blkdef = ThisDrawing.Blocks.Item(blk.Name)
             blockName = blk.effectiveName
@@ -92,8 +92,8 @@ Private Sub CountBlocks2(ByVal ss As AcadSelectionSet, ByRef blockDict As Object
                     noContableDict.Add blockName, CreateObject("Scripting.Dictionary")
                 End If
                 For Each entity In blkdef
-                    If TypeOf entity Is AcadBlockReference Then
-                        Dim innerBlkRef As AcadBlockReference
+                    If TypeOf entity Is GcadBlockReference Then
+                        Dim innerBlkRef As GcadBlockReference
                         Set innerBlkRef = entity
                         innername = innerBlkRef.effectiveName
                         innerlayer = innerBlkRef.Layer
@@ -150,9 +150,18 @@ End Sub
 
 
 
+
+
+
+
+
+
+
+
+
 Sub antiguocomandorecuento()
-    Dim obj As AcadEntity
-    Dim blk As AcadBlockReference
+    Dim obj As GcadEntity
+    Dim blk As GcadBlockReference
     Dim blockName As String
     Dim blockDict As Object
     Set blockDict = CreateObject("Scripting.Dictionary")
@@ -183,7 +192,7 @@ Sub antiguocomandorecuento()
 
     ' Verificar si estamos en el espacio modelo
     If ThisDrawing.ActiveSpace = acModelSpace Then
-        Dim ss As AcadSelectionSet
+        Dim ss As GcadSelectionSet
         On Error Resume Next
         Set ss = ThisDrawing.SelectionSets("SS1")
         On Error GoTo 0
@@ -215,18 +224,18 @@ Sub antiguocomandorecuento()
 terminar:
 End Sub
 
-Private Sub CountBlocks(ByVal ss As AcadSelectionSet, ByRef blockDict As Object)
-    Dim obj As AcadEntity
-    Dim blk As AcadBlockReference
-    Dim blkdef As acadBlock
+Private Sub CountBlocks(ByVal ss As GcadSelectionSet, ByRef blockDict As Object)
+    Dim obj As GcadEntity
+    Dim blk As GcadBlockReference
+    Dim blkdef As GcadBlock
     Dim blockName As String
     Dim innername As String
     Dim innerlayer As String
-    Dim entity As AcadEntity
+    Dim entity As GcadEntity
     Dim tempArray As Variant
 
     For Each obj In ss
-        If TypeOf obj Is AcadBlockReference Then
+        If TypeOf obj Is GcadBlockReference Then
             Set blk = obj
             Set blkdef = ThisDrawing.Blocks.Item(blk.Name)
             blockName = blk.effectiveName
@@ -234,8 +243,8 @@ Private Sub CountBlocks(ByVal ss As AcadSelectionSet, ByRef blockDict As Object)
             If blk.Layer = "NoContable" Then
                 ' Verificar si el bloque contiene otros bloques anidados
                 For Each entity In blkdef
-                    If TypeOf entity Is AcadBlockReference Then
-                        Dim innerBlkRef As AcadBlockReference
+                    If TypeOf entity Is GcadBlockReference Then
+                        Dim innerBlkRef As GcadBlockReference
                         Set innerBlkRef = entity
                         innername = innerBlkRef.effectiveName
                         innerlayer = innerBlkRef.Layer
@@ -285,9 +294,29 @@ End Sub
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Sub selrecantiguo()
-    Dim obj As AcadEntity
-    Dim blk As AcadBlockReference
+    Dim obj As GcadEntity
+    Dim blk As GcadBlockReference
     Dim blockName As String
     Dim blockDict As Object
     Set blockDict = CreateObject("Scripting.Dictionary")
@@ -318,7 +347,7 @@ Sub selrecantiguo()
 
     ' Verificar si estamos en el espacio modelo
     If ThisDrawing.ActiveSpace = acModelSpace Then
-        Dim ss As AcadSelectionSet
+        Dim ss As GcadSelectionSet
         On Error Resume Next
         Set ss = ThisDrawing.SelectionSets("SS1")
         On Error GoTo 0
@@ -334,7 +363,7 @@ Sub selrecantiguo()
 
         ' Contar los bloques seleccionados y obtener la capa asociada
         For Each obj In ss
-            If TypeOf obj Is AcadBlockReference Then
+            If TypeOf obj Is GcadBlockReference Then
                 Set blk = obj
                 blockName = blk.effectiveName
                 If Not blockDict.Exists(blockName) Then

@@ -3,8 +3,8 @@ Option Explicit
 ' MTN : Multitensor
 
 Sub mtn()
-' luego cada subfunción es llamada con la primera selección de puntos sobre el plano de gcad
-Dim AcadDoc As Object, AcadUtil As Object, AcadModel As Object, Eje1 As Object, blockRef As Object
+' luego cada subfunción es llamada con la primera selección de puntos sobre el plano de Gcad
+Dim GcadDoc As Object, GcadUtil As Object, GcadModel As Object, Eje1 As Object, blockRef As Object
 Dim rutall As String, rutamp As String, rutator As String, rutampacc As String, rutass As String
 Dim PI As Variant, Distancia As Double
 Dim x As Double, y As Double, z As Double, Xs As Double, Ys As Double, Zs As Double, ANG As Double, lpuntal As Double, lregulacion As Double
@@ -13,21 +13,24 @@ Dim punto1 As Variant, punto2 As Variant
 Dim kwordList As String, Ncapa As String, Gcapa As Object
 
 
-Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
-Set AcadModel = AcadDoc.ModelSpace
-Set AcadUtil = AcadDoc.Utility
+Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+Set GcadModel = GcadDoc.ModelSpace
+Set GcadUtil = GcadDoc.Utility
 
 Ncapa = "NoContable"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 40
+Ncapa = "Nonplot"
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
+Gcapa.color = 50
 
 On Error GoTo terminar
 repite = 1
 
 Do While repite = 1
 
-punto1 = AcadUtil.GetPoint(, "1º Punto: ")
-punto2 = AcadUtil.GetPoint(punto1, "2º Punto: ")
+punto1 = GcadUtil.GetPoint(, "1º Punto: ")
+punto2 = GcadUtil.GetPoint(punto1, "2º Punto: ")
 
 x = punto2(0) - punto1(0)
 y = punto2(1) - punto1(1)
@@ -103,7 +106,7 @@ End Sub
 
 Sub tensor_c(punto1 As Variant, punto2 As Variant)
 
-Dim AcadDoc As Object, AcadUtil As Object, AcadModel As Object, Eje1 As Object, blockRef As Object
+Dim GcadDoc As Object, GcadUtil As Object, GcadModel As Object, Eje1 As Object, blockRef As Object
 Dim x As Double, y As Double, z As Double, Xs As Double, Ys As Double, Zs As Double, ANG As Double, lpuntal As Double, lregulacion As Double
 Dim rutatensor As String
 Dim Punto_inicial(0 To 2) As Double, Punto_final(0 To 2) As Double, Punto_inicial2(0 To 2) As Double, Punto_final2(0 To 2) As Double, Punto_aux1(0 To 2) As Double, Punto_aux2(0 To 2) As Double, P1(0 To 2) As Double, P2(0 To 2) As Double
@@ -113,18 +116,18 @@ Dim PI As Variant, Distancia As Double
 Dim PuntoM(0 To 2) As Double, husillo_c As String, cuerpo_c As String, kwordList As String
 
 
-Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
-Set AcadModel = AcadDoc.ModelSpace
-Set AcadUtil = AcadDoc.Utility
+Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+Set GcadModel = GcadDoc.ModelSpace
+Set GcadUtil = GcadDoc.Utility
 
 Ncapa = "Mega"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 Ncapa = "Lolashor"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 Ncapa = "Slims"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 
 rutatensor = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\Tensores\"
@@ -144,15 +147,12 @@ P2(0) = punto2(0): P2(1) = punto2(1): P2(2) = punto2(2)
 ' TRAS SELECCION DE PRIMER PUNTO
 
 Dim k As String, b As Object, entity As Object
-k = InputBox("Ingrese nombre: ")
 
-If k = "" Then
+k = InputBox("Ingrese nombre: ")
 nop:
-    MsgBox "Introduzca un nombre, por favor"
-    k = InputBox("Ingrese nombre: ")
-    If k = "" Then
-        GoTo nop
-    End If
+If k = "" Then
+
+    k = GenerarNombreAleatorio(30)
 End If
     
 If BloqueExiste(k) Then
@@ -166,7 +166,7 @@ If BloqueExiste(k) Then
     If Respuesta = "Sobreescribir" Or Respuesta = "" Then
     
         For Each entity In ThisDrawing.ModelSpace
-            If TypeOf entity Is AcadBlockReference Then
+            If TypeOf entity Is GcadBlockReference Then
                 If entity.effectiveName = k Then
                     entity.Delete
                 End If
@@ -181,12 +181,14 @@ If BloqueExiste(k) Then
     End If
 End If
 
+Dim check As Double
+check = Len(k)
 
 Set b = ThisDrawing.Blocks.Add(punto1, k)
 
 Set Eje1 = ThisDrawing.Blocks.Item(k).AddLine(P1, P2)
 Eje1.Layer = "Nonplot"
-ANG = AcadUtil.AngleFromXAxis(P1, P2)
+ANG = GcadUtil.AngleFromXAxis(P1, P2)
 
 x = P2(0) - P1(0)
 y = P2(1) - P1(1)
@@ -194,6 +196,13 @@ Xs = 1
 Ys = 1
 Zs = 1
 Distancia = Val(Sqr((x ^ 2 + y ^ 2)))
+Dim Longitud As String, orientacion As String, Pinicio0 As String, Pinicio1 As String, Pinicio2 As String, PreMon As String
+
+Pinicio0 = CStr(P1(0))
+Pinicio1 = CStr(P1(1))
+Pinicio2 = CStr(P1(2))
+Longitud = CStr(Distancia)
+orientacion = CStr(ANG)
 
 Punto_inicial(0) = P1(0): Punto_inicial(1) = P1(1): Punto_inicial(2) = P1(2)
 Punto_final(0) = Punto_inicial(0) + Distancia * Cos(ANG): Punto_final(1) = Punto_inicial(1) + Distancia * Sin(ANG): Punto_final(2) = Punto_inicial(2)
@@ -218,9 +227,32 @@ blockRef.Layer = "Nonplot"
 Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(P2, Bulond19, Xs, Ys, Zs, ANG)
 blockRef.Layer = "Nonplot"
 
+PreMon = ""
+Dim NamePre As GcadAttribute
+Set NamePre = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "NombrePremontaje", PreMon)
+
+Dim longitudatt As GcadAttribute
+Set longitudatt = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Longitud", Longitud)
+        
+Dim orientacionatt As GcadAttribute
+Set orientacionatt = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Orientacion", orientacion)
+           
+Dim cooordenadainicio0 As GcadAttribute
+Set cooordenadainicio0 = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Coordenada0", Pinicio0)
+        
+Dim cooordenadainicio1 As GcadAttribute
+Set cooordenadainicio1 = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Coordenada1", Pinicio1)
+        
+Dim cooordenadainicio2 As GcadAttribute
+Set cooordenadainicio2 = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Coordenada2", Pinicio2)
+
 Set blockRef = ThisDrawing.ModelSpace.InsertBlock(punto1, k, Xs, Ys, Zs, 0)
-blockRef.Layer = "NoContable"
-blockRef.Update
+If check = 30 Then
+    blockRef.Explode
+    blockRef.Delete
+Else
+    blockRef.Layer = "NoContable"
+End If
 
 terminar:
 End Sub
@@ -230,7 +262,7 @@ End Sub
 
 Sub tensor_l(punto1 As Variant, punto2 As Variant)
 
-Dim AcadDoc As Object, AcadUtil As Object, AcadModel As Object, Eje1 As Object, blockRef As Object
+Dim GcadDoc As Object, GcadUtil As Object, GcadModel As Object, Eje1 As Object, blockRef As Object
 Dim x As Double, y As Double, z As Double, Xs As Double, Ys As Double, Zs As Double, ANG As Double, lpuntal As Double, lregulacion As Double
 Dim rutatensor As String
 Dim Punto_inicial(0 To 2) As Double, Punto_final(0 To 2) As Double, Punto_inicial2(0 To 2) As Double, Punto_final2(0 To 2) As Double, Punto_aux1(0 To 2) As Double, Punto_aux2(0 To 2) As Double, P1(0 To 2) As Double, P2(0 To 2) As Double
@@ -240,18 +272,18 @@ Dim PI As Variant, Distancia As Double
 Dim PuntoM(0 To 2) As Double, husillo_l As String, cuerpo_l As String, kwordList As String
 
 
-Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
-Set AcadModel = AcadDoc.ModelSpace
-Set AcadUtil = AcadDoc.Utility
+Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+Set GcadModel = GcadDoc.ModelSpace
+Set GcadUtil = GcadDoc.Utility
 
 Ncapa = "Mega"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 Ncapa = "Lolashor"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 Ncapa = "Slims"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 
 rutatensor = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\Tensores\"
@@ -271,15 +303,12 @@ P2(0) = punto2(0): P2(1) = punto2(1): P2(2) = punto2(2)
 ' TRAS SELECCION DE PRIMER PUNTO
 
 Dim k As String, b As Object, entity As Object
+nop:
 k = InputBox("Ingrese nombre: ")
 
 If k = "" Then
-nop:
-    MsgBox "Introduzca un nombre, por favor"
-    k = InputBox("Ingrese nombre: ")
-    If k = "" Then
-        GoTo nop
-    End If
+
+    k = GenerarNombreAleatorio(30)
 End If
     
 If BloqueExiste(k) Then
@@ -293,7 +322,7 @@ If BloqueExiste(k) Then
     If Respuesta = "Sobreescribir" Or Respuesta = "" Then
     
         For Each entity In ThisDrawing.ModelSpace
-            If TypeOf entity Is AcadBlockReference Then
+            If TypeOf entity Is GcadBlockReference Then
                 If entity.effectiveName = k Then
                     entity.Delete
                 End If
@@ -308,12 +337,14 @@ If BloqueExiste(k) Then
     End If
 End If
 
+Dim check As Double
+check = Len(k)
 
 Set b = ThisDrawing.Blocks.Add(punto1, k)
 
 Set Eje1 = ThisDrawing.Blocks.Item(k).AddLine(P1, P2)
 Eje1.Layer = "Nonplot"
-ANG = AcadUtil.AngleFromXAxis(P1, P2)
+ANG = GcadUtil.AngleFromXAxis(P1, P2)
 
 x = P2(0) - P1(0)
 y = P2(1) - P1(1)
@@ -321,6 +352,15 @@ Xs = 1
 Ys = 1
 Zs = 1
 Distancia = Val(Sqr((x ^ 2 + y ^ 2)))
+
+Dim Longitud As String, orientacion As String, Pinicio0 As String, Pinicio1 As String, Pinicio2 As String, PreMon As String
+
+Pinicio0 = CStr(P1(0))
+Pinicio1 = CStr(P1(1))
+Pinicio2 = CStr(P1(2))
+Longitud = CStr(Distancia)
+orientacion = CStr(ANG)
+
 
 Punto_inicial(0) = P1(0): Punto_inicial(1) = P1(1): Punto_inicial(2) = P1(2)
 Punto_final(0) = Punto_inicial(0) + Distancia * Cos(ANG): Punto_final(1) = Punto_inicial(1) + Distancia * Sin(ANG): Punto_final(2) = Punto_inicial(2)
@@ -346,10 +386,33 @@ Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(P2, Bulond19, Xs, Ys, Zs, 
 blockRef.Layer = "Nonplot"
 
 '' FINAL
+PreMon = ""
+Dim NamePre As GcadAttribute
+Set NamePre = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "NombrePremontaje", PreMon)
+
+Dim longitudatt As GcadAttribute
+Set longitudatt = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Longitud", Longitud)
+        
+Dim orientacionatt As GcadAttribute
+Set orientacionatt = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Orientacion", orientacion)
+           
+Dim cooordenadainicio0 As GcadAttribute
+Set cooordenadainicio0 = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Coordenada0", Pinicio0)
+        
+Dim cooordenadainicio1 As GcadAttribute
+Set cooordenadainicio1 = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Coordenada1", Pinicio1)
+        
+Dim cooordenadainicio2 As GcadAttribute
+Set cooordenadainicio2 = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Coordenada2", Pinicio2)
+
 
 Set blockRef = ThisDrawing.ModelSpace.InsertBlock(punto1, k, Xs, Ys, Zs, 0)
-blockRef.Layer = "NoContable"
-blockRef.Update
+If check = 30 Then
+    blockRef.Explode
+    blockRef.Delete
+Else
+    blockRef.Layer = "NoContable"
+End If
 
 terminar:
 End Sub
@@ -358,7 +421,7 @@ End Sub
 
 Sub tensor_xl(punto1 As Variant, punto2 As Variant)
 
-Dim AcadDoc As Object, AcadUtil As Object, AcadModel As Object, Eje1 As Object, blockRef As Object
+Dim GcadDoc As Object, GcadUtil As Object, GcadModel As Object, Eje1 As Object, blockRef As Object
 Dim x As Double, y As Double, z As Double, Xs As Double, Ys As Double, Zs As Double, ANG As Double, lpuntal As Double, lregulacion As Double
 Dim rutatensor As String
 Dim Punto_inicial(0 To 2) As Double, Punto_final(0 To 2) As Double, Punto_inicial2(0 To 2) As Double, Punto_final2(0 To 2) As Double, Punto_aux1(0 To 2) As Double, Punto_aux2(0 To 2) As Double, P1(0 To 2) As Double, P2(0 To 2) As Double
@@ -368,18 +431,18 @@ Dim PI As Variant, Distancia As Double
 Dim PuntoM(0 To 2) As Double, husillo_xl As String, cuerpo_xl As String, kwordList As String
 
 
-Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
-Set AcadModel = AcadDoc.ModelSpace
-Set AcadUtil = AcadDoc.Utility
+Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+Set GcadModel = GcadDoc.ModelSpace
+Set GcadUtil = GcadDoc.Utility
 
 Ncapa = "Mega"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 Ncapa = "Lolashor"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 Ncapa = "Slims"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 
 rutatensor = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\Tensores\"
@@ -399,15 +462,12 @@ P2(0) = punto2(0): P2(1) = punto2(1): P2(2) = punto2(2)
 ' TRAS SELECCION DE PRIMER PUNTO
 
 Dim k As String, b As Object, entity As Object
+nop:
 k = InputBox("Ingrese nombre: ")
 
 If k = "" Then
-nop:
-    MsgBox "Introduzca un nombre, por favor"
-    k = InputBox("Ingrese nombre: ")
-    If k = "" Then
-        GoTo nop
-    End If
+
+    k = GenerarNombreAleatorio(30)
 End If
     
 If BloqueExiste(k) Then
@@ -421,7 +481,7 @@ If BloqueExiste(k) Then
     If Respuesta = "Sobreescribir" Or Respuesta = "" Then
     
         For Each entity In ThisDrawing.ModelSpace
-            If TypeOf entity Is AcadBlockReference Then
+            If TypeOf entity Is GcadBlockReference Then
                 If entity.effectiveName = k Then
                     entity.Delete
                 End If
@@ -436,12 +496,14 @@ If BloqueExiste(k) Then
     End If
 End If
 
+Dim check As Double
+check = Len(k)
 
 Set b = ThisDrawing.Blocks.Add(punto1, k)
 
 Set Eje1 = ThisDrawing.Blocks.Item(k).AddLine(P1, P2)
 Eje1.Layer = "Nonplot"
-ANG = AcadUtil.AngleFromXAxis(P1, P2)
+ANG = GcadUtil.AngleFromXAxis(P1, P2)
 
 x = P2(0) - P1(0)
 y = P2(1) - P1(1)
@@ -449,6 +511,16 @@ Xs = 1
 Ys = 1
 Zs = 1
 Distancia = Val(Sqr((x ^ 2 + y ^ 2)))
+
+Dim Longitud As String, orientacion As String, Pinicio0 As String, Pinicio1 As String, Pinicio2 As String, PreMon As String
+
+Pinicio0 = CStr(P1(0))
+Pinicio1 = CStr(P1(1))
+Pinicio2 = CStr(P1(2))
+Longitud = CStr(Distancia)
+orientacion = CStr(ANG)
+
+
 
 Punto_inicial(0) = P1(0): Punto_inicial(1) = P1(1): Punto_inicial(2) = P1(2)
 Punto_final(0) = Punto_inicial(0) + Distancia * Cos(ANG): Punto_final(1) = Punto_inicial(1) + Distancia * Sin(ANG): Punto_final(2) = Punto_inicial(2)
@@ -474,10 +546,34 @@ blockRef.Layer = "Nonplot"
 
 
 '' FINAL
+PreMon = ""
+Dim NamePre As GcadAttribute
+Set NamePre = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "NombrePremontaje", PreMon)
+
+Dim longitudatt As GcadAttribute
+Set longitudatt = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Longitud", Longitud)
+        
+Dim orientacionatt As GcadAttribute
+Set orientacionatt = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Orientacion", orientacion)
+           
+Dim cooordenadainicio0 As GcadAttribute
+Set cooordenadainicio0 = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Coordenada0", Pinicio0)
+        
+Dim cooordenadainicio1 As GcadAttribute
+Set cooordenadainicio1 = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Coordenada1", Pinicio1)
+        
+Dim cooordenadainicio2 As GcadAttribute
+Set cooordenadainicio2 = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Coordenada2", Pinicio2)
+
+
 
 Set blockRef = ThisDrawing.ModelSpace.InsertBlock(punto1, k, Xs, Ys, Zs, 0)
-blockRef.Layer = "NoContable"
-blockRef.Update
+If check = 30 Then
+    blockRef.Explode
+    blockRef.Delete
+Else
+    blockRef.Layer = "NoContable"
+End If
 
 
 terminar:
@@ -485,7 +581,7 @@ End Sub
 
 Sub tensor_xl2(punto1 As Variant, punto2 As Variant)
 
-Dim AcadDoc As Object, AcadUtil As Object, AcadModel As Object, Eje1 As Object, blockRef As Object
+Dim GcadDoc As Object, GcadUtil As Object, GcadModel As Object, Eje1 As Object, blockRef As Object
 Dim x As Double, y As Double, z As Double, Xs As Double, Ys As Double, Zs As Double, ANG As Double, lpuntal As Double, lregulacion As Double
 Dim rutatensor As String
 Dim Punto_inicial(0 To 2) As Double, Punto_final(0 To 2) As Double, Punto_inicial2(0 To 2) As Double, Punto_final2(0 To 2) As Double, Punto_aux1(0 To 2) As Double, Punto_aux2(0 To 2) As Double, P1(0 To 2) As Double, P2(0 To 2) As Double
@@ -495,18 +591,18 @@ Dim PI As Variant, Distancia As Double
 Dim PuntoM(0 To 2) As Double, husillo_xl2 As String, cuerpo_xl2 As String, kwordList As String
 
 
-Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
-Set AcadModel = AcadDoc.ModelSpace
-Set AcadUtil = AcadDoc.Utility
+Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+Set GcadModel = GcadDoc.ModelSpace
+Set GcadUtil = GcadDoc.Utility
 
 Ncapa = "Mega"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 Ncapa = "Lolashor"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 Ncapa = "Slims"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 
 Dim rutator As String
@@ -526,15 +622,12 @@ P2(0) = punto2(0): P2(1) = punto2(1): P2(2) = punto2(2)
 ' TRAS SELECCION DE PRIMER PUNTO
 
 Dim k As String, b As Object, entity As Object
+nop:
 k = InputBox("Ingrese nombre: ")
 
 If k = "" Then
-nop:
-    MsgBox "Introduzca un nombre, por favor"
-    k = InputBox("Ingrese nombre: ")
-    If k = "" Then
-        GoTo nop
-    End If
+
+    k = GenerarNombreAleatorio(30)
 End If
     
 If BloqueExiste(k) Then
@@ -548,7 +641,7 @@ If BloqueExiste(k) Then
     If Respuesta = "Sobreescribir" Or Respuesta = "" Then
     
         For Each entity In ThisDrawing.ModelSpace
-            If TypeOf entity Is AcadBlockReference Then
+            If TypeOf entity Is GcadBlockReference Then
                 If entity.effectiveName = k Then
                     entity.Delete
                 End If
@@ -563,12 +656,14 @@ If BloqueExiste(k) Then
     End If
 End If
 
+Dim check As Double
+check = Len(k)
 
 Set b = ThisDrawing.Blocks.Add(punto1, k)
 
 Set Eje1 = ThisDrawing.Blocks.Item(k).AddLine(P1, P2)
 Eje1.Layer = "Nonplot"
-ANG = AcadUtil.AngleFromXAxis(P1, P2)
+ANG = GcadUtil.AngleFromXAxis(P1, P2)
 
 x = P2(0) - P1(0)
 y = P2(1) - P1(1)
@@ -576,6 +671,14 @@ Xs = 1
 Ys = 1
 Zs = 1
 Distancia = Val(Sqr((x ^ 2 + y ^ 2)))
+
+Dim Longitud As String, orientacion As String, Pinicio0 As String, Pinicio1 As String, Pinicio2 As String, PreMon As String
+
+Pinicio0 = CStr(P1(0))
+Pinicio1 = CStr(P1(1))
+Pinicio2 = CStr(P1(2))
+Longitud = CStr(Distancia)
+orientacion = CStr(ANG)
 
 Punto_inicial(0) = P1(0): Punto_inicial(1) = P1(1): Punto_inicial(2) = P1(2)
 Punto_final(0) = Punto_inicial(0) + Distancia * Cos(ANG): Punto_final(1) = Punto_inicial(1) + Distancia * Sin(ANG): Punto_final(2) = Punto_inicial(2)
@@ -601,17 +704,41 @@ blockRef.Layer = "Nonplot"
 
 
 '' FINAL
+PreMon = ""
+Dim NamePre As GcadAttribute
+Set NamePre = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "NombrePremontaje", PreMon)
+
+Dim longitudatt As GcadAttribute
+Set longitudatt = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Longitud", Longitud)
+        
+Dim orientacionatt As GcadAttribute
+Set orientacionatt = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Orientacion", orientacion)
+           
+Dim cooordenadainicio0 As GcadAttribute
+Set cooordenadainicio0 = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Coordenada0", Pinicio0)
+        
+Dim cooordenadainicio1 As GcadAttribute
+Set cooordenadainicio1 = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Coordenada1", Pinicio1)
+        
+Dim cooordenadainicio2 As GcadAttribute
+Set cooordenadainicio2 = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Coordenada2", Pinicio2)
+
+
 
 Set blockRef = ThisDrawing.ModelSpace.InsertBlock(punto1, k, Xs, Ys, Zs, 0)
-blockRef.Layer = "NoContable"
-blockRef.Update
+If check = 30 Then
+    blockRef.Explode
+    blockRef.Delete
+Else
+    blockRef.Layer = "NoContable"
+End If
 
 terminar:
 End Sub
 
 Sub tensor_telesc(punto1 As Variant, punto2 As Variant)
 
-Dim AcadDoc As Object, AcadUtil As Object, AcadModel As Object, Eje1 As Object, blockRef As Object
+Dim GcadDoc As Object, GcadUtil As Object, GcadModel As Object, Eje1 As Object, blockRef As Object
 Dim x As Double, y As Double, z As Double, Xs As Double, Ys As Double, Zs As Double, ANG As Double, lpuntal As Double, lregulacion As Double
 Dim rutatensor As String
 Dim Punto_inicial(0 To 2) As Double, Punto_final(0 To 2) As Double, Punto_inicial2(0 To 2) As Double, Punto_final2(0 To 2) As Double, Punto_aux1(0 To 2) As Double, Punto_aux2(0 To 2) As Double, P1(0 To 2) As Double, P2(0 To 2) As Double
@@ -625,18 +752,18 @@ rutator = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\1
 Dim Bulond19 As String
 Bulond19 = rutator & "1M19_BULOND19.dwg"
 
-Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
-Set AcadModel = AcadDoc.ModelSpace
-Set AcadUtil = AcadDoc.Utility
+Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+Set GcadModel = GcadDoc.ModelSpace
+Set GcadUtil = GcadDoc.Utility
 
 Ncapa = "Mega"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 Ncapa = "Lolashor"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 Ncapa = "Slims"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 
 rutatensor = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\Tensores\"
@@ -651,15 +778,12 @@ P2(0) = punto2(0): P2(1) = punto2(1): P2(2) = punto2(2)
 ' TRAS SELECCION DE PRIMER PUNTO
 
 Dim k As String, b As Object, entity As Object
+nop:
 k = InputBox("Ingrese nombre: ")
 
 If k = "" Then
-nop:
-    MsgBox "Introduzca un nombre, por favor"
-    k = InputBox("Ingrese nombre: ")
-    If k = "" Then
-        GoTo nop
-    End If
+
+    k = GenerarNombreAleatorio(30)
 End If
     
 If BloqueExiste(k) Then
@@ -673,7 +797,7 @@ If BloqueExiste(k) Then
     If Respuesta = "Sobreescribir" Or Respuesta = "" Then
     
         For Each entity In ThisDrawing.ModelSpace
-            If TypeOf entity Is AcadBlockReference Then
+            If TypeOf entity Is GcadBlockReference Then
                 If entity.effectiveName = k Then
                     entity.Delete
                 End If
@@ -688,13 +812,14 @@ If BloqueExiste(k) Then
     End If
 End If
 
-
+Dim check As Double
+check = Len(k)
 Set b = ThisDrawing.Blocks.Add(punto1, k)
 
 
 Set Eje1 = ThisDrawing.Blocks.Item(k).AddLine(P1, P2)
 Eje1.Layer = "Nonplot"
-ANG = AcadUtil.AngleFromXAxis(P1, P2)
+ANG = GcadUtil.AngleFromXAxis(P1, P2)
 
 x = P2(0) - P1(0)
 y = P2(1) - P1(1)
@@ -770,8 +895,13 @@ blockRef.Layer = "Nonplot"
 '' FINAL
 
 Set blockRef = ThisDrawing.ModelSpace.InsertBlock(punto1, k, Xs, Ys, Zs, 0)
-blockRef.Layer = "NoContable"
-blockRef.Update
+If check = 30 Then
+    blockRef.Explode
+    blockRef.Delete
+Else
+    blockRef.Layer = "NoContable"
+End If
+
 
 
 terminar:
@@ -781,7 +911,7 @@ End Sub
 
 Sub ll_tensor(punto1 As Variant, punto2 As Variant)
 
-Dim AcadDoc As Object, AcadUtil As Object, AcadModel As Object, Eje1 As Object, blockRef As Object
+Dim GcadDoc As Object, GcadUtil As Object, GcadModel As Object, Eje1 As Object, blockRef As Object
 Dim rutall As String, rutamp As String, rutator As String, rutampacc As String, rutass As String
 Dim PI As Variant
 Dim x As Double, y As Double, z As Double, Xs As Double, Ys As Double, Zs As Double, ANG As Double, lpuntal As Double, lregulacion As Double
@@ -797,18 +927,18 @@ Dim Gcapa As Object
 Dim n2200 As Integer, n1100 As Integer, n550 As Integer, n450 As Integer, n270 As Integer, n180mp As Integer, n90 As Integer, n540 As Integer, n360 As Integer, n180 As Integer, nespada As Integer, divhueco As Integer
 Dim M20x90_4 As String, M20x50_4 As String, M20x60_4 As String, M16x40_4 As String, M16x40_8 As String, M16x40_16 As String, M24x110 As String
 
-Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
-Set AcadModel = AcadDoc.ModelSpace
-Set AcadUtil = AcadDoc.Utility
+Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+Set GcadModel = GcadDoc.ModelSpace
+Set GcadUtil = GcadDoc.Utility
 
 Ncapa = "Mega"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 Ncapa = "Lolashor"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 Ncapa = "Slims"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 
 On Error GoTo terminar
@@ -877,8 +1007,8 @@ Bulond23 = rutator & "1M23_BULOND23.dwg"
 
 
     'Geometría:
-    'punto1 = AcadUtil.GetPoint(, "1º Punto: ")
-    'punto2 = AcadUtil.GetPoint(punto1, "2º Punto: ")
+    'punto1 = GcadUtil.GetPoint(, "1º Punto: ")
+    'punto2 = GcadUtil.GetPoint(punto1, "2º Punto: ")
     
     
 For i = 0 To 2
@@ -897,21 +1027,18 @@ Dim PStrut2 As Variant
 P1(0) = punto1(0): P1(1) = punto1(1): P1(2) = punto1(2)
 P2prov(0) = punto2(0): P2prov(1) = punto2(1): P2prov(2) = punto2(2)
 
-PStrut1 = AcadUtil.GetPoint(, "1 anclaje del Strut Adaptor: ")
-PStrut2 = AcadUtil.GetPoint(PStrut1, "2 anclaje del Strut Adaptor: ")
+PStrut1 = GcadUtil.GetPoint(, "1 anclaje del Strut Adaptor: ")
+PStrut2 = GcadUtil.GetPoint(PStrut1, "2 anclaje del Strut Adaptor: ")
 
 ' TRAS SELECCION DE PRIMER PUNTO
 
 Dim k As String, b As Object, entity As Object
+nop:
 k = InputBox("Ingrese nombre: ")
 
 If k = "" Then
-nop:
-    MsgBox "Introduzca un nombre, por favor"
-    k = InputBox("Ingrese nombre: ")
-    If k = "" Then
-        GoTo nop
-    End If
+
+    k = GenerarNombreAleatorio(30)
 End If
     
 If BloqueExiste(k) Then
@@ -925,7 +1052,7 @@ If BloqueExiste(k) Then
     If Respuesta = "Sobreescribir" Or Respuesta = "" Then
     
         For Each entity In ThisDrawing.ModelSpace
-            If TypeOf entity Is AcadBlockReference Then
+            If TypeOf entity Is GcadBlockReference Then
                 If entity.effectiveName = k Then
                     entity.Delete
                 End If
@@ -940,6 +1067,8 @@ If BloqueExiste(k) Then
     End If
 End If
 
+Dim check As Double
+check = Len(k)
 
 Set b = ThisDrawing.Blocks.Add(punto1, k)
 
@@ -950,14 +1079,14 @@ Dim Pbulon2(0 To 2) As Double
 Pbulon1(0) = PStrut1(0): Pbulon1(1) = PStrut1(1): Pbulon1(2) = PStrut1(2)
 Pbulon2(0) = PStrut2(0): Pbulon2(1) = PStrut2(1): Pbulon2(2) = PStrut2(2)
 
-ANG2 = AcadUtil.AngleFromXAxis(PStrut2, PStrut1)
+ANG2 = GcadUtil.AngleFromXAxis(PStrut2, PStrut1)
 
 PStrut(0) = PStrut2(0) + 90 * Cos(ANG2): PStrut(1) = PStrut2(1) + 90 * Sin(ANG2): PStrut(2) = PStrut2(2)
-ANG3 = AcadUtil.AngleFromXAxis(P2prov, PStrut)
+ANG3 = GcadUtil.AngleFromXAxis(P2prov, PStrut)
 P2(0) = PStrut(0) + 104 * Cos(ANG3): P2(1) = PStrut(1) + 104 * Sin(ANG3): P2(2) = PStrut(2)
 
        Set Eje1 = ThisDrawing.Blocks.Item(k).AddLine(P1, P2)
-       ANG = AcadUtil.AngleFromXAxis(P1, P2)
+       ANG = GcadUtil.AngleFromXAxis(P1, P2)
     
        x = P2(0) - P1(0)
        y = P2(1) - P1(1)
@@ -965,6 +1094,15 @@ P2(0) = PStrut(0) + 104 * Cos(ANG3): P2(1) = PStrut(1) + 104 * Sin(ANG3): P2(2) 
        Ys = 1
        Zs = 1
        Distancia = Val(Sqr((x ^ 2 + y ^ 2)))
+       
+       Dim Longitud As String, orientacion As String, Pinicio0 As String, Pinicio1 As String, Pinicio2 As String, PreMon As String
+
+        Pinicio0 = CStr(P1(0))
+        Pinicio1 = CStr(P1(1))
+        Pinicio2 = CStr(P1(2))
+        Longitud = CStr(Distancia)
+        orientacion = CStr(ANG)
+
        
        Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Pbulon1, Bulond19, Xs, Ys, Zs, ANG)
        blockRef.Layer = "Nonplot"
@@ -1268,11 +1406,34 @@ P2(0) = PStrut(0) + 104 * Cos(ANG3): P2(1) = PStrut(1) + 104 * Sin(ANG3): P2(2) 
 Dim strut As String
 strut = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\Tensores\Strut.dwg"
 Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(PStrut, strut, Xs, Ys, Zs, ANG3 - (PI) / 2)
-blockRef.Layer = "Slims"
+If check = 30 Then
+    blockRef.Explode
+    blockRef.Delete
+Else
+    blockRef.Layer = "NoContable"
+End If
     
     
 Eje1.Layer = "Nonplot"
 
+PreMon = ""
+Dim NamePre As GcadAttribute
+Set NamePre = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "NombrePremontaje", PreMon)
+
+Dim longitudatt As GcadAttribute
+Set longitudatt = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Longitud", Longitud)
+        
+Dim orientacionatt As GcadAttribute
+Set orientacionatt = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Orientacion", orientacion)
+           
+Dim cooordenadainicio0 As GcadAttribute
+Set cooordenadainicio0 = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Coordenada0", Pinicio0)
+        
+Dim cooordenadainicio1 As GcadAttribute
+Set cooordenadainicio1 = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Coordenada1", Pinicio1)
+        
+Dim cooordenadainicio2 As GcadAttribute
+Set cooordenadainicio2 = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Coordenada2", Pinicio2)
 
 
 '' FINAL
@@ -1288,9 +1449,9 @@ End Sub
 Sub ssc_tensor(punto1 As Variant, punto2 As Variant)
 Dim rutass As String
 Dim rutat As String, rutags As String
-Dim AcadDoc As Object
-Dim AcadUtil As Object
-Dim AcadModel As Object, kwordList As String
+Dim GcadDoc As Object
+Dim GcadUtil As Object
+Dim GcadModel As Object, kwordList As String
 Dim x As Double
 Dim y As Double
 Dim z As Double
@@ -1353,15 +1514,15 @@ Dim lfija As Double
 Dim Ncapaslim As String
 Dim capaslim As Object
 
-Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
-Set AcadModel = AcadDoc.ModelSpace
-Set AcadUtil = AcadDoc.Utility
+Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+Set GcadModel = GcadDoc.ModelSpace
+Set GcadUtil = GcadDoc.Utility
 
 On Error GoTo terminar
 repite = 1
 
 Ncapaslim = "Slims"
-Set capaslim = AcadDoc.Layers.Add(Ncapaslim)
+Set capaslim = GcadDoc.Layers.Add(Ncapaslim)
 capaslim.color = 30
 
 rutass = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\SSlimsG\"
@@ -1443,23 +1604,20 @@ lfija = nangulo * langulo + n360os * l360 + nespadags * lespadags + nespadampcor
 
 
 'Geometría:
-'punto1 = AcadUtil.GetPoint(, "1º Punto: ")
-'punto2 = AcadUtil.GetPoint(punto1, "2º Punto: ")
+'punto1 = GcadUtil.GetPoint(, "1º Punto: ")
+'punto2 = GcadUtil.GetPoint(punto1, "2º Punto: ")
 P1(0) = punto1(0): P1(1) = punto1(1): P1(2) = punto1(2)
 P2(0) = punto2(0): P2(1) = punto2(1): P2(2) = punto2(2)
 
 ' TRAS SELECCION DE PRIMER PUNTO
 
 Dim k As String, b As Object, entity As Object
+nop:
 k = InputBox("Ingrese nombre: ")
 
 If k = "" Then
-nop:
-    MsgBox "Introduzca un nombre, por favor"
-    k = InputBox("Ingrese nombre: ")
-    If k = "" Then
-        GoTo nop
-    End If
+
+    k = GenerarNombreAleatorio(30)
 End If
     
 If BloqueExiste(k) Then
@@ -1473,7 +1631,7 @@ If BloqueExiste(k) Then
     If Respuesta = "Sobreescribir" Or Respuesta = "" Then
     
         For Each entity In ThisDrawing.ModelSpace
-            If TypeOf entity Is AcadBlockReference Then
+            If TypeOf entity Is GcadBlockReference Then
                 If entity.effectiveName = k Then
                     entity.Delete
                 End If
@@ -1488,11 +1646,13 @@ If BloqueExiste(k) Then
     End If
 End If
 
+Dim check As Double
+check = Len(k)
 
 Set b = ThisDrawing.Blocks.Add(punto1, k)
 
 Set Eje1 = ThisDrawing.Blocks.Item(k).AddLine(P1, P2)
-ANG = AcadUtil.AngleFromXAxis(P1, P2)
+ANG = GcadUtil.AngleFromXAxis(P1, P2)
 
 x = P2(0) - P1(0)
 y = P2(1) - P1(1)
@@ -1749,8 +1909,13 @@ blockRef.Layer = "Nonplot"
 ' FINAL
 
 Set blockRef = ThisDrawing.ModelSpace.InsertBlock(punto1, k, Xs, Ys, Zs, 0)
-blockRef.Layer = "NoContable"
-blockRef.Update
+
+If check = 30 Then
+    blockRef.Explode
+    blockRef.Delete
+Else
+    blockRef.Layer = "NoContable"
+End If
 
 
 Eje1.Layer = "Nonplot"
@@ -1762,9 +1927,9 @@ End Sub
 Sub ssclargo_tensor(punto1 As Variant, punto2 As Variant)
 Dim rutass As String
 Dim rutat As String, rutags As String
-Dim AcadDoc As Object
-Dim AcadUtil As Object
-Dim AcadModel As Object
+Dim GcadDoc As Object
+Dim GcadUtil As Object
+Dim GcadModel As Object
 Dim x As Double
 Dim y As Double
 Dim z As Double
@@ -1839,15 +2004,15 @@ Dim lfija As Double
 Dim Ncapaslim As String
 Dim capaslim As Object
 
-Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
-Set AcadModel = AcadDoc.ModelSpace
-Set AcadUtil = AcadDoc.Utility
+Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+Set GcadModel = GcadDoc.ModelSpace
+Set GcadUtil = GcadDoc.Utility
 
 On Error GoTo terminar
 repite = 1
 
 Ncapaslim = "Slims"
-Set capaslim = AcadDoc.Layers.Add(Ncapaslim)
+Set capaslim = GcadDoc.Layers.Add(Ncapaslim)
 capaslim.color = 30
 
 rutass = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\SSlimsG\"
@@ -1931,23 +2096,20 @@ lfija = nangulo * langulo + n360os * l360 + nespadags * lespadags + nespadampcor
 
 
 'Geometría:
-'punto1 = AcadUtil.GetPoint(, "1º Punto: ")
-'punto2 = AcadUtil.GetPoint(punto1, "2º Punto: ")
+'punto1 = GcadUtil.GetPoint(, "1º Punto: ")
+'punto2 = GcadUtil.GetPoint(punto1, "2º Punto: ")
 P1(0) = punto1(0): P1(1) = punto1(1): P1(2) = punto1(2)
 P2prov(0) = punto2(0): P2prov(1) = punto2(1): P2prov(2) = punto2(2)
 
 ' TRAS SELECCION DE PRIMER PUNTO
 
 Dim k As String, b As Object, entity As Object
+nop:
 k = InputBox("Ingrese nombre: ")
 
 If k = "" Then
-nop:
-    MsgBox "Introduzca un nombre, por favor"
-    k = InputBox("Ingrese nombre: ")
-    If k = "" Then
-        GoTo nop
-    End If
+
+    k = GenerarNombreAleatorio(30)
 End If
     
 If BloqueExiste(k) Then
@@ -1961,7 +2123,7 @@ If BloqueExiste(k) Then
     If Respuesta = "Sobreescribir" Or Respuesta = "" Then
     
         For Each entity In ThisDrawing.ModelSpace
-            If TypeOf entity Is AcadBlockReference Then
+            If TypeOf entity Is GcadBlockReference Then
                 If entity.effectiveName = k Then
                     entity.Delete
                 End If
@@ -1976,12 +2138,14 @@ If BloqueExiste(k) Then
     End If
 End If
 
+Dim check As Double
+check = Len(k)
 
 Set b = ThisDrawing.Blocks.Add(punto1, k)
 
 
-PStrut1 = AcadUtil.GetPoint(, "1 anclaje del Strut Adaptor: ")
-PStrut2 = AcadUtil.GetPoint(PStrut1, "2 anclaje del Strut Adaptor: ")
+PStrut1 = GcadUtil.GetPoint(, "1 anclaje del Strut Adaptor: ")
+PStrut2 = GcadUtil.GetPoint(PStrut1, "2 anclaje del Strut Adaptor: ")
 
 Dim Pbulon1(0 To 2) As Double
 Dim Pbulon2(0 To 2) As Double
@@ -1991,16 +2155,16 @@ Pbulon2(0) = PStrut2(0): Pbulon2(1) = PStrut2(1): Pbulon2(2) = PStrut2(2)
 
 
 
-ANG2 = AcadUtil.AngleFromXAxis(PStrut2, PStrut1)
+ANG2 = GcadUtil.AngleFromXAxis(PStrut2, PStrut1)
 
 PStrut(0) = PStrut2(0) + 90 * Cos(ANG2): PStrut(1) = PStrut2(1) + 90 * Sin(ANG2): PStrut(2) = PStrut2(2)
-ANG3 = AcadUtil.AngleFromXAxis(P2prov, PStrut)
+ANG3 = GcadUtil.AngleFromXAxis(P2prov, PStrut)
 P2(0) = PStrut(0) + 104 * Cos(ANG3): P2(1) = PStrut(1) + 104 * Sin(ANG3): P2(2) = PStrut(2)
 
 
 
 Set Eje1 = ThisDrawing.Blocks.Item(k).AddLine(P1, P2)
-ANG = AcadUtil.AngleFromXAxis(P1, P2)
+ANG = GcadUtil.AngleFromXAxis(P1, P2)
 
 
 x = P2(0) - P1(0)
@@ -2318,8 +2482,12 @@ blockRef.Layer = "Slims"
 '' FINAL
 
 Set blockRef = ThisDrawing.ModelSpace.InsertBlock(punto1, k, Xs, Ys, Zs, 0)
-blockRef.Layer = "NoContable"
-blockRef.Update
+If check = 30 Then
+    blockRef.Explode
+    blockRef.Delete
+Else
+    blockRef.Layer = "NoContable"
+End If
 
 
 Eje1.Layer = "Nonplot"
@@ -2333,9 +2501,9 @@ Dim rutags As String
 Dim ruta1 As String
 Dim husillo As String
 Dim ruta2 As String, rutass As String
-Dim AcadDoc As Object
-Dim AcadUtil As Object
-Dim AcadModel As Object
+Dim GcadDoc As Object
+Dim GcadUtil As Object
+Dim GcadModel As Object
 Dim x As Double
 Dim y As Double
 Dim z As Double
@@ -2409,9 +2577,9 @@ Dim i As Integer
 Dim lfija As Double
 Dim Ncapaslim As String, vigaM As String
 Dim capaslim As Object
-Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
-Set AcadModel = AcadDoc.ModelSpace
-Set AcadUtil = AcadDoc.Utility
+Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+Set GcadModel = GcadDoc.ModelSpace
+Set GcadUtil = GcadDoc.Utility
 On Error GoTo terminar
 repite = 1
 'Valores constantes
@@ -2439,7 +2607,7 @@ lespadamplarga = 358
 lespadampcorta = 158
 
 Ncapaslim = "Slims"
-Set capaslim = AcadDoc.Layers.Add(Ncapaslim)
+Set capaslim = GcadDoc.Layers.Add(Ncapaslim)
 capaslim.color = 30
 
 ruta1 = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\Tensor80x4\"
@@ -2486,8 +2654,8 @@ GoTo terminar
 End If
 
 
-'punto1 = AcadUtil.GetPoint(, "1º Punto: ")
-'punto2 = AcadUtil.GetPoint(punto1, "2º Punto: ")
+'punto1 = GcadUtil.GetPoint(, "1º Punto: ")
+'punto2 = GcadUtil.GetPoint(punto1, "2º Punto: ")
 P1(0) = punto1(0): P1(1) = punto1(1): P1(2) = punto1(2)
 P2(0) = punto2(0): P2(1) = punto2(1): P2(2) = punto2(2)
 
@@ -2495,15 +2663,12 @@ P2(0) = punto2(0): P2(1) = punto2(1): P2(2) = punto2(2)
 ' TRAS SELECCION DE PRIMER PUNTO
 
 Dim k As String, b As Object, entity As Object
+nop:
 k = InputBox("Ingrese nombre: ")
 
 If k = "" Then
-nop:
-    MsgBox "Introduzca un nombre, por favor"
-    k = InputBox("Ingrese nombre: ")
-    If k = "" Then
-        GoTo nop
-    End If
+
+    k = GenerarNombreAleatorio(30)
 End If
     
 If BloqueExiste(k) Then
@@ -2517,7 +2682,7 @@ If BloqueExiste(k) Then
     If Respuesta = "Sobreescribir" Or Respuesta = "" Then
     
         For Each entity In ThisDrawing.ModelSpace
-            If TypeOf entity Is AcadBlockReference Then
+            If TypeOf entity Is GcadBlockReference Then
                 If entity.effectiveName = k Then
                     entity.Delete
                 End If
@@ -2532,11 +2697,13 @@ If BloqueExiste(k) Then
     End If
 End If
 
+Dim check As Double
+check = Len(k)
 
 Set b = ThisDrawing.Blocks.Add(punto1, k)
 
 Set Eje1 = ThisDrawing.Blocks.Item(k).AddLine(P1, P2)
-ANG = AcadUtil.AngleFromXAxis(P1, P2)
+ANG = GcadUtil.AngleFromXAxis(P1, P2)
 
 x = P2(0) - P1(0)
 y = P2(1) - P1(1)
@@ -2896,8 +3063,12 @@ End If
 '' FINAL
 
 Set blockRef = ThisDrawing.ModelSpace.InsertBlock(punto1, k, Xs, Ys, Zs, 0)
-blockRef.Layer = "NoContable"
-blockRef.Update
+If check = 30 Then
+    blockRef.Explode
+    blockRef.Delete
+Else
+    blockRef.Layer = "NoContable"
+End If
 
 
 
@@ -2926,7 +3097,22 @@ Function BloqueExiste(blockNamedelet As String) As Boolean
 End Function
 
 
+Function GenerarNombreAleatorio(Longitud As Integer) As String
+    Dim i As Integer
+    Dim Nombre As String
+    Dim Caracter As String
+    Dim Rango As String
 
+    Rango = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    
+    Nombre = ""
+    For i = 1 To Longitud
+        Caracter = Mid(Rango, Int((Len(Rango) * Rnd) + 1), 1)
+        Nombre = Nombre & Caracter
+    Next i
+    
+    GenerarNombreAleatorio = Nombre
+End Function
 
 
 

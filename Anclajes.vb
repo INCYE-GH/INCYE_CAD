@@ -1,7 +1,7 @@
 Option Explicit
 
 Sub an()
-    Dim gcadDoc As Object, gcadUtil As Object, gcadModel As Object, blockRef As Object
+    Dim GcadDoc As Object, GcadUtil As Object, GcadModel As Object, blockRef As Object
     Dim rutator As String, capa As String, referencia As String, metrica As String, bloque As String, Respuesta As String, rutabul19 As String, rutabul23 As String
     Dim punto1 As Variant
     Dim Gcapa As Object
@@ -14,12 +14,12 @@ Sub an()
     Dim acBlock As GcadBlockReference
     Dim numElements As Integer
     
-    Set gcadDoc = GetObject(, "gcad.Application").ActiveDocument
-    Set gcadModel = gcadDoc.ModelSpace
-    Set gcadUtil = gcadDoc.Utility
+    Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+    Set GcadModel = GcadDoc.ModelSpace
+    Set GcadUtil = GcadDoc.Utility
 
     Ncapa = "Nonplot"
-    Set Gcapa = gcadDoc.Layers.Add(Ncapa)
+    Set Gcapa = GcadDoc.Layers.Add(Ncapa)
     Gcapa.color = 2
 
     On Error GoTo terminar
@@ -41,23 +41,23 @@ Sub an()
             numero = InputBox("Introduce el número de unidades", "NÚMERO DE UNIDADES", "1", 750, 750, "DEMO.HLP", 10)
             'If IsNumeric(numero) = False Then Respuesta = MsgBox("Debes introducir un número entero, inténtalo de nuevo", , "ERROR", "DEMO.HLP", 750)
         'Loop
-		
-		If numero = vbNullString Then
-			MsgBox "Operación cancelada."
-			Exit Sub ' Sale del subprocedimiento si se cancela la operación
-		End If
+        
+        If numero = vbNullString Then
+            MsgBox "Operación cancelada."
+            Exit Sub ' Sale del subprocedimiento si se cancela la operación
+        End If
 
-		' Verifica si la entrada es un número entero
-		If Not IsNumeric(numero) Then
-			MsgBox "Debes introducir un número entero, inténtalo de nuevo", , "ERROR", "DEMO.HLP", 750
-			'Exit Sub ' Sale del subprocedimiento si la entrada no es un número
-		End If
-		
-		loop
+        ' Verifica si la entrada es un número entero
+        If Not IsNumeric(numero) Then
+            MsgBox "Debes introducir un número entero, inténtalo de nuevo", , "ERROR", "DEMO.HLP", 750
+            'Exit Sub ' Sale del subprocedimiento si la entrada no es un número
+        End If
+        
+        Loop
 
         repite = 1
         Do While repite = 1
-            punto1 = gcadUtil.GetPoint(, "1º Punto: ")
+            punto1 = GcadUtil.GetPoint(, "1º Punto: ")
             P1(0) = punto1(0): P1(1) = punto1(1): P1(2) = punto1(2)
 
             Xs = 1
@@ -67,7 +67,7 @@ Sub an()
 
             Do While i < numero
                 If Dir(bloque) <> "" Then  ' Verificar si el archivo del bloque existe
-                    Set blockRef = gcadModel.InsertBlock(P1, bloque, Xs, Ys, Zs, 0)
+                    Set blockRef = GcadModel.InsertBlock(P1, bloque, Xs, Ys, Zs, 0)
                     blockRef.Layer = "Nonplot"
                 Else
                     MsgBox "El archivo del bloque no existe: " & bloque, vbExclamation, "Error"
@@ -77,33 +77,33 @@ Sub an()
             Loop
         Loop
 
-	ElseIf bloque = "Bulon" Then
-		kwordList = "A-M19X180 B-M23X160"
+    ElseIf bloque = "Bulon" Then
+        kwordList = "A-M19X180 B-M23X160"
         ThisDrawing.Utility.InitializeUserInput 0, kwordList
         referencia = ThisDrawing.Utility.GetKeyword(vbLf & "Metrica: [A-M19X180/B-M23X160]")
-		
-		repite = 1
-		Do While repite = 1
-            punto1 = gcadUtil.GetPoint(, "1º Punto: ")
+        
+        repite = 1
+        Do While repite = 1
+            punto1 = GcadUtil.GetPoint(, "1º Punto: ")
             P1(0) = punto1(0): P1(1) = punto1(1): P1(2) = punto1(2)
 
             Xs = 1
             Ys = 1
             Zs = 1
-			
-			rutabul19 = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\TORNILLERIA\1M19_BULOND19.dwg"
-			rutabul23 = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\TORNILLERIA\1M23_BULOND23.dwg"
-		
-		If Referencia = "A-M19X180" Then
-		Set blockRef = gcadModel.InsertBlock(P1, rutabul19, Xs, Ys, Zs, 0) 
+            
+            rutabul19 = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\TORNILLERIA\1M19_BULOND19.dwg"
+            rutabul23 = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\TORNILLERIA\1M23_BULOND23.dwg"
+        
+        If referencia = "A-M19X180" Then
+        Set blockRef = GcadModel.InsertBlock(P1, rutabul19, Xs, Ys, Zs, 0)
             blockRef.Layer = "Nonplot"
-			
-		ElseIf Referencia = "B-M23X160" Then
-		Set blockRef = gcadModel.InsertBlock(P1, rutabul23, Xs, Ys, Zs, 0) 
+            
+        ElseIf referencia = "B-M23X160" Then
+        Set blockRef = GcadModel.InsertBlock(P1, rutabul23, Xs, Ys, Zs, 0)
             blockRef.Layer = "Nonplot"
-			
-		End If
-		loop
+            
+        End If
+        Loop
 
     ElseIf bloque = "Tornillos" Then
         kwordList = "A-M16 B-M20 C-M24 D-M30"
@@ -116,7 +116,7 @@ Sub an()
             metrica = ThisDrawing.Utility.GetKeyword(vbLf & "Referencia: [A-M16X40/B-M16X40A/C-M16X60/D-M16X90/E-M16X110/F-M16X150]")
             
             ElseIf referencia = "B-M20" Then
-            kwordList = "A-M20X40 B-M20X50 C-M20X60 D-M20X60A E-M20X80A F-M20X80{12.9} G-M20X80{12.9}RP H-M20X90 I-M20X100A J-M20X110 K-M20X130 L-M20X150 M-M20X160 N-M20X160{12.9}A" 
+            kwordList = "A-M20X40 B-M20X50 C-M20X60 D-M20X60A E-M20X80A F-M20X80{12.9} G-M20X80{12.9}RP H-M20X90 I-M20X100A J-M20X110 K-M20X130 L-M20X150 M-M20X160 N-M20X160{12.9}A"
             ThisDrawing.Utility.InitializeUserInput 0, kwordList
             metrica = ThisDrawing.Utility.GetKeyword(vbLf & "Referencia: [A-M20X40/B-M20X50/C-M20X60/D-M20X60A/E-M20X80A/F-M20X80{12.9}/G-M20X80{12.9}RP/H-M20X90/I-M20X100A/J-M20X110/K-M20X130/L-M20X150/M-M20X160/N-M20X160{12.9}A]")
             
@@ -137,24 +137,24 @@ Sub an()
             numero = InputBox("Introduce el número de unidades", "NÚMERO DE UNIDADES", "1", 750, 750, "DEMO.HLP", 10)
             'If IsNumeric(numero) = False Then Respuesta = MsgBox("Debes introducir un número entero, inténtalo de nuevo", , "ERROR", "DEMO.HLP", 750)
         'Loop
-		
-		
-		If numero = vbNullString Then
-			MsgBox "Operación cancelada."
-			Exit Sub ' Sale del subprocedimiento si se cancela la operación
-		End If
+        
+        
+        If numero = vbNullString Then
+            MsgBox "Operación cancelada."
+            Exit Sub ' Sale del subprocedimiento si se cancela la operación
+        End If
 
-		' Verifica si la entrada es un número entero
-		If Not IsNumeric(numero) Then
-			MsgBox "Debes introducir un número entero, inténtalo de nuevo", , "ERROR", "DEMO.HLP", 750
-			'Exit Sub ' Sale del subprocedimiento si la entrada no es un número
-		End If
-		
-		Loop
+        ' Verifica si la entrada es un número entero
+        If Not IsNumeric(numero) Then
+            MsgBox "Debes introducir un número entero, inténtalo de nuevo", , "ERROR", "DEMO.HLP", 750
+            'Exit Sub ' Sale del subprocedimiento si la entrada no es un número
+        End If
+        
+        Loop
 
         repite = 1
         Do While repite = 1
-            punto1 = gcadUtil.GetPoint(, "1º Punto: ")
+            punto1 = GcadUtil.GetPoint(, "1º Punto: ")
             P1(0) = punto1(0): P1(1) = punto1(1): P1(2) = punto1(2)
 
             Xs = 1
@@ -164,7 +164,7 @@ Sub an()
             bloque = rutator & numero & Right(metrica, Len(metrica) - 1) & ".dwg"
 
             If Dir(bloque) <> "" Then  ' Verificar si el archivo del tornillo existe
-                Set blockRef = gcadModel.InsertBlock(P1, bloque, Xs, Ys, Zs, 0)
+                Set blockRef = GcadModel.InsertBlock(P1, bloque, Xs, Ys, Zs, 0)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
@@ -191,7 +191,7 @@ Sub an()
                 nuevoNombre = "0" & numero & Right(metrica, Len(metrica) - 2)
 
                 ' Modificar el nombre del bloque existente
-                Dim blk As gcadBlock
+                Dim blk As GcadBlock
                 Set blk = ThisDrawing.Blocks.Item(nombreBloqueExistente)
         
                 ' Cambiar el nombre del bloque existente
@@ -220,7 +220,7 @@ Sub an()
 
                 'MsgBox "Proceso completado."
                 
-                Set blockRef = gcadModel.InsertBlock(P1, bloque, Xs, Ys, Zs, 0)
+                Set blockRef = GcadModel.InsertBlock(P1, bloque, Xs, Ys, Zs, 0)
                 blockRef.Layer = "Nonplot"
                 blockRef.Update
                 blockRef.Explode
@@ -250,6 +250,7 @@ Sub ModPropAtri(acBlock As GcadBlockReference, strText As String)
         End If
     Next i
 End Sub
+
 
 
 

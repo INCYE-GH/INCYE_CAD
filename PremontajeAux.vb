@@ -1,23 +1,25 @@
 Public consecutivo As Integer
-Public insertionP(0 To 2) As Double
-Public insertionT(0 To 2) As Double
-Public b As Object
 
-Sub premontaje2()
+Sub premontaje(noContableBlocks As Collection)
     Dim obj As GcadEntity
     Dim blk As GcadBlockReference
     Dim blockName As String
     
     Dim PA(0 To 2) As Double, PB(0 To 2) As Double
     Dim insertionPoint2(0 To 2) As Double
+    Dim insertionT(0 To 2) As Double
+    Dim insertionP(0 To 2) As Double
     
     Dim orientation As Double
+    Dim orientationa As Double
     
     Dim textHeight As Double
     Dim textHeight2 As Double
     Dim textToInsert As String
-    Dim escalaPapel As Double
-        
+    Dim textObj As GcadText
+    Dim newText As GcadObject
+    Dim newText2 As GcadObject
+    
     Dim rutaps As String, rutapl As String, rutap6 As String
     Dim ps As String
     
@@ -38,352 +40,18 @@ Sub premontaje2()
     Dim Distancia As Double
     Dim obj2 As GcadEntity
     Dim blk2 As GcadBlockReference
-    Dim NamePre As String
     
     Dim blockRef As GcadBlockReference
-    Dim noContableBlocks As New Collection ' Colección para almacenar los bloques "NoContable"
-        
+    Dim blockRef2 As Object
+    
+    Dim PI As Double
+    PI = 4 * Atn(1)
+    
     Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
     Set GcadModel = GcadDoc.ModelSpace
     Set GcadUtil = GcadDoc.Utility
     
     On Error GoTo terminar
-
-    ' Verificar si hay un dibujo activo
-    If ThisDrawing Is Nothing Then
-        MsgBox "No hay dibujo activo. Abre un dibujo y vuelve a intentarlo."
-        Exit Sub
-    End If
-    
-    ' Cambiar al espacio modelo si no estamos ya en él
-    If ThisDrawing.ActiveSpace <> acModelSpace Then
-        ThisDrawing.ActiveSpace = acModelSpace
-    End If
-    
-    'repite = 1
-    'Do While repite = 1
-    
-    On Error GoTo terminar
-
-        textHeight = 5
-       
-    ' Verificar si estamos en el espacio modelo
-    If ThisDrawing.ActiveSpace = acModelSpace Then
-        Dim ss As GcadSelectionSet
-
-        On Error Resume Next
-        Set ss = ThisDrawing.SelectionSets("SS1")
-        On Error GoTo 0
-
-        If ss Is Nothing Then
-            Set ss = ThisDrawing.SelectionSets.Add("SS1")
-        Else
-            ss.clear
-        End If
-
-        ' Solicitar al usuario que seleccione los bloques en la pantalla
-        On Error GoTo seleccionarError
-        ss.SelectOnScreen
-        
-        ' Seleccionar punto de inserción
-        Dim puntoInicio(0 To 2) As Double
-        
-        ' Iterar sobre la selección
-        For Each obj In ss
-            ' Verificar si la entidad es un bloque
-            If TypeOf obj Is GcadBlockReference Then
-                Set blockRef = obj
-                layerName = blockRef.Layer
-                
-                Dim nestedBlocks As New Collection
-                                 
-                 ' Verificar si el bloque está en la capa "NoContable"
-                If layerName = "NoContable" Then
-                
-                Dim blockName2 As String
-                blockName2 = blockRef.Name ' Obtener el nombre del bloque
-                
-                    ' Variables para atributos
-                    Dim coordenadaX As Double
-                    Dim coordenadaY As Double
-                    Dim coordenadaZ As Double
-                    Dim longitudStr As String
-                    
-                   ' Asegurarse de que blockRef es un bloque válido
-                    If Not blockRef Is Nothing Then
-                        ' Extraer los atributos del bloque si tiene alguno
-                        If blockRef.HasAttributes Then
-                            Dim attArray As Variant
-                            attArray = blockRef.GetAttributes
-                            
-                            ' Asegurarse de que attArray contiene atributos y no es Nothing
-                            If Not IsEmpty(attArray) Then
-                                Dim attRef As GcadAttributeReference
-                                Dim h As Integer
-                                For h = LBound(attArray) To UBound(attArray)
-                                    Set attRef = attArray(h)
-                                    Debug.Print "Attribute Tag: " & attRef.TagString & ", Value: " & attRef.TextString
-                                    Select Case attRef.TagString
-                                        Case "Coordenada0"
-                                            coordenadaX = CDbl(attRef.TextString)
-                                        Case "Coordenada1"
-                                            coordenadaY = CDbl(attRef.TextString)
-                                        Case "Coordenada2"
-                                            coordenadaZ = CDbl(attRef.TextString)
-                                        Case "Longitud"
-                                            longitudStr = attRef.TextString
-                                        Case "Orientacion"
-                                            orientation = CDbl(attRef.TextString)
-                                        Case "NombrePremontaje"
-                                            NamePre = attRef.TextString
-                                    End Select
-                                Next h
-                            Else
-                                MsgBox "Atributos está vacío o es Nothing."
-                            End If
-                        Else
-                        
-                        Call CollectNestedBlocks2(blockRef, nestedBlocks)
-                        
-                            Dim blk5 As Variant
-                            For Each blk5 In nestedBlocks
-                                noContableBlocks.Add blk5
-                            Next blk5
-                            
-                            GoTo sinatributos
-
-                        End If
-                    Else
-                        MsgBox "blockRef es Nothing."
-                    End If
-
-                    
-
-                            If Not NamePre = "" Then
-
-                       
-                                ' Buscar el bloque con el mismo nombre que NamePre
-                                Dim obj3 As GcadEntity
-                                For Each obj3 In ThisDrawing.PaperSpace
-                                    If TypeOf obj3 Is GcadBlockReference Then
-                                        If obj3.Name = NamePre Then
-                                            ' Iterar sobre los elementos del bloque encontrado y eliminarlos
-                                            Dim blk3 As GcadBlockReference
-                                            Set blk3 = obj3
-                                            Set b = obj3
-                                            
-                                            'obtener nueva longitud bloque modificado
-                                            Dim minPoint As Variant
-                                            Dim maxPoint As Variant
-                                            Dim diagonal As Double
-                                            
-                                            ' Obtener el bounding box del bloque
-                                            'blk3.GetBoundingBox minPoint, maxPoint
-                                            
-                                             ' Calcular la diagonal más lejana
-                                                'diagonal = Sqr((maxPoint(0) - minPoint(0)) ^ 2 + (maxPoint(1) - minPoint(1)) ^ 2 + (maxPoint(2) - minPoint(2)) ^ 2)
-                                                'longitud = diagonal
-                        
-                                            ' Obtener el bloque de definición
-                                            Dim blockDef As GcadBlock
-                                            Set blockDef = ThisDrawing.Blocks(blk3.Name)
-                                
-                                            ' Iterar sobre las entidades dentro del bloque de definición y eliminarlas
-                                            Dim nestedObj As GcadEntity
-                                            For Each nestedObj In blockDef
-                                                nestedObj.Delete
-                                            Next nestedObj
-                                        End If
-                                    End If
-                                Next obj3
-                                                                                            
-                            k = NamePre
-                            
-                            ' Establecer la escala deseada en el espacio de papel
-                                If longitud < 10000 Then
-                                    ' Acción para longitudes menores a 10
-                                    escalaPapel = 0.03
-                                    textHeight2 = 50
-                                ElseIf longitud >= 10000 And longitud <= 15000 Then
-                                    ' Acción para longitudes entre 10 y 15
-                                    escalaPapel = 0.02
-                                    textHeight2 = 75
-                                Else
-                                    ' Acción para longitudes mayores a 15
-                                    escalaPapel = 0.015
-                                    textHeight2 = 100
-                                End If
-                            
-                            ' Crear una colección para almacenar los bloques anidados
-                            Call CollectNestedBlocks2(blockRef, nestedBlocks)
-
-                            ' Enviar los bloques anidados a la subrutina desarrollo
-                            
-                            
-                            Call desarrollo(nestedBlocks, escalaPapel, textHeight2, orientation, k, b)
-
-                            GoTo vacio
-
-                            End If
-                                        
-                    ' Asignar las coordenadas al punto de inicio
-                    PA(0) = coordenadaX
-                    PA(1) = coordenadaY
-                    PA(2) = coordenadaZ
-                    
-                    ' Asignar las coordenadas obtenidas de los atributos del bloque al punto de inicio
-                    puntoInicio(0) = coordenadaX
-                    puntoInicio(1) = coordenadaY
-                    puntoInicio(2) = coordenadaZ
-                    
-                    ' Convertir la longitud a número
-                    longitud = CDbl(longitudStr)
-                    
-                    ' Establecer la escala deseada en el espacio de papel
-                    If longitud < 10000 Then
-                        ' Acción para longitudes menores a 10
-                        escalaPapel = 0.03
-                        textHeight2 = 50
-                    ElseIf longitud >= 10000 And longitud <= 15000 Then
-                        ' Acción para longitudes entre 10 y 15
-                        escalaPapel = 0.02
-                        textHeight2 = 75
-                    Else
-                        ' Acción para longitudes mayores a 15
-                        escalaPapel = 0.015
-                        textHeight2 = 100
-                    End If
-                    
-                    Call Elementolayout(puntoInicio, k)
-                    
-                    ' Dentro del bucle que procesa los atributos del bloque
-                    For h = LBound(attArray) To UBound(attArray)
-                        Set attRef = attArray(h)
-                        'MsgBox "Attribute Tag: " & attRef.TagString & ", Value: " & attRef.TextString
-                        Select Case attRef.TagString
-                            ' Otros casos de atributos
-                            Case "NombrePremontaje"
-                                ' Asignar el valor obtenido de Elementolayout al atributo NombrePremontaje
-                                attRef.TextString = k
-                        End Select
-                    Next h
-                             
-                    ' Crear una colección para almacenar los bloques anidados
-                    
-                    Call CollectNestedBlocks2(blockRef, nestedBlocks)
-                    
-                    ' Enviar los bloques anidados a la subrutina desarrollo
-                    Call desarrollo(nestedBlocks, escalaPapel, textHeight2, orientation, k, b)
-                                        
-                    ' Configurar capa y color para el nuevo texto
-                    Set textObj = ThisDrawing.PaperSpace.AddText(blockName2, insertionT, textHeight)
-                    textObj.Layer = "0"
-                    textObj.color = acRed
-                
-                    ' Insertar el nuevo bloque en el espacio de papel con escala menor
-                    Set blockRef = ThisDrawing.PaperSpace.InsertBlock(insertionP, b.Name, escalaPapel, escalaPapel, escalaPapel, -orientation)
-                    blockRef.Layer = "0"
-               
-vacio:
-               
-                    ' Regenerar el espacio modelo
-                    ThisDrawing.Regen acAllViewports
-                        
-                    Set nestedBlocks = New Collection
-                 
-                Else
-                    ' Agregar el bloque a la colección noContableBlocks
-                    noContableBlocks.Add blockRef
-                 
-                End If
-            
-            ElseIf TypeOf obj Is GcadMText Or TypeOf obj Is GcadText Then
-                ' Añadir GcadMText o GcadText a la colección noContableBlocks
-                noContableBlocks.Add obj
-            
-            End If
-            
-sinatributos:
-            
-        Next obj
-        
-        ' Llamar a premontaje solo con los bloques "NoContable"
-        If noContableBlocks.Count > 0 Then
-            Call PremontajeAux.premontaje(noContableBlocks)
-        End If
-        
-clear:
-        
-        ' Eliminar el conjunto de selección
-        On Error Resume Next
-        ss.Delete
-        On Error GoTo 0
-        
-terminar:
-
-
-    ' Liberar objetos y recursos
-        Set ss = Nothing
-        Set b = Nothing
-        Set blockRef = Nothing
-        Set textEntity = Nothing
-        Set textObj = Nothing
-
-        'Loop
-    
-        If Err.Number <> 0 Then
-            MsgBox "Ocurrió un error: " & Err.Description
-        End If
-        Exit Sub
-    End If
-    Exit Sub
-    
-seleccionarError:
-    MsgBox "Error al seleccionar los bloques: " & Err.Description
-    Resume terminar
-    
-End Sub
-
-Sub CollectNestedBlocks2(blockRef As GcadBlockReference, nestedBlocks As Collection)
-    Dim entity As GcadEntity
-    Dim blockDef As GcadBlock
-    On Error Resume Next
-    
-    ' Intentar obtener la definición del bloque
-    Set blockDef = ThisDrawing.Blocks.Item(blockRef.Name)
-    
-    ' Asegurarse de que blockDef es válido
-    If Not blockDef Is Nothing Then
-        ' Iterar sobre las entidades dentro de la definición del bloque
-        For Each entity In blockDef
-            If TypeOf entity Is GcadBlockReference Then
-                nestedBlocks.Add entity
-                Call CollectNestedBlocks2(entity, nestedBlocks)
-            End If
-        Next entity
-    Else
-        Debug.Print "blockDef es Nothing."
-    End If
-End Sub
-
-Sub desarrollo(nestedBlocks As Collection, escalaPapel As Double, textHeight2 As Double, orientation As Double, k As String, b As Object)
-    ' Implementa la lógica de la subrutina desarrollo aquí
-    ' Puedes iterar sobre los bloques anidados y realizar acciones específicas
-    Dim nestedBlock As GcadBlockReference
-    Dim blk As GcadBlockReference
-    Dim blockName As String
-    Dim contador As Integer
-    
-    Dim insertionPoint2(0 To 2) As Double
-    Dim leaderEndPoint(0 To 2) As Double
-    Dim textEndPoint(0 To 2) As Double
-    Dim rutaps As String, rutapl As String, rutap6 As String
-    Dim ps As String
-    Dim orientationa As Double
-    Dim textoSinUltimasSeisLetras As String
-    Dim newText2 As GcadObject
-    Dim newText As GcadObject
-    Dim textObj As GcadText
     
     rutaps = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\Pshor_4S\"
     rutapl = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\Pshor_4L\"
@@ -392,17 +60,161 @@ Sub desarrollo(nestedBlocks As Collection, escalaPapel As Double, textHeight2 As
     rutacajon = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\Cajon hidraulico\"
     rutamp = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\MSHOR\VIGAS\"
     rutacu = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\MSHOR\ACCESORIOS\"
+
+    ' Verificar si hay un dibujo activo
+    If ThisDrawing Is Nothing Then
+        MsgBox "No hay dibujo activo. Abre un dibujo y vuelve a intentarlo."
+        Exit Sub
+    End If
     
-    Dim PI As Double
-    PI = 4 * Atn(1)
     
-    'Giro de direccion 90 grados para hallar perpendicular
+    
+    On Error GoTo terminar
+    
+    ' Definir la distancia de offset para el siguiente bloque
+    offsetDistance = 50
+    
+    'Posicion texto
+    Dim offsetXTexto As Double, offsetYTexto As Double
+    offsetXTexto = 30
+    offsetYTexto = 2.5
+    
+    textHeight = 5
+       
+       ' Cambiar al espacio modelo si no estamos ya en él
+    If ThisDrawing.ActiveSpace <> acModelSpace Then
+        ThisDrawing.ActiveSpace = acModelSpace
+    End If
+       
+    ' Verificar si estamos en el espacio modelo
+    If ThisDrawing.ActiveSpace = acModelSpace Then
+        
+        On Error Resume Next
+        
+        On Error GoTo 0
+
+        ' Seleccionar punto de inserción
+        Dim puntoInicio As Variant, puntoFin As Variant
+        
+        puntoInicio = ThisDrawing.Utility.GetPoint(, "Selecciona el punto de Insercion: ")
+        puntoFin = ThisDrawing.Utility.GetPoint(, "Selecciona el punto Fin del Eje: ")
+            
+        PA(0) = puntoInicio(0): PA(1) = puntoInicio(1): PA(2) = puntoInicio(2)
+        PB(0) = puntoFin(0): PB(1) = puntoFin(1): PB(2) = puntoFin(2)
+        
+        ' Establecer la escala deseada en el espacio de papel
+        
+        'calculo distancia total
+            xa = PA(0) - PB(0)
+            ya = PA(1) - PB(1)
+            
+            Distancia = Val(Sqr((xa ^ 2 + ya ^ 2)))
+            
+            If Distancia < 10000 Then
+                ' Acción para distancias menores a 10
+            escalaPapel = 0.03
+            textHeight2 = 50
+            ElseIf Distancia >= 10000 And Distancia <= 15000 Then
+                ' Acción para distancias entre 10 y 15
+            escalaPapel = 0.02
+            textHeight2 = 75
+            Else
+                ' Acción para distancias mayores a 15
+            escalaPapel = 0.015
+            textHeight2 = 100
+            End If
+        
+Inicio:
+        'nombre de las hojas de las pestañas
+        layoutName = "90"
+        
+        Dim num As Integer
+        num = 1
+
+        ' Intenta encontrar un nombre único para la pestaña
+        Do While LayoutExists(layoutName & CStr(num))
+            num = num + 1
+        Loop
+        
+        num = num - 1
+        
+        existingLayerName = layoutName & CStr(num)
+        
+        'si no existe la primera 901 crear nueva
+        If existingLayerName = "900" Then
+        
+        Call CrearNuevaPestaña2
+        num = num + 1
+        
+        End If
+        
+        'seccion asegurar estar en la pestaña activa correcta
+        ventanaacti = layoutName & num
+        
+        Call SeleccionarPestana(ventanaacti)
+        
+        'contar cuantos elemento ya existen en esa pestaña layout
+        Call ContarElementos(num)
+        
+        Dim nconsecutivo As String
+        nconsecutivo = consecutivo
+                               
+        ' Verificar si es el primer bloque
+        If nconsecutivo = "1" Then
+            ' Es el primer bloque, insertarlo en el punto especificado
+            insertionP(0) = 50#: insertionP(1) = 250#: insertionP(2) = 0#
+                    
+        ElseIf nconsecutivo = "2" Or nconsecutivo = "3" Or nconsecutivo = "4" Or nconsecutivo = "5" Then
+        
+            insertionP(0) = 50#: insertionP(1) = 250#: insertionP(2) = 0#
+        
+            ' Calcular la posición del siguiente bloque en la dirección hacia abajo
+            insertionP(0) = insertionP(0)
+            insertionP(1) = insertionP(1) - (offsetDistance * (nconsecutivo - 1))
+            insertionP(2) = insertionP(2)
+        
+        'si ya esta el maximo de elementos en el layout crear un nuevo layout
+        ElseIf nconsecutivo = "6" Then
+        
+        Call CrearNuevaPestaña2
+        
+        GoTo Inicio
+                
+        End If
+                
+        'Posicion texto
+        insertionT(0) = insertionP(0) - offsetXTexto
+        insertionT(1) = insertionP(1) - offsetYTexto
+        insertionT(2) = insertionP(2)
+                
+        k = "ELEMENTO90" & num & nconsecutivo
+        
+        Dim blockNamedelet As String
+    Dim block As Object
+    
+    ' Especifica el nombre del bloque que deseas eliminar
+    blockNamedelet = k
+    
+    ' Verifica si el bloque existe en la colección de bloques
+    If BloqueExiste(blockNamedelet) Then
+        ' Elimina el bloque de la colección de bloques
+        ThisDrawing.Blocks.Item(blockNamedelet).Delete
+        MsgBox "Bloque con el mismo nombre eliminado con éxito.", vbInformation
+    End If
+        
+        ' Crear un nuevo bloque
+        Set bloque = ThisDrawing.Blocks.Add(puntoInicio, k)
+        
+        ' Obtener el ángulo de las líneas
+        orientation = GcadUtil.AngleFromXAxis(PA, PB)
+        
+        'Giro de direccion 90 grados para hallar perpendicular
         orientationa = orientation - ((PI) / 2)
-    
-    For Each nestedBlock In nestedBlocks
-               
-            If TypeOf nestedBlock Is GcadBlockReference Then
-                Set blk = nestedBlock
+        
+        ' Contar los bloques seleccionados y obtener la capa asociada
+        For Each blockRef2 In noContableBlocks
+            If TypeOf blockRef2 Is GcadBlockReference Then
+                Set blk = blockRef2
                 blockName = blk.effectiveName
                 contador = 0
                                                         
@@ -426,7 +238,7 @@ Sub desarrollo(nestedBlocks As Collection, escalaPapel As Double, textHeight2 As
                         ' Inicializar el contador para este conjunto de bloques VAR
                                              
                         ' Bucle interno para contar bloques VAR en el mismo punto de inserción
-                        For Each obj2 In ss
+                        For Each obj2 In noContableBlocks
                             If TypeOf obj2 Is GcadBlockReference Then
                                 Set blk2 = obj2
                                 blockName2 = blk2.effectiveName
@@ -734,118 +546,49 @@ basegato:
                         blockRef.Layer = "0"
                         
                     End If
-                           
+                                 
+            ElseIf TypeOf blockRef2 Is GcadMText Or TypeOf blockRef2 Is GcadText Then
+                Set textEntity = blockRef2
+                textToInsert = textEntity.TextString
+                
+                ' Configurar capa y color para el nuevo texto
+                Set textObj = ThisDrawing.PaperSpace.AddText(textToInsert, insertionT, textHeight)
+                textObj.Layer = "0"
+                textObj.color = acRed
                 
             End If
             
 proximo:
             
-        Next nestedBlock
-           
-    
+        Next blockRef2
+        
+        ' Insertar el nuevo bloque en el espacio de papel con escala menor
+        Set blockRef = ThisDrawing.PaperSpace.InsertBlock(insertionP, bloque.Name, escalaPapel, escalaPapel, escalaPapel, -orientation)
+        blockRef.Layer = "0"
+                       
+        ' Regenerar el espacio modelo
+        ThisDrawing.Regen acAllViewports
 
+    Else
+       ' MsgBox "Por favor, cambia al espacio modelo y vuelve a intentarlo."
+        
+        GoTo terminar
+        
+    End If
+    
+clear:
+
+terminar:
+
+' Liberar objetos y recursos
+    Set bloque = Nothing
+    Set blockRef = Nothing
+    Set textEntity = Nothing
+    Set textObj = Nothing
 
 End Sub
 
-Sub Elementolayout(puntoInicio As Variant, k As String)
-        
-Inicio:
-
-        'Posicion texto
-        Dim offsetXTexto As Double, offsetYTexto As Double
-        offsetXTexto = 30
-        offsetYTexto = 2.5
-        
-
-        'nombre de las hojas de las pestañas
-        layoutName = "90"
-        
-        Dim num As Integer
-        num = 1
-        
-        ' Intenta encontrar un nombre único para la pestaña
-        Do While LayoutExists(layoutName & CStr(num))
-            num = num + 1
-        Loop
-        
-        num = num - 1
-        
-        existingLayerName = layoutName & CStr(num)
-        
-        'si no existe la primera 901 crear nueva
-        If existingLayerName = "900" Then
-        
-        Call CrearNuevaPestaña2
-        num = num + 1
-        
-        End If
-        
-        Dim ventanaacti As Integer
-        
-        
-        'seccion asegurar estar en la pestaña activa correcta
-        ventanaacti = layoutName & num
-        
-        Call SeleccionarPestana(ventanaacti)
-        
-        'contar cuantos elemento ya existen en esa pestaña layout
-        Call ContarElementos(num)
-        
-        Dim nconsecutivo As String
-        nconsecutivo = consecutivo
-                               
-        ' Verificar si es el primer bloque
-        If nconsecutivo = "1" Then
-            ' Es el primer bloque, insertarlo en el punto especificado
-            insertionP(0) = 50#: insertionP(1) = 250#: insertionP(2) = 0#
-                    
-        ElseIf nconsecutivo = "2" Or nconsecutivo = "3" Or nconsecutivo = "4" Or nconsecutivo = "5" Then
-        
-            insertionP(0) = 50#: insertionP(1) = 250#: insertionP(2) = 0#
-        
-            ' Calcular la posición del siguiente bloque en la dirección hacia abajo
-            ' Definir la distancia de offset para el siguiente bloque
-            offsetDistance = 50
-            insertionP(0) = insertionP(0)
-            insertionP(1) = insertionP(1) - (offsetDistance * (nconsecutivo - 1))
-            insertionP(2) = insertionP(2)
-        
-        'si ya esta el maximo de elementos en el layout crear un nuevo layout
-        ElseIf nconsecutivo = "6" Then
-        
-        Call CrearNuevaPestaña2
-        
-        GoTo Inicio
-                
-        End If
-                
-        'Posicion texto
-        insertionT(0) = insertionP(0) - offsetXTexto
-        insertionT(1) = insertionP(1) - offsetYTexto
-        insertionT(2) = insertionP(2)
-                
-        k = "ELEMENTO90" & num & nconsecutivo
-        
-        Dim blockNamedelet As String
-    Dim block As Object
-    
-    ' Especifica el nombre del bloque que deseas eliminar
-    blockNamedelet = k
-    
-    ' Verifica si el bloque existe en la colección de bloques
-    If BloqueExiste(blockNamedelet) Then
-        ' Elimina el bloque de la colección de bloques
-        ThisDrawing.Blocks.Item(blockNamedelet).Delete
-        MsgBox "Bloque con el mismo nombre eliminado con éxito.", vbInformation
-    End If
-        
-        ' Crear un nuevo bloque
-        Set b = ThisDrawing.Blocks.Add(puntoInicio, k)
-        
-        
- End Sub
-        
- Sub ContarElementos(num As Integer)
+Sub ContarElementos(num As Integer)
     Dim n As Integer
     Dim i As Integer
     Dim myVal As GcadBlockReference
@@ -859,7 +602,6 @@ Inicio:
     For i = 1 To n
         On Error Resume Next
         Set myVal = ThisDrawing.PaperSpace.Item(i)
-        
         On Error GoTo 0
 
         If Not myVal Is Nothing Then
@@ -1078,4 +820,10 @@ Sub Textsup(orientation As Double, orientationa As Double, insertionPoint2() As 
     newLine.Layer = "Dimension"
     
 End Sub
+
+
+
+
+
+
 

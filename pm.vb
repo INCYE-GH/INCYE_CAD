@@ -7,9 +7,9 @@ Dim ruta3 As String
 Dim ruta4 As String
 Dim rutapl1 As String
 Dim rutapl2 As String
-Dim AcadDoc As Object
-Dim AcadUtil As Object
-Dim AcadModel As Object
+Dim GcadDoc As Object
+Dim GcadUtil As Object
+Dim GcadModel As Object
 Dim punto1 As Variant
 Dim punto2 As Variant
 Dim x As Double
@@ -107,21 +107,21 @@ Dim i As Integer
 Dim Ncapa As String
 Dim Gcapa As Object
 
-Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
-Set AcadModel = AcadDoc.ModelSpace
-Set AcadUtil = AcadDoc.Utility
+Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+Set GcadModel = GcadDoc.ModelSpace
+Set GcadUtil = GcadDoc.Utility
 
 On Error GoTo terminar
 repite = 1
 
 Ncapa = "Mega"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 Ncapa = "Pipeshor4S"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 7
 Ncapa = "Pipeshor4L"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 5
 
 'Valores fijos
@@ -247,14 +247,14 @@ End If
 
 Do While repite = 1
 'Geometría:
-punto1 = AcadUtil.GetPoint(, "1º Punto: ")
-punto2 = AcadUtil.GetPoint(punto1, "2º Punto: ")
+punto1 = GcadUtil.GetPoint(, "1º Punto: ")
+punto2 = GcadUtil.GetPoint(punto1, "2º Punto: ")
 P1(0) = punto1(0): P1(1) = punto1(1): P1(2) = punto1(2)
 P2(0) = punto2(0): P2(1) = punto2(1): P2(2) = punto2(2)
 
-Set Eje1 = AcadModel.AddLine(P1, P2)
+Set Eje1 = GcadModel.AddLine(P1, P2)
 Eje1.Layer = "Nonplot"
-ANG = AcadUtil.AngleFromXAxis(P1, P2)
+ANG = GcadUtil.AngleFromXAxis(P1, P2)
 
 x = P2(0) - P1(0)
 y = P2(1) - P1(1)
@@ -337,14 +337,14 @@ lpuntal = lpuntal - n90 * l90
 MP_Giro1 = ruta3 & rutapl1 & plalz & ".dwg"
 MP_Giro2 = ruta3 & rutapl2 & plalz & ".dwg"
 
-Set blockRef = AcadModel.InsertBlock(P1, MP_Giro1, Xs, Ys, Zs, ANG)
+Set blockRef = GcadModel.InsertBlock(P1, MP_Giro1, Xs, Ys, Zs, ANG)
 blockRef.Layer = "Mega"
 Punto_inial(0) = P1(0) + lgiro1 * Cos(ANG): Punto_inial(1) = P1(1) + lgiro1 * Sin(ANG): Punto_inial(2) = P1(2)
 MP_Fusible = ruta2 & "Mshor90" & plalz & "fusible.dwg"
-Set blockRef = AcadModel.InsertBlock(Punto_inial, MP_Fusible, Xs, Ys, Zs, ANG)
+Set blockRef = GcadModel.InsertBlock(Punto_inial, MP_Fusible, Xs, Ys, Zs, ANG)
 blockRef.Layer = "Mega"
 M20x50 = ruta4 & "4M20X50.dwg"
-Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x50, Xs, Ys, Zs, ANG)
+Set blockRef = GcadModel.InsertBlock(Punto_inial, M20x50, Xs, Ys, Zs, ANG)
 blockRef.Layer = "Nonplot"
 '
         '
@@ -354,9 +354,9 @@ Punto_final(0) = Punto_inial(0) + l90 * Cos(ANG): Punto_final(1) = Punto_inial(1
 If n90 > 0 Then
         Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_final(2) = Punto_final(2)
         mp_90 = ruta2 & "Mshor90" & plalz & ".dwg"
-        Set blockRef = AcadModel.InsertBlock(Punto_inial, mp_90, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inial, mp_90, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Mega"
-        Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x50, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inial, M20x50, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Nonplot"
         '
         '
@@ -367,10 +367,10 @@ M20x60 = ruta4 & "6M20X60.dwg"
 If n180 > 0 Then
         Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_final(2) = Punto_final(2)
         mp_180 = ruta2 & "Mshor180" & plalz & ".dwg"
-        Set blockRef = AcadModel.InsertBlock(Punto_inial, mp_180, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inial, mp_180, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Mega"
 
-        Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x60, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inial, M20x60, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Nonplot"
         '
         '
@@ -381,9 +381,9 @@ End If
 If n270 > 0 Then
         Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_final(2) = Punto_final(2)
         mp_270 = ruta2 & "Mshor270" & plalz & ".dwg"
-        Set blockRef = AcadModel.InsertBlock(Punto_inial, mp_270, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inial, mp_270, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Mega"
-        Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x60, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inial, M20x60, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Nonplot"
         '
         '
@@ -394,9 +394,9 @@ End If
 If n450 > 0 Then
         Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_final(2) = Punto_final(2)
         mp_450 = ruta2 & "Mshor450" & plalz & ".dwg"
-        Set blockRef = AcadModel.InsertBlock(Punto_inial, mp_450, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inial, mp_450, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Mega"
-        Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x60, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inial, M20x60, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Nonplot"
         '
         '
@@ -407,9 +407,9 @@ End If
 If n900 > 0 Then
         Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_final(2) = Punto_final(2)
         mp_900 = ruta2 & "Mshor900" & plalz & ".dwg"
-        Set blockRef = AcadModel.InsertBlock(Punto_inial, mp_900, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inial, mp_900, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Mega"
-        Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x60, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inial, M20x60, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Nonplot"
         '
         '
@@ -419,17 +419,17 @@ End If
 
 Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_final(2) = Punto_final(2)
 PS_Placa50mm = ruta1 & "PS_Placa50mm_" & dato1 & ".dwg"
-Set blockRef = AcadModel.InsertBlock(Punto_inial, PS_Placa50mm, Xs, Ys, Zs, ANG)
+Set blockRef = GcadModel.InsertBlock(Punto_inial, PS_Placa50mm, Xs, Ys, Zs, ANG)
 blockRef.Layer = "Pipeshor4S"
 M20x90 = ruta4 & "4M20X90.dwg"
-Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x90, Xs, Ys, Zs, ANG)
+Set blockRef = GcadModel.InsertBlock(Punto_inial, M20x90, Xs, Ys, Zs, ANG)
 blockRef.Layer = "Nonplot"
 '
         '
         '
 Punto_final(0) = Punto_inial(0) + l50 * Cos(ANG): Punto_final(1) = Punto_inial(1) + l50 * Sin(ANG): Punto_final(2) = Punto_inial(2)
 M20x110 = ruta4 & "4M20x110.dwg"
-Set blockRef = AcadModel.InsertBlock(Punto_final, M20x110, Xs, Ys, Zs, ANG)
+Set blockRef = GcadModel.InsertBlock(Punto_final, M20x110, Xs, Ys, Zs, ANG)
 blockRef.Layer = "Nonplot"
 '
         '
@@ -441,10 +441,10 @@ If n280 > 0 Then
     Do While i < n280
         Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
         PS_280 = ruta1 & "PL_280_" & dato1 & ".dwg"
-        Set blockRef = AcadModel.InsertBlock(Punto_inial, PS_280, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inial, PS_280, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Pipeshor4L"
         If i > 0 Then
-        Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x90_16, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inial, M20x90_16, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Nonplot"
         '
         '
@@ -458,10 +458,10 @@ End If
 If n1500 > 0 Then
         Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
         PS_1500 = ruta1 & dato5 & "_1500_" & dato1 & ".dwg"
-        Set blockRef = AcadModel.InsertBlock(Punto_inial, PS_1500, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inial, PS_1500, Xs, Ys, Zs, ANG)
         blockRef.Layer = capa
         If n280 > 0 Then
-        Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x90_16, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inial, M20x90_16, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Nonplot"
         '
         '
@@ -473,10 +473,10 @@ End If
 If n3000 > 0 Then
         Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
         PS_3000 = ruta1 & dato5 & "_3000_" & dato1 & ".dwg"
-        Set blockRef = AcadModel.InsertBlock(Punto_inial, PS_3000, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inial, PS_3000, Xs, Ys, Zs, ANG)
         blockRef.Layer = capa
         If n280 > 0 Or n1500 > 0 Then
-        Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x90_16, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inial, M20x90_16, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Nonplot"
         '
         '
@@ -489,10 +489,10 @@ End If
 If n4500 > 0 Then
         Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
         PS_4500 = ruta1 & dato5 & "_4500_" & dato1 & ".dwg"
-        Set blockRef = AcadModel.InsertBlock(Punto_inial, PS_4500, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inial, PS_4500, Xs, Ys, Zs, ANG)
         blockRef.Layer = capa
         If n280 > 0 Or n1500 > 0 Or n3000 > 0 Then
-        Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x90_16, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inial, M20x90_16, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Nonplot"
         '
         '
@@ -506,10 +506,10 @@ If n6000 > 0 Then
     Do While i < n6000
         Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
         PS_6000 = ruta1 & dato5 & "_6000_" & dato1 & ".dwg"
-        Set blockRef = AcadModel.InsertBlock(Punto_inial, PS_6000, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inial, PS_6000, Xs, Ys, Zs, ANG)
         blockRef.Layer = capa
         If n280 > 0 Or n1500 > 0 Or n3000 > 0 Or n4500 > 0 Or i > 0 Then
-        Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x90_16, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inial, M20x90_16, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Nonplot"
         '
         '
@@ -523,10 +523,10 @@ End If
 If n750 > 0 Then
         Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
         PS_750 = ruta1 & dato5 & "_750_" & dato1 & ".dwg"
-        Set blockRef = AcadModel.InsertBlock(Punto_inial, PS_750, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inial, PS_750, Xs, Ys, Zs, ANG)
         blockRef.Layer = capa
         If n280 > 0 Or n1500 > 0 Or n3000 > 0 Or n4500 > 0 Or n6000 > 0 Then
-        Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x90_16, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inial, M20x90_16, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Nonplot"
         '
         '
@@ -538,10 +538,10 @@ End If
 If n560 > 0 Then
         Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
         PS_560 = ruta1 & dato5 & "_560_" & dato1 & ".dwg"
-        Set blockRef = AcadModel.InsertBlock(Punto_inial, PS_560, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inial, PS_560, Xs, Ys, Zs, ANG)
         blockRef.Layer = capa
         If n280 > 0 Or n1500 > 0 Or n3000 > 0 Or n4500 > 0 Or n6000 > 0 Or n750 > 0 Then
-        Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x90_16, Xs, Ys, Zs, ANG)
+        Set blockRef = GcadModel.InsertBlock(Punto_inial, M20x90_16, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Nonplot"
         '
         '
@@ -551,33 +551,33 @@ If n560 > 0 Then
 End If
 
 Punto_inial(0) = Punto_final(0): Punto_inial(1) = Punto_final(1): Punto_inial(2) = Punto_final(2)
-Set blockRef = AcadModel.InsertBlock(Punto_inial, PS_Placa50mm, Xs, Ys, Zs, ANG)
+Set blockRef = GcadModel.InsertBlock(Punto_inial, PS_Placa50mm, Xs, Ys, Zs, ANG)
 blockRef.Layer = "Pipeshor4S"
-Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x110, Xs, Ys, Zs, ANG)
+Set blockRef = GcadModel.InsertBlock(Punto_inial, M20x110, Xs, Ys, Zs, ANG)
 blockRef.Layer = "Nonplot"
 '
         '
         '
 Punto_inial(0) = Punto_inial(0) + l50 * Cos(ANG): Punto_inial(1) = Punto_inial(1) + l50 * Sin(ANG): Punto_inial(2) = Punto_inial(2)
-Set blockRef = AcadModel.InsertBlock(Punto_inial, M20x90, Xs, Ys, Zs, ANG)
+Set blockRef = GcadModel.InsertBlock(Punto_inial, M20x90, Xs, Ys, Zs, ANG)
 blockRef.Layer = "Nonplot"
 '
         '
         '
 zMP_Base = ruta3 & "zMGBaseGato_azul.dwg"
-Set blockRef = AcadModel.InsertBlock(Punto_inial, zMP_Base, Xs, Ys, Zs, ANG)
+Set blockRef = GcadModel.InsertBlock(Punto_inial, zMP_Base, Xs, Ys, Zs, ANG)
 blockRef.Layer = "Mega"
 Punto_final(0) = Punto_inial(0): Punto_final(1) = Punto_inial(1): Punto_final(2) = Punto_inial(2)
 
-Set blockRef = AcadModel.InsertBlock(P2, MP_Giro2, Xs, Ys, Zs, ANG + PI)
+Set blockRef = GcadModel.InsertBlock(P2, MP_Giro2, Xs, Ys, Zs, ANG + PI)
 blockRef.Layer = "Mega"
 Punto_final2(0) = P2(0) - lgiro2 * Cos(ANG): Punto_final2(1) = P2(1) - lgiro2 * Sin(ANG): Punto_final2(2) = P2(2)
 
 If njack = 1 Then
     MP_Jack = ruta2 & "MshorJACKPLATE.dwg"
-    Set blockRef = AcadModel.InsertBlock(Punto_final2, MP_Jack, Xs, Ys, Zs, ANG + PI)
+    Set blockRef = GcadModel.InsertBlock(Punto_final2, MP_Jack, Xs, Ys, Zs, ANG + PI)
     blockRef.Layer = "Mega"
-    Set blockRef = AcadModel.InsertBlock(Punto_final2, M20x110, Xs, Ys, Zs, ANG)
+    Set blockRef = GcadModel.InsertBlock(Punto_final2, M20x110, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Nonplot"
     '
         '
@@ -585,20 +585,20 @@ If njack = 1 Then
     Punto_final2(0) = Punto_final2(0) - ljack * Cos(ANG): Punto_final2(1) = Punto_final2(1) - ljack * Sin(ANG): Punto_final2(2) = Punto_final2(2)
 ElseIf njack = 0 Then
     M20x60_4 = ruta4 & "4M20X60.dwg"
-    Set blockRef = AcadModel.InsertBlock(Punto_final2, M20x60_4, Xs, Ys, Zs, ANG)
+    Set blockRef = GcadModel.InsertBlock(Punto_final2, M20x60_4, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Nonplot"
     '
         '
         '
 End If
 zMP_Base = ruta3 & "zMGBaseGato_naranja.dwg"
-Set blockRef = AcadModel.InsertBlock(Punto_final2, zMP_Base, Xs, Ys, Zs, ANG + PI)
+Set blockRef = GcadModel.InsertBlock(Punto_final2, zMP_Base, Xs, Ys, Zs, ANG + PI)
 blockRef.Layer = "Mega"
 
 Punto_inial(0) = (Punto_final(0) + Punto_final2(0)) / 2: Punto_inial(1) = (Punto_final(1) + Punto_final2(1)) / 2: Punto_inial(2) = (Punto_final(2) + Punto_final2(2)) / 2
 
 MP_Husillo = ruta3 & "MGHusilloGato.dwg"
-Set blockRef = AcadModel.InsertBlock(Punto_inial, MP_Husillo, Xs, Ys, Zs, ANG)
+Set blockRef = GcadModel.InsertBlock(Punto_inial, MP_Husillo, Xs, Ys, Zs, ANG)
 blockRef.Layer = "Mega"
 
 Eje1.Layer = "Nonplot"

@@ -4,9 +4,9 @@ Option Explicit
 Sub p6()
 
 Dim rutaps As String, rutap6 As String, rutator As String, rutags As String, rutapl As String
-Dim AcadDoc As Object
-Dim AcadUtil As Object
-Dim AcadModel As Object
+Dim GcadDoc As Object
+Dim GcadUtil As Object
+Dim GcadModel As Object
 Dim punto1 As Variant
 Dim punto2 As Variant
 Dim x As Double
@@ -77,22 +77,27 @@ Dim i As Integer
 Dim Ncapa As String
 Dim Gcapa As Object
 
-Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
-Set AcadModel = AcadDoc.ModelSpace
-Set AcadUtil = AcadDoc.Utility
+Dim longitud As String, orientacion As String, Pinicio0 As String, Pinicio1 As String, Pinicio2 As String, PreMon As String
+
+Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+Set GcadModel = GcadDoc.ModelSpace
+Set GcadUtil = GcadDoc.Utility
 
 Ncapa = "NoContable"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 40
 Ncapa = "Pipeshor4S"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 7
 Ncapa = "Pipeshor6"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 7
 Ncapa = "Pipeshor4L"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 5
+Ncapa = "Nonplot"
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
+Gcapa.color = 50
 
 rutaps = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\Pshor_4S\"
 rutapl = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\Pshor_4L\"
@@ -204,21 +209,22 @@ If dato4 = "" Or dato4 = "A" Then
 
 
         'Geometría:
-        punto1 = AcadUtil.GetPoint(, "1º Punto: ")
-        punto2 = AcadUtil.GetPoint(punto1, "2º Punto: ")
+        punto1 = GcadUtil.GetPoint(, "1º Punto: ")
+        punto2 = GcadUtil.GetPoint(punto1, "2º Punto: ")
         P1(0) = punto1(0): P1(1) = punto1(1): P1(2) = punto1(2)
         P2(0) = punto2(0): P2(1) = punto2(1): P2(2) = punto2(2)
+		
+		Pinicio0 = CStr(P1(0))
+		Pinicio1 = CStr(P1(1))
+		Pinicio2 = CStr(P1(2))
         
         Dim k As String, b As Object, entity As Object
+nop:
         k = InputBox("Ingrese nombre: ")
         
         If k = "" Then
-nop:
-            MsgBox "Introduzca un nombre, por favor"
-            k = InputBox("Ingrese nombre: ")
-            If k = "" Then
-                GoTo nop
-            End If
+
+            k = GenerarNombreAleatorio(30)
         End If
             
         If BloqueExiste(k) Then
@@ -232,7 +238,7 @@ nop:
             If Respuesta = "Sobreescribir" Or Respuesta = "" Then
             
                 For Each entity In ThisDrawing.ModelSpace
-                    If TypeOf entity Is AcadBlockReference Then
+                    If TypeOf entity Is GcadBlockReference Then
                         If entity.effectiveName = k Then
                             entity.Delete
                         End If
@@ -247,11 +253,14 @@ nop:
             End If
         End If
         
+        Dim check As Double
+        check = Len(k)
+        
         Set b = ThisDrawing.Blocks.Add(punto1, k)
         
         Set Eje1 = ThisDrawing.Blocks.Item(k).AddLine(P1, P2)
-        Eje1.Layer = "Nonplot"
-        ANG = AcadUtil.AngleFromXAxis(P1, P2)
+        'Eje1.Layer = "Nonplot"
+        ANG = GcadUtil.AngleFromXAxis(P1, P2)
 
         x = P2(0) - P1(0)
         y = P2(1) - P1(1)
@@ -259,6 +268,9 @@ nop:
         Ys = 1
         Zs = 1
         Distancia = Val(Sqr((x ^ 2 + y ^ 2)))
+		
+		Longitud = CStr(Distancia)
+		orientacion = CStr(ANG)
 
         lfija2 = InputBox("Introduce longitud en mm de tubo PS6: 3000/4500/6000...", "Longitud PS6", 4500)
         If lfija2 Mod 1500 = 0 Then
@@ -292,6 +304,11 @@ nop:
         End If
         
         lpuntal = Distancia - lfija
+        
+        ' aquí empieza el cambio
+        ' hay que mirar a ver si cada una de las dos mitades de lpuntal tiene una buena distribución
+        ' en caso de que la tenga, distribuimos y movemos el P6 según haga falta
+        ' si la carga es > a 3000KN no puede entrar la PL280 por tanto habrá que mover más el P6 dejando
         n6000 = Fix(lpuntal / l6000)
         lpuntal = lpuntal - n6000 * l6000
         n4500 = Fix(lpuntal / l4500)
@@ -626,9 +643,35 @@ nop:
         PS_Gato = rutaps & "PS_Gato_" & dato2 & ".dwg"
         Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, PS_Gato, Xs, Ys, Zs, ANG)
         blockRef.Layer = "Pipeshor4S"
+		
+		PreMon = ""
+		Dim NamePre As GcadAttribute
+		Set NamePre = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "NombrePremontaje", PreMon)
+
+		Dim longitudatt As GcadAttribute
+		Set longitudatt = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Longitud", longitud)
+				
+		Dim orientacionatt As GcadAttribute
+		Set orientacionatt = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Orientacion", orientacion)
+				   
+		Dim cooordenadainicio0 As GcadAttribute
+		Set cooordenadainicio0 = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Coordenada0", Pinicio0)
+				
+		Dim cooordenadainicio1 As GcadAttribute
+		Set cooordenadainicio1 = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Coordenada1", Pinicio1)
+				
+		Dim cooordenadainicio2 As GcadAttribute
+		Set cooordenadainicio2 = b.AddAttribute(1, acAttributeModeInvisible, "ey", punto1, "Coordenada2", Pinicio2)           
+		 
     
         Set blockRef = ThisDrawing.ModelSpace.InsertBlock(punto1, k, Xs, Ys, Zs, 0)
-        blockRef.Layer = "NoContable"
+        If check = 30 Then
+            blockRef.Explode
+            blockRef.Delete
+        Else
+            blockRef.Layer = "NoContable"
+        End If
+
     
     Eje1.Layer = "Nonplot"
     Loop
@@ -688,3 +731,19 @@ Function BloqueExiste(blockNamedelet As String) As Boolean
 End Function
 
 
+Function GenerarNombreAleatorio(Longitud As Integer) As String
+    Dim i As Integer
+    Dim Nombre As String
+    Dim Caracter As String
+    Dim Rango As String
+
+    Rango = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    
+    Nombre = ""
+    For i = 1 To Longitud
+        Caracter = Mid(Rango, Int((Len(Rango) * Rnd) + 1), 1)
+        Nombre = Nombre & Caracter
+    Next i
+    
+    GenerarNombreAleatorio = Nombre
+End Function

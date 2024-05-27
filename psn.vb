@@ -7,18 +7,18 @@ Option Explicit
 Sub mpn(carga As Variant)
 Dim ruta As String, rutaps As String, rutapl As String, rutags As String
 Dim ruta2 As String
-Dim AcadDoc As Object
+Dim GcadDoc As Object
 Dim M20x60_4 As String
 Dim M20x50_4 As String
-Dim AcadUtil As Object
-Dim AcadModel As Object
+Dim GcadUtil As Object
+Dim GcadModel As Object
 Dim punto1 As Variant
 Dim punto2 As Variant
 Dim x As Double
 Dim y As Double
 Dim z As Double
-Dim line2 As AcadLine
-Dim line1 As AcadLine
+Dim line2 As GcadLine
+Dim line1 As GcadLine
 Dim M20x90 As String
 Dim M20x150 As String, M20x110 As String, Var20x250 As String
 Dim M20x160 As String
@@ -135,7 +135,7 @@ Dim muromoduladome2 As Double
 Dim muromoduladoma2 As Double
 Dim mod2c As Double
 Dim mod2M As Double
-Dim objAcadDimAligned As AcadDimAligned
+Dim objGcadDimAligned As GcadDimAligned
 Dim TxtPnt(0 To 2) As Double
 Dim TxtPnt2(0 To 2) As Double
 Dim TxtPnt3(0 To 2) As Double
@@ -159,21 +159,29 @@ Dim rutacu As String
 Dim DirPuntal2 As Double
 
 
-Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
-Set AcadModel = AcadDoc.ModelSpace
-Set AcadUtil = AcadDoc.Utility
+Dim NamePre As GcadAttribute
+Dim longitudatt As GcadAttribute
+Dim orientacionatt As GcadAttribute
+Dim cooordenadainicio0 As GcadAttribute
+Dim cooordenadainicio1 As GcadAttribute
+Dim cooordenadainicio2 As GcadAttribute
+
+
+Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+Set GcadModel = GcadDoc.ModelSpace
+Set GcadUtil = GcadDoc.Utility
 
 Ncapa = "Pipeshor4S"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 7
 Ncapa = "Pipeshor4L"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 5
 Ncapa = "Granshor"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 150
 Ncapa = "NoContable"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 40
 
 
@@ -245,11 +253,11 @@ lalt2 = 0
 
 
 
-puntoA = AcadUtil.GetPoint(, "punto inserción 1ª placa: ")
-puntop1 = AcadUtil.GetPoint(puntoA, "punto direccional del muro 1 (convergente): ")
+puntoA = GcadUtil.GetPoint(, "punto inserción 1ª placa: ")
+puntop1 = GcadUtil.GetPoint(puntoA, "punto direccional del muro 1 (convergente): ")
 
-puntoB = AcadUtil.GetPoint(, "punto inserción 2ª placa: ")
-puntop2 = AcadUtil.GetPoint(puntoB, "punto direccional del muro 2 (convergente): ")
+puntoB = GcadUtil.GetPoint(, "punto inserción 2ª placa: ")
+puntop2 = GcadUtil.GetPoint(puntoB, "punto direccional del muro 2 (convergente): ")
 
 'PA es el punto de inserción de la primera placa
 PA(0) = puntoA(0): PA(1) = puntoA(1): PA(2) = puntoA(2)
@@ -259,9 +267,9 @@ PP1(0) = puntop1(0): PP1(1) = puntop1(1): PP1(2) = puntop1(2)
 PB(0) = puntoB(0): PB(1) = puntoB(1): PB(2) = puntoB(2)
 PP2(0) = puntop2(0): PP2(1) = puntop2(1): PP2(2) = puntop2(2)
 
-DirMuro1 = AcadUtil.AngleFromXAxis(PA, PP1)
-DirMuro2 = AcadUtil.AngleFromXAxis(PB, PP2)
-DirPuntal = AcadUtil.AngleFromXAxis(PA, PB)
+DirMuro1 = GcadUtil.AngleFromXAxis(PA, PP1)
+DirMuro2 = GcadUtil.AngleFromXAxis(PB, PP2)
+DirPuntal = GcadUtil.AngleFromXAxis(PA, PB)
 
 '''' caso General
 '' seleccionar los 4 puntos en sentido horario
@@ -289,7 +297,7 @@ On Error GoTo terminar
     If Respuesta = "Sobreescribir" Or Respuesta = "" Then
     
         For Each entity In ThisDrawing.ModelSpace
-            If TypeOf entity Is AcadBlockReference Then
+            If TypeOf entity Is GcadBlockReference Then
                 If entity.effectiveName = k Then
                     entity.Delete
                 End If
@@ -335,9 +343,9 @@ If Abs(DirMuro2 - DirMuro1) > PI Then
         PA(0) = PB(0): PA(1) = PB(1): PA(2) = PB(2)
         PB(0) = tempP0(0): PB(1) = tempP0(1): PB(2) = tempP0(2):
         ' Recalcular la dirección del muro 1 y perpendicular al muro
-        DirMuro1 = AcadUtil.AngleFromXAxis(PA, Esq)
+        DirMuro1 = GcadUtil.AngleFromXAxis(PA, Esq)
         ' Recalcular la dirección del muro 2 y perpendicular al muro
-        DirMuro2 = AcadUtil.AngleFromXAxis(PB, Esq)
+        DirMuro2 = GcadUtil.AngleFromXAxis(PB, Esq)
         Slope1 = Tan(DirMuro1)
         Slope2 = Tan(DirMuro2)
     End If
@@ -349,9 +357,9 @@ Else
         PA(0) = PB(0): PA(1) = PB(1): PA(2) = PB(2)
         PB(0) = tempP(0): PB(1) = tempP(1): PB(2) = tempP(2):
         ' Recalcular la dirección del muro 1 y perpendicular al muro
-        DirMuro1 = AcadUtil.AngleFromXAxis(PA, Esq)
+        DirMuro1 = GcadUtil.AngleFromXAxis(PA, Esq)
         ' Recalcular la dirección del muro 2 y perpendicular al muro
-        DirMuro2 = AcadUtil.AngleFromXAxis(PB, Esq)
+        DirMuro2 = GcadUtil.AngleFromXAxis(PB, Esq)
         Slope1 = Tan(DirMuro1)
         Slope2 = Tan(DirMuro2)
     End If
@@ -369,10 +377,10 @@ End If
     'PB(0) = tempP(0): PB(1) = tempP(1): PB(2) = tempP(2)
 
     ' Recalcular la dirección del muro 1 y perpendicular al muro
-    'DirMuro1 = AcadUtil.AngleFromXAxis(PA, Esq)
+    'DirMuro1 = GcadUtil.AngleFromXAxis(PA, Esq)
     ' Recalcular la dirección del muro 2 y perpendicular al muro
-    'DirMuro2 = AcadUtil.AngleFromXAxis(PB, Esq)
-    'DirPuntal = AcadUtil.AngleFromXAxis(PA, PB)
+    'DirMuro2 = GcadUtil.AngleFromXAxis(PB, Esq)
+    'DirPuntal = GcadUtil.AngleFromXAxis(PA, PB)
 'Else
     'DirBulon1 = DirMuro1 - (PI / 2)
     'DirBulon2 = DirMuro2 + (PI / 2)
@@ -486,8 +494,8 @@ End If
 
 
 
-DirPuntal = AcadUtil.AngleFromXAxis(P1, P2)
-DirPuntal2 = AcadUtil.AngleFromXAxis(P2, P1)
+DirPuntal = GcadUtil.AngleFromXAxis(P1, P2)
+DirPuntal2 = GcadUtil.AngleFromXAxis(P2, P1)
 
 '''' podemos también añadir las rutas de la placa1 y placa2 como hago aquí abajo pero lo metemos directamente en el condicional que tenemos aquí arriba, para dejar ya cerrada cuál va a ser cada una de las placas
 '''' además de añadir las capas. En caso de que sea el ángulo de giro podemos añadirlo también.
@@ -580,6 +588,8 @@ Xs = 1
 Ys = 1
 Zs = 1
 
+Dim Longitud As String, orientacion As String, Pinicio0 As String, Pinicio1 As String, Pinicio2 As String, PreMon As String
+
 
 x = P2(0) - P1(0)
 y = P2(1) - P1(1)
@@ -600,8 +610,14 @@ If carga >= 750 And carga <= 1350 Then
         Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(PB, rutaplaca1, Xs, Ys, Zs, DirMuro2)
         blockRef.Layer = "Mega"
         
-        ANG = AcadUtil.AngleFromXAxis(P1, P2)
+        ANG = GcadUtil.AngleFromXAxis(P1, P2)
         ANG2 = ANG + (PI / 2)
+        
+        Pinicio0 = CStr(P1(0))
+        Pinicio1 = CStr(P1(1))
+        Pinicio2 = CStr(P1(2))
+        Longitud = CStr(Distancia)
+        orientacion = CStr(ANG)
         
         PAP(0) = PA(0): PAP(1) = PA(1): PAP(2) = PA(2)
         PBP(0) = PB(0): PBP(1) = PB(1): PBP(2) = PB(2)
@@ -615,21 +631,21 @@ If carga >= 750 And carga <= 1350 Then
         TxtPnt(0) = P1(0) + (Distancia / 2) * Cos(ANG): TxtPnt(1) = P1(1) + (Distancia / 2) * Sin(ANG): TxtPnt(2) = P1(2)
         TxtPnt(0) = TxtPnt(0) + 410 * Cos(ANG2): TxtPnt(1) = TxtPnt(1) + 410 * Sin(ANG2): TxtPnt(2) = TxtPnt(2)
         
-        Set objAcadDimAligned = AcadModel.AddDimAligned(P1, P2, TxtPnt)
-        objAcadDimAligned.PrimaryUnitsPrecision = acDimPrecisionZero
-        objAcadDimAligned.StyleName = "MODELO"
-        objAcadDimAligned.TextStyle = "SIMPLEX"
-        objAcadDimAligned.VerticalTextPosition = acOutside
-        objAcadDimAligned.Update
-        objAcadDimAligned.Layer = "Dimension"
+        Set objGcadDimAligned = GcadModel.AddDimAligned(P1, P2, TxtPnt)
+        objGcadDimAligned.PrimaryUnitsPrecision = acDimPrecisionZero
+        objGcadDimAligned.StyleName = "MODELO"
+        objGcadDimAligned.TextStyle = "SIMPLEX"
+        objGcadDimAligned.VerticalTextPosition = acOutside
+        objGcadDimAligned.Update
+        objGcadDimAligned.Layer = "Dimension"
         
-        Set objAcadDimAligned = AcadModel.AddDimAligned(PBP, PAP, TxtPnt2)
-        objAcadDimAligned.PrimaryUnitsPrecision = acDimPrecisionZero
-        objAcadDimAligned.StyleName = "MODELO"
-        objAcadDimAligned.TextStyle = "SIMPLEX"
-        objAcadDimAligned.VerticalTextPosition = acOutside
-        objAcadDimAligned.Update
-        objAcadDimAligned.Layer = "Dimension"
+        Set objGcadDimAligned = GcadModel.AddDimAligned(PBP, PAP, TxtPnt2)
+        objGcadDimAligned.PrimaryUnitsPrecision = acDimPrecisionZero
+        objGcadDimAligned.StyleName = "MODELO"
+        objGcadDimAligned.TextStyle = "SIMPLEX"
+        objGcadDimAligned.VerticalTextPosition = acOutside
+        objGcadDimAligned.Update
+        objGcadDimAligned.Layer = "Dimension"
         
         tubo = "Pshor_4L"
         ' mandamos al pm la selección de placa 1
@@ -661,6 +677,21 @@ If carga >= 750 And carga <= 1350 Then
         
         Call pm(P1, P2, placa1, placa2, vista, tubo, k)
         
+        PreMon = ""
+
+        Set NamePre = b.AddAttribute(1, acAttributeModeInvisible, "ey", P1, "NombrePremontaje", PreMon)
+
+        Set longitudatt = b.AddAttribute(1, acAttributeModeInvisible, "ey", P1, "Longitud", Longitud)
+
+        Set orientacionatt = b.AddAttribute(1, acAttributeModeInvisible, "ey", P1, "Orientacion", orientacion)
+
+        Set cooordenadainicio0 = b.AddAttribute(1, acAttributeModeInvisible, "ey", P1, "Coordenada0", Pinicio0)
+
+        Set cooordenadainicio1 = b.AddAttribute(1, acAttributeModeInvisible, "ey", P1, "Coordenada1", Pinicio1)
+
+        Set cooordenadainicio2 = b.AddAttribute(1, acAttributeModeInvisible, "ey", P1, "Coordenada2", Pinicio2)
+
+        
         Set blockRef = ThisDrawing.ModelSpace.InsertBlock(PA, k, Xs, Ys, Zs, 0)
         blockRef.Layer = "NoContable"
         blockRef.Update
@@ -674,8 +705,14 @@ If carga >= 750 And carga <= 1350 Then
         Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(PB, rutaplaca1, Xs, Ys, Zs, DirMuro2)
         blockRef.Layer = "Mega"
         
-        ANG = AcadUtil.AngleFromXAxis(P1, P2)
+        ANG = GcadUtil.AngleFromXAxis(P1, P2)
         ANG2 = ANG + (PI / 2)
+        
+        Pinicio0 = CStr(P1(0))
+        Pinicio1 = CStr(P1(1))
+        Pinicio2 = CStr(P1(2))
+        Longitud = CStr(Distancia)
+        orientacion = CStr(ANG)
         
         PAP(0) = PA(0): PAP(1) = PA(1): PAP(2) = PA(2)
         PBP(0) = PB(0): PBP(1) = PB(1): PBP(2) = PB(2)
@@ -689,21 +726,21 @@ If carga >= 750 And carga <= 1350 Then
         TxtPnt(0) = P1(0) + (Distancia / 2) * Cos(ANG): TxtPnt(1) = P1(1) + (Distancia / 2) * Sin(ANG): TxtPnt(2) = P1(2)
         TxtPnt(0) = TxtPnt(0) + 410 * Cos(ANG2): TxtPnt(1) = TxtPnt(1) + 410 * Sin(ANG2): TxtPnt(2) = TxtPnt(2)
         
-        Set objAcadDimAligned = AcadModel.AddDimAligned(P1, P2, TxtPnt)
-        objAcadDimAligned.PrimaryUnitsPrecision = acDimPrecisionZero
-        objAcadDimAligned.StyleName = "MODELO"
-        objAcadDimAligned.TextStyle = "SIMPLEX"
-        objAcadDimAligned.VerticalTextPosition = acOutside
-        objAcadDimAligned.Update
-        objAcadDimAligned.Layer = "Dimension"
+        Set objGcadDimAligned = GcadModel.AddDimAligned(P1, P2, TxtPnt)
+        objGcadDimAligned.PrimaryUnitsPrecision = acDimPrecisionZero
+        objGcadDimAligned.StyleName = "MODELO"
+        objGcadDimAligned.TextStyle = "SIMPLEX"
+        objGcadDimAligned.VerticalTextPosition = acOutside
+        objGcadDimAligned.Update
+        objGcadDimAligned.Layer = "Dimension"
         
-        Set objAcadDimAligned = AcadModel.AddDimAligned(PBP, PAP, TxtPnt2)
-        objAcadDimAligned.PrimaryUnitsPrecision = acDimPrecisionZero
-        objAcadDimAligned.StyleName = "MODELO"
-        objAcadDimAligned.TextStyle = "SIMPLEX"
-        objAcadDimAligned.VerticalTextPosition = acOutside
-        objAcadDimAligned.Update
-        objAcadDimAligned.Layer = "Dimension"
+        Set objGcadDimAligned = GcadModel.AddDimAligned(PBP, PAP, TxtPnt2)
+        objGcadDimAligned.PrimaryUnitsPrecision = acDimPrecisionZero
+        objGcadDimAligned.StyleName = "MODELO"
+        objGcadDimAligned.TextStyle = "SIMPLEX"
+        objGcadDimAligned.VerticalTextPosition = acOutside
+        objGcadDimAligned.Update
+        objGcadDimAligned.Layer = "Dimension"
         
         tubo = "Pshor_4S"
         ' mandamos al pm la selección de placa 1
@@ -733,6 +770,25 @@ If carga >= 750 And carga <= 1350 Then
             vista = "Alzado"
         End If
         Call pm(P1, P2, placa1, placa2, vista, tubo, k)
+        
+        PreMon = ""
+
+        Set NamePre = b.AddAttribute(1, acAttributeModeInvisible, "ey", P1, "NombrePremontaje", PreMon)
+        
+
+        Set longitudatt = b.AddAttribute(1, acAttributeModeInvisible, "ey", P1, "Longitud", Longitud)
+                
+
+        Set orientacionatt = b.AddAttribute(1, acAttributeModeInvisible, "ey", P1, "Orientacion", orientacion)
+                   
+
+        Set cooordenadainicio0 = b.AddAttribute(1, acAttributeModeInvisible, "ey", P1, "Coordenada0", Pinicio0)
+                
+
+        Set cooordenadainicio1 = b.AddAttribute(1, acAttributeModeInvisible, "ey", P1, "Coordenada1", Pinicio1)
+
+        Set cooordenadainicio2 = b.AddAttribute(1, acAttributeModeInvisible, "ey", P1, "Coordenada2", Pinicio2)
+
         
         Set blockRef = ThisDrawing.ModelSpace.InsertBlock(PA, k, Xs, Ys, Zs, 0)
         blockRef.Layer = "NoContable"
@@ -874,10 +930,14 @@ End If
 
 Set Eje1 = ThisDrawing.Blocks.Item(k).AddLine(P1, P2)
 Eje1.Layer = "Nonplot"
-ANG = AcadUtil.AngleFromXAxis(P1, P2)
+ANG = GcadUtil.AngleFromXAxis(P1, P2)
 ANG2 = ANG + (PI / 2)
 
-
+Pinicio0 = CStr(P1(0))
+Pinicio1 = CStr(P1(1))
+Pinicio2 = CStr(P1(2))
+Longitud = CStr(Distancia)
+orientacion = CStr(ANG)
 
 If Distancia < lfija Then
         MsgBox "Medida de puntal " & Distancia & "mm, menor que el mínimo necesario de " & lfija & "."""
@@ -898,21 +958,21 @@ TxtPnt2(0) = TxtPnt2(0) + 860 * Cos(ANG2): TxtPnt2(1) = TxtPnt2(1) + 860 * Sin(A
 TxtPnt(0) = P1(0) + (Distancia / 2) * Cos(ANG): TxtPnt(1) = P1(1) + (Distancia / 2) * Sin(ANG): TxtPnt(2) = P1(2)
 TxtPnt(0) = TxtPnt(0) + 410 * Cos(ANG2): TxtPnt(1) = TxtPnt(1) + 410 * Sin(ANG2): TxtPnt(2) = TxtPnt(2)
 
-Set objAcadDimAligned = AcadModel.AddDimAligned(P1, P2, TxtPnt)
-objAcadDimAligned.PrimaryUnitsPrecision = acDimPrecisionZero
-objAcadDimAligned.StyleName = "MODELO"
-objAcadDimAligned.TextStyle = "SIMPLEX"
-objAcadDimAligned.VerticalTextPosition = acOutside
-objAcadDimAligned.Update
-objAcadDimAligned.Layer = "Dimension"
+Set objGcadDimAligned = GcadModel.AddDimAligned(P1, P2, TxtPnt)
+objGcadDimAligned.PrimaryUnitsPrecision = acDimPrecisionZero
+objGcadDimAligned.StyleName = "MODELO"
+objGcadDimAligned.TextStyle = "SIMPLEX"
+objGcadDimAligned.VerticalTextPosition = acOutside
+objGcadDimAligned.Update
+objGcadDimAligned.Layer = "Dimension"
 
-Set objAcadDimAligned = AcadModel.AddDimAligned(PBP, PAP, TxtPnt2)
-objAcadDimAligned.PrimaryUnitsPrecision = acDimPrecisionZero
-objAcadDimAligned.StyleName = "MODELO"
-objAcadDimAligned.TextStyle = "SIMPLEX"
-objAcadDimAligned.VerticalTextPosition = acOutside
-objAcadDimAligned.Update
-objAcadDimAligned.Layer = "Dimension"
+Set objGcadDimAligned = GcadModel.AddDimAligned(PBP, PAP, TxtPnt2)
+objGcadDimAligned.PrimaryUnitsPrecision = acDimPrecisionZero
+objGcadDimAligned.StyleName = "MODELO"
+objGcadDimAligned.TextStyle = "SIMPLEX"
+objGcadDimAligned.VerticalTextPosition = acOutside
+objGcadDimAligned.Update
+objGcadDimAligned.Layer = "Dimension"
 
 
 Punto_inial(0) = P1(0): Punto_inial(1) = P1(1): Punto_inial(2) = P1(2)
@@ -941,7 +1001,13 @@ ElseIf placaanc1 = "GiroMP" Then
     Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, agiro, Xs, Ys, Zs, ANG)
     blockRef.Layer = "Mega"
     Punto_inial(0) = Punto_inial(0) + 90 * Cos(ANG): Punto_inial(1) = Punto_inial(1) + 90 * Sin(ANG): Punto_inial(2) = Punto_inial(2)
+Else
+    Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_inial, agiro, Xs, Ys, Zs, ANG)
+    blockRef.Layer = "Mega"
+    Punto_inial(0) = Punto_inial(0) + 90 * Cos(ANG): Punto_inial(1) = Punto_inial(1) + 90 * Sin(ANG): Punto_inial(2) = Punto_inial(2)
 End If
+
+
     
 
 
@@ -1109,6 +1175,10 @@ ElseIf placaanc2 = "GiroMP" Then
     Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, agiro, Xs, Ys, Zs, ANG + PI)
     blockRef.Layer = "Mega"
     Punto_final(0) = Punto_final(0) - 90 * Cos(ANG): Punto_final(1) = Punto_final(1) - 90 * Sin(ANG): Punto_final(2) = Punto_final(2)
+Else
+    Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, agiro, Xs, Ys, Zs, ANG + PI)
+    blockRef.Layer = "Mega"
+    Punto_final(0) = Punto_final(0) - 90 * Cos(ANG): Punto_final(1) = Punto_final(1) - 90 * Sin(ANG): Punto_final(2) = Punto_final(2)
 End If
     
 
@@ -1132,8 +1202,9 @@ Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, base_naranja,
 blockRef.Layer = "Mega"
 If carga < 1200 Then
     Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(Punto_final, M20x60_4, Xs, Ys, Zs, ANG)
+    blockRef.Layer = "Nonplot"
 End If
-blockRef.Layer = "Nonplot"
+
 
 Punto_final(0) = Punto_final(0) - 150 * Cos(ANG): Punto_final(1) = Punto_final(1) - 150 * Sin(ANG): Punto_final(2) = Punto_final(2)
 
@@ -1162,13 +1233,32 @@ D_Gato = Val(Sqr((x5 ^ 2 + y5 ^ 2)))
 TxtPnt3(0) = PGato1(0) + (D_Gato / 2) * Cos(ANG): TxtPnt3(1) = PGato1(1) + (D_Gato / 2) * Sin(ANG): TxtPnt3(2) = PGato1(2)
 TxtPnt3(0) = TxtPnt3(0) - 350 * Cos(ANG2): TxtPnt3(1) = TxtPnt3(1) - 350 * Sin(ANG2): TxtPnt3(2) = TxtPnt3(2)
 
-Set objAcadDimAligned = AcadModel.AddDimAligned(PGato1, PGato2, TxtPnt3)
-objAcadDimAligned.PrimaryUnitsPrecision = acDimPrecisionZero
-objAcadDimAligned.StyleName = "MODELO"
-objAcadDimAligned.TextStyle = "SIMPLEX"
-objAcadDimAligned.VerticalTextPosition = acOutside
-objAcadDimAligned.Update
-objAcadDimAligned.Layer = "Dimension"
+Set objGcadDimAligned = GcadModel.AddDimAligned(PGato1, PGato2, TxtPnt3)
+objGcadDimAligned.PrimaryUnitsPrecision = acDimPrecisionZero
+objGcadDimAligned.StyleName = "MODELO"
+objGcadDimAligned.TextStyle = "SIMPLEX"
+objGcadDimAligned.VerticalTextPosition = acOutside
+objGcadDimAligned.Update
+objGcadDimAligned.Layer = "Dimension"
+
+PreMon = ""
+
+Set NamePre = b.AddAttribute(1, acAttributeModeInvisible, "ey", P1, "NombrePremontaje", PreMon)
+
+
+Set longitudatt = b.AddAttribute(1, acAttributeModeInvisible, "ey", P1, "Longitud", Longitud)
+        
+
+Set orientacionatt = b.AddAttribute(1, acAttributeModeInvisible, "ey", P1, "Orientacion", orientacion)
+           
+
+Set cooordenadainicio0 = b.AddAttribute(1, acAttributeModeInvisible, "ey", P1, "Coordenada0", Pinicio0)
+        
+
+Set cooordenadainicio1 = b.AddAttribute(1, acAttributeModeInvisible, "ey", P1, "Coordenada1", Pinicio1)
+        
+
+Set cooordenadainicio2 = b.AddAttribute(1, acAttributeModeInvisible, "ey", P1, "Coordenada2", Pinicio2)
 
 
 Set blockRef = ThisDrawing.ModelSpace.InsertBlock(PA, k, Xs, Ys, Zs, 0)
@@ -1188,16 +1278,16 @@ End Sub
 Sub psn()
 Dim ruta As String, rutaps As String, rutapl As String, rutags As String
 Dim ruta2 As String
-Dim AcadDoc As Object
-Dim AcadUtil As Object
-Dim AcadModel As Object
+Dim GcadDoc As Object
+Dim GcadUtil As Object
+Dim GcadModel As Object
 Dim punto1 As Variant
 Dim punto2 As Variant
 Dim x As Double
 Dim y As Double
 Dim z As Double
-Dim line2 As AcadLine
-Dim line1 As AcadLine
+Dim line2 As GcadLine
+Dim line1 As GcadLine
 Dim M20x90 As String
 Dim M20x150 As String, M20x110 As String, Var20x250 As String
 Dim M20x100 As String
@@ -1313,7 +1403,7 @@ Dim muromoduladome2 As Double
 Dim muromoduladoma2 As Double
 Dim mod2c As Double
 Dim mod2M As Double
-Dim objAcadDimAligned As AcadDimAligned
+Dim objGcadDimAligned As GcadDimAligned
 Dim TxtPnt(0 To 2) As Double
 Dim TxtPnt2(0 To 2) As Double
 Dim TxtPnt3(0 To 2) As Double
@@ -1335,24 +1425,24 @@ Dim DirMuro2Inv As Double
 Dim DirPuntal As Double
 Dim DirPuntal2 As Double
 
-Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
-Set AcadModel = AcadDoc.ModelSpace
-Set AcadUtil = AcadDoc.Utility
+Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+Set GcadModel = GcadDoc.ModelSpace
+Set GcadUtil = GcadDoc.Utility
 
 Ncapa = "Pipeshor4S"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 7
 Ncapa = "Pipeshor4L"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 5
 Ncapa = "Granshor"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 150
 Ncapa = "NoContable"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 40
 Ncapa = "Nonplot"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 50
 
 'Valores fijos
@@ -1428,7 +1518,7 @@ If BloqueExiste(k) Then
     If Respuesta = "Sobreescribir" Or Respuesta = "" Then
     
         For Each entity In ThisDrawing.ModelSpace
-            If TypeOf entity Is AcadBlockReference Then
+            If TypeOf entity Is GcadBlockReference Then
                 If entity.effectiveName = k Then
                     entity.Delete
                 End If
@@ -1541,11 +1631,11 @@ lalt2 = 0
 '' seleccionar los 4 puntos en sentido horario
 
 
-puntoA = AcadUtil.GetPoint(, "punto inserción 1ª placa: ")
-puntop1 = AcadUtil.GetPoint(puntoA, "punto direccional del muro 1 (convergente): ")
+puntoA = GcadUtil.GetPoint(, "punto inserción 1ª placa: ")
+puntop1 = GcadUtil.GetPoint(puntoA, "punto direccional del muro 1 (convergente): ")
 
-puntoB = AcadUtil.GetPoint(, "punto inserción 2ª placa: ")
-puntop2 = AcadUtil.GetPoint(puntoB, "punto direccional del muro 2 (convergente): ")
+puntoB = GcadUtil.GetPoint(, "punto inserción 2ª placa: ")
+puntop2 = GcadUtil.GetPoint(puntoB, "punto direccional del muro 2 (convergente): ")
 
 'PA es el punto de inserción de la primera placa
 PA(0) = puntoA(0): PA(1) = puntoA(1): PA(2) = puntoA(2)
@@ -1555,9 +1645,9 @@ PP1(0) = puntop1(0): PP1(1) = puntop1(1): PP1(2) = puntop1(2)
 PB(0) = puntoB(0): PB(1) = puntoB(1): PB(2) = puntoB(2)
 PP2(0) = puntop2(0): PP2(1) = puntop2(1): PP2(2) = puntop2(2)
 
-DirMuro1 = AcadUtil.AngleFromXAxis(PA, PP1)
-DirMuro2 = AcadUtil.AngleFromXAxis(PB, PP2)
-DirPuntal = AcadUtil.AngleFromXAxis(PA, PB)
+DirMuro1 = GcadUtil.AngleFromXAxis(PA, PP1)
+DirMuro2 = GcadUtil.AngleFromXAxis(PB, PP2)
+DirPuntal = GcadUtil.AngleFromXAxis(PA, PB)
 
 ' conseguir la esquina:
 ' Calculamos las direcciones de las rectas
@@ -1620,9 +1710,9 @@ If Abs(DirMuro2 - DirMuro1) > PI Then
         PA(0) = PB(0): PA(1) = PB(1): PA(2) = PB(2)
         PB(0) = tempP0(0): PB(1) = tempP0(1): PB(2) = tempP0(2):
         ' Recalcular la dirección del muro 1 y perpendicular al muro
-        DirMuro1 = AcadUtil.AngleFromXAxis(PA, Esq)
+        DirMuro1 = GcadUtil.AngleFromXAxis(PA, Esq)
         ' Recalcular la dirección del muro 2 y perpendicular al muro
-        DirMuro2 = AcadUtil.AngleFromXAxis(PB, Esq)
+        DirMuro2 = GcadUtil.AngleFromXAxis(PB, Esq)
         Slope1 = Tan(DirMuro1)
         Slope2 = Tan(DirMuro2)
     End If
@@ -1634,9 +1724,9 @@ Else
         PA(0) = PB(0): PA(1) = PB(1): PA(2) = PB(2)
         PB(0) = tempP(0): PB(1) = tempP(1): PB(2) = tempP(2):
         ' Recalcular la dirección del muro 1 y perpendicular al muro
-        DirMuro1 = AcadUtil.AngleFromXAxis(PA, Esq)
+        DirMuro1 = GcadUtil.AngleFromXAxis(PA, Esq)
         ' Recalcular la dirección del muro 2 y perpendicular al muro
-        DirMuro2 = AcadUtil.AngleFromXAxis(PB, Esq)
+        DirMuro2 = GcadUtil.AngleFromXAxis(PB, Esq)
         Slope1 = Tan(DirMuro1)
         Slope2 = Tan(DirMuro2)
     End If
@@ -1716,8 +1806,8 @@ If DirMuro1 = DirMuro2 Then
         GoTo terminar
             
     End Select
-    DirPuntal = AcadUtil.AngleFromXAxis(P1, P2)
-    DirPuntal2 = AcadUtil.AngleFromXAxis(P2, P1)
+    DirPuntal = GcadUtil.AngleFromXAxis(P1, P2)
+    DirPuntal2 = GcadUtil.AngleFromXAxis(P2, P1)
     If (Abs(DirMuro1 - DirPuntal2) <= (PI / 2)) Or (Abs(DirMuro1 - DirPuntal2) >= ((3 * PI) / 2)) Then
         rutaplaca1 = rutaplaca1
         Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(PA, rutaplaca1, Xs, Ys, Zs, DirMuro1)
@@ -1863,8 +1953,8 @@ Else
         
         If userInput = "1" Or userInput = "" Then
             Set b = ThisDrawing.Blocks.Add(PBloque, k)
-            DirPuntal = AcadUtil.AngleFromXAxis(P1, P2)
-            DirPuntal2 = AcadUtil.AngleFromXAxis(P2, P1)
+            DirPuntal = GcadUtil.AngleFromXAxis(P1, P2)
+            DirPuntal2 = GcadUtil.AngleFromXAxis(P2, P1)
             If (Abs(DirMuro1 - DirPuntal2) <= (PI / 2)) Or (Abs(DirMuro1 - DirPuntal2) >= ((3 * PI) / 2)) Then
                 rutaplaca1 = rutaplaca1
                 Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(PA, rutaplaca1, Xs, Ys, Zs, DirMuro1)
@@ -1900,8 +1990,8 @@ Else
             Distancia = lalt1
             PA(0) = PA(0) + mod1c * Cos(DirMuro1): PA(1) = PA(1) + mod1c * Sin(DirMuro1): PA(2) = PA(2)
             PB(0) = PB(0) + mod2c * Cos(DirMuro2): PB(1) = PB(1) + mod2c * Sin(DirMuro2): PB(2) = PB(0)
-            DirPuntal = AcadUtil.AngleFromXAxis(P1, P2)
-            DirPuntal2 = AcadUtil.AngleFromXAxis(P2, P1)
+            DirPuntal = GcadUtil.AngleFromXAxis(P1, P2)
+            DirPuntal2 = GcadUtil.AngleFromXAxis(P2, P1)
             PBloque(0) = PA(0): PBloque(1) = PA(1): PBloque(2) = PA(2)
             Set b = ThisDrawing.Blocks.Add(PBloque, k)
             If (Abs(DirMuro1 - DirPuntal2) <= (PI / 2)) Or (Abs(DirMuro1 - DirPuntal2) >= ((3 * PI) / 2)) Then
@@ -1939,8 +2029,8 @@ Else
             Distancia = lalt2
             PA(0) = PA(0) - mod1M * Cos(DirMuro1): PA(1) = PA(1) - mod1M * Sin(DirMuro1): PA(2) = PA(2)
             PB(0) = PB(0) - mod2M * Cos(DirMuro2): PB(1) = PB(1) - mod2M * Sin(DirMuro2): PB(2) = PB(0)
-            DirPuntal = AcadUtil.AngleFromXAxis(P1, P2)
-            DirPuntal2 = AcadUtil.AngleFromXAxis(P2, P1)
+            DirPuntal = GcadUtil.AngleFromXAxis(P1, P2)
+            DirPuntal2 = GcadUtil.AngleFromXAxis(P2, P1)
             PBloque(0) = PA(0): PBloque(1) = PA(1): PBloque(2) = PA(2)
             Set b = ThisDrawing.Blocks.Add(PBloque, k)
             If (Abs(DirMuro1 - DirPuntal2) <= (PI / 2)) Or (Abs(DirMuro1 - DirPuntal2) >= ((3 * PI) / 2)) Then
@@ -1975,8 +2065,8 @@ Else
         End If
     Else
         Set b = ThisDrawing.Blocks.Add(PBloque, k)
-        DirPuntal = AcadUtil.AngleFromXAxis(P1, P2)
-        DirPuntal2 = AcadUtil.AngleFromXAxis(P2, P1)
+        DirPuntal = GcadUtil.AngleFromXAxis(P1, P2)
+        DirPuntal2 = GcadUtil.AngleFromXAxis(P2, P1)
         If (Abs(DirMuro1 - DirPuntal2) <= (PI / 2)) Or (Abs(DirMuro1 - DirPuntal2) >= ((3 * PI) / 2)) Then
             rutaplaca1 = rutaplaca1
             Set blockRef = ThisDrawing.Blocks.Item(k).InsertBlock(PA, rutaplaca1, Xs, Ys, Zs, DirMuro1)
@@ -2015,7 +2105,7 @@ End If
 
 Set Eje1 = ThisDrawing.Blocks.Item(k).AddLine(P1, P2)
 Eje1.Layer = "Nonplot"
-ANG = AcadUtil.AngleFromXAxis(P1, P2)
+ANG = GcadUtil.AngleFromXAxis(P1, P2)
 ANG2 = ANG + (PI / 2)
 
 x = P2(0) - P1(0)
@@ -2024,6 +2114,15 @@ Xs = 1
 Ys = 1
 Zs = 1
 Distancia = Val(Sqr((x ^ 2 + y ^ 2)))
+
+Dim Longitud As String, orientacion As String, Pinicio0 As String, Pinicio1 As String, Pinicio2 As String, PreMon As String
+
+
+Pinicio0 = CStr(P1(0))
+Pinicio1 = CStr(P1(1))
+Pinicio2 = CStr(P1(2))
+Longitud = CStr(Distancia)
+orientacion = CStr(ANG)
 
 If Distancia < lfija Then
         MsgBox "Medida de puntal " & Distancia & "mm, menor que el mínimo necesario de " & lfija & "."""
@@ -2043,22 +2142,22 @@ TxtPnt2(0) = TxtPnt2(0) + 860 * Cos(ANG2): TxtPnt2(1) = TxtPnt2(1) + 860 * Sin(A
 TxtPnt(0) = P1(0) + (Distancia / 2) * Cos(ANG): TxtPnt(1) = P1(1) + (Distancia / 2) * Sin(ANG): TxtPnt(2) = P1(2)
 TxtPnt(0) = TxtPnt(0) + 410 * Cos(ANG2): TxtPnt(1) = TxtPnt(1) + 410 * Sin(ANG2): TxtPnt(2) = TxtPnt(2)
 
-Set objAcadDimAligned = AcadModel.AddDimAligned(P1, P2, TxtPnt)
-objAcadDimAligned.PrimaryUnitsPrecision = acDimPrecisionZero
-objAcadDimAligned.StyleName = "MODELO"
-objAcadDimAligned.TextStyle = "SIMPLEX"
-objAcadDimAligned.VerticalTextPosition = acOutside
-objAcadDimAligned.Update
-objAcadDimAligned.Layer = "Dimension"
+Set objGcadDimAligned = GcadModel.AddDimAligned(P1, P2, TxtPnt)
+objGcadDimAligned.PrimaryUnitsPrecision = acDimPrecisionZero
+objGcadDimAligned.StyleName = "MODELO"
+objGcadDimAligned.TextStyle = "SIMPLEX"
+objGcadDimAligned.VerticalTextPosition = acOutside
+objGcadDimAligned.Update
+objGcadDimAligned.Layer = "Dimension"
 
 
-Set objAcadDimAligned = AcadModel.AddDimAligned(PBP, PAP, TxtPnt2)
-objAcadDimAligned.PrimaryUnitsPrecision = acDimPrecisionZero
-objAcadDimAligned.StyleName = "MODELO"
-objAcadDimAligned.TextStyle = "SIMPLEX"
-objAcadDimAligned.VerticalTextPosition = acOutside
-objAcadDimAligned.Update
-objAcadDimAligned.Layer = "Dimension"
+Set objGcadDimAligned = GcadModel.AddDimAligned(PBP, PAP, TxtPnt2)
+objGcadDimAligned.PrimaryUnitsPrecision = acDimPrecisionZero
+objGcadDimAligned.StyleName = "MODELO"
+objGcadDimAligned.TextStyle = "SIMPLEX"
+objGcadDimAligned.VerticalTextPosition = acOutside
+objGcadDimAligned.Update
+objGcadDimAligned.Layer = "Dimension"
 
 
 If dato2 = "PS6" Then
@@ -2487,14 +2586,14 @@ If carga < 2900 Then
     TxtPnt3(0) = PGato1(0) + (D_Gato / 2) * Cos(ANG): TxtPnt3(1) = PGato1(1) + (D_Gato / 2) * Sin(ANG): TxtPnt3(2) = PGato1(2)
     TxtPnt3(0) = TxtPnt3(0) - 350 * Cos(ANG2): TxtPnt3(1) = TxtPnt3(1) - 350 * Sin(ANG2): TxtPnt3(2) = TxtPnt3(2)
 
-    Set objAcadDimAligned = AcadModel.AddDimAligned(PGato1, PGato2, TxtPnt3)
-    objAcadDimAligned.PrimaryUnitsPrecision = acDimPrecisionZero
-    objAcadDimAligned.StyleName = "MODELO"
-    objAcadDimAligned.TextStyle = "SIMPLEX"
-    objAcadDimAligned.VerticalTextPosition = acOutside
+    Set objGcadDimAligned = GcadModel.AddDimAligned(PGato1, PGato2, TxtPnt3)
+    objGcadDimAligned.PrimaryUnitsPrecision = acDimPrecisionZero
+    objGcadDimAligned.StyleName = "MODELO"
+    objGcadDimAligned.TextStyle = "SIMPLEX"
+    objGcadDimAligned.VerticalTextPosition = acOutside
     
-    objAcadDimAligned.Layer = "Dimension"
-    objAcadDimAligned.Update
+    objGcadDimAligned.Layer = "Dimension"
+    objGcadDimAligned.Update
 
 
     Punto_inial(0) = (Punto_final(0) + Punto_final2(0)) / 2: Punto_inial(1) = (Punto_final(1) + Punto_final2(1)) / 2: Punto_inial(2) = (Punto_final(2) + Punto_final2(2)) / 2
@@ -2562,18 +2661,39 @@ Else
     TxtPnt3(0) = PGato1(0) + (D_Gato / 2) * Cos(ANG): TxtPnt3(1) = PGato1(1) + (D_Gato / 2) * Sin(ANG): TxtPnt3(2) = PGato1(2)
     TxtPnt3(0) = TxtPnt3(0) - 350 * Cos(ANG2): TxtPnt3(1) = TxtPnt3(1) - 350 * Sin(ANG2): TxtPnt3(2) = TxtPnt3(2)
 
-    Set objAcadDimAligned = AcadModel.AddDimAligned(PGato1, PGato2, TxtPnt3)
-    objAcadDimAligned.PrimaryUnitsPrecision = acDimPrecisionZero
-    objAcadDimAligned.StyleName = "MODELO"
-    objAcadDimAligned.TextStyle = "SIMPLEX"
-    objAcadDimAligned.VerticalTextPosition = acOutside
-    objAcadDimAligned.Update
-    objAcadDimAligned.Layer = "Dimension"
-    objAcadDimAligned.Update
+    Set objGcadDimAligned = GcadModel.AddDimAligned(PGato1, PGato2, TxtPnt3)
+    objGcadDimAligned.PrimaryUnitsPrecision = acDimPrecisionZero
+    objGcadDimAligned.StyleName = "MODELO"
+    objGcadDimAligned.TextStyle = "SIMPLEX"
+    objGcadDimAligned.VerticalTextPosition = acOutside
+    objGcadDimAligned.Update
+    objGcadDimAligned.Layer = "Dimension"
+    objGcadDimAligned.Update
 End If
 
 
+
 enchufarp6:
+
+PreMon = ""
+Dim NamePre As GcadAttribute
+Set NamePre = b.AddAttribute(1, acAttributeModeInvisible, "ey", P1, "NombrePremontaje", PreMon)
+
+Dim longitudatt As GcadAttribute
+Set longitudatt = b.AddAttribute(1, acAttributeModeInvisible, "ey", P1, "Longitud", Longitud)
+        
+Dim orientacionatt As GcadAttribute
+Set orientacionatt = b.AddAttribute(1, acAttributeModeInvisible, "ey", P1, "Orientacion", orientacion)
+           
+Dim cooordenadainicio0 As GcadAttribute
+Set cooordenadainicio0 = b.AddAttribute(1, acAttributeModeInvisible, "ey", P1, "Coordenada0", Pinicio0)
+        
+Dim cooordenadainicio1 As GcadAttribute
+Set cooordenadainicio1 = b.AddAttribute(1, acAttributeModeInvisible, "ey", P1, "Coordenada1", Pinicio1)
+        
+Dim cooordenadainicio2 As GcadAttribute
+Set cooordenadainicio2 = b.AddAttribute(1, acAttributeModeInvisible, "ey", P1, "Coordenada2", Pinicio2)
+
 Set blockRef = ThisDrawing.ModelSpace.InsertBlock(PBloque, k, Xs, Ys, Zs, 0)
 blockRef.Layer = "NoContable"
 blockRef.Update
@@ -2619,9 +2739,9 @@ Dim ruta3 As String
 Dim ruta4 As String
 Dim rutapl1 As String
 Dim rutapl2 As String
-Dim AcadDoc As Object
-Dim AcadUtil As Object
-Dim AcadModel As Object
+Dim GcadDoc As Object
+Dim GcadUtil As Object
+Dim GcadModel As Object
 Dim x As Double
 Dim y As Double
 Dim z As Double
@@ -2714,7 +2834,7 @@ Dim dato4 As String
 Dim dato5 As String
 Dim tipoplaca1 As String
 Dim tipoplaca2 As String
-Dim objAcadDimAligned As AcadDimAligned
+Dim objGcadDimAligned As GcadDimAligned
 Dim plalz As String
 Dim capa As String
 Dim condicion As Boolean
@@ -2724,24 +2844,24 @@ Dim Ncapa As String
 Dim Gcapa As Object, b As Object
 Dim TxtPnt3(0 To 2) As Double
 
-Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
-Set AcadModel = AcadDoc.ModelSpace
-Set AcadUtil = AcadDoc.Utility
+Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+Set GcadModel = GcadDoc.ModelSpace
+Set GcadUtil = GcadDoc.Utility
 
 On Error GoTo terminar
 repite = 1
 
 Ncapa = "NoContable"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 40
 Ncapa = "Mega"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 30
 Ncapa = "Pipeshor4S"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 7
 Ncapa = "Pipeshor4L"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 5
 
 'Valores fijos
@@ -2865,7 +2985,7 @@ P2(0) = punto2(0): P2(1) = punto2(1): P2(2) = punto2(2)
 
 Set Eje1 = ThisDrawing.Blocks.Item(k).AddLine(P1, P2)
 Eje1.Layer = "Nonplot"
-ANG = AcadUtil.AngleFromXAxis(P1, P2)
+ANG = GcadUtil.AngleFromXAxis(P1, P2)
 ANG2 = ANG + (PI / 2)
 
 x = P2(0) - P1(0)
@@ -2874,6 +2994,7 @@ Xs = 1
 Ys = 1
 Zs = 1
 Distancia = Val(Sqr((x ^ 2 + y ^ 2)))
+
 
 If Distancia < lfija Then
         MsgBox "Medida de puntal " & Distancia & "mm, menor que el mínimo necesario de " & lfija & "."""
@@ -3236,13 +3357,13 @@ D_Gato = Val(Sqr((x5 ^ 2 + y5 ^ 2)))
 TxtPnt3(0) = PGato1(0) + (D_Gato / 2) * Cos(ANG): TxtPnt3(1) = PGato1(1) + (D_Gato / 2) * Sin(ANG): TxtPnt3(2) = PGato1(2)
 TxtPnt3(0) = TxtPnt3(0) - 350 * Cos(ANG2): TxtPnt3(1) = TxtPnt3(1) - 350 * Sin(ANG2): TxtPnt3(2) = TxtPnt3(2)
 
-Set objAcadDimAligned = AcadModel.AddDimAligned(PGato1, PGato2, TxtPnt3)
-objAcadDimAligned.PrimaryUnitsPrecision = acDimPrecisionZero
-objAcadDimAligned.StyleName = "MODELO"
-objAcadDimAligned.TextStyle = "SIMPLEX"
-objAcadDimAligned.VerticalTextPosition = acOutside
-objAcadDimAligned.Update
-objAcadDimAligned.Layer = "Dimension"
+Set objGcadDimAligned = GcadModel.AddDimAligned(PGato1, PGato2, TxtPnt3)
+objGcadDimAligned.PrimaryUnitsPrecision = acDimPrecisionZero
+objGcadDimAligned.StyleName = "MODELO"
+objGcadDimAligned.TextStyle = "SIMPLEX"
+objGcadDimAligned.VerticalTextPosition = acOutside
+objGcadDimAligned.Update
+objGcadDimAligned.Layer = "Dimension"
 
 
 'Set blockRef = ThisDrawing.ModelSpace.InsertBlock(P1, k, Xs, Ys, Zs, 0)
@@ -3301,9 +3422,9 @@ End Function
 Sub p6(punto1 As Variant, punto2 As Variant, carga As Double, vista As String, k As String)
 
 Dim rutaps As String, rutap6 As String, rutator As String, rutags As String, rutapl As String
-Dim AcadDoc As Object
-Dim AcadUtil As Object
-Dim AcadModel As Object
+Dim GcadDoc As Object
+Dim GcadUtil As Object
+Dim GcadModel As Object
 Dim x As Double
 Dim y As Double
 Dim z As Double
@@ -3372,24 +3493,24 @@ Dim i As Integer
 Dim Ncapa As String
 Dim Gcapa As Object
 
-Set AcadDoc = GetObject(, "Autocad.Application").ActiveDocument
-Set AcadModel = AcadDoc.ModelSpace
-Set AcadUtil = AcadDoc.Utility
+Set GcadDoc = GetObject(, "Gcad.Application").ActiveDocument
+Set GcadModel = GcadDoc.ModelSpace
+Set GcadUtil = GcadDoc.Utility
 
 Ncapa = "NoContable"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 40
 Ncapa = "Pipeshor4S"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 7
 Ncapa = "Pipeshor6"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 7
 Ncapa = "Pipeshor4L"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 5
 Ncapa = "Nonplot"
-Set Gcapa = AcadDoc.Layers.Add(Ncapa)
+Set Gcapa = GcadDoc.Layers.Add(Ncapa)
 Gcapa.color = 50
 
 rutaps = "C:\Users\" & Environ$("Username") & "\Incye\Ingenieria - Documentos\12_Aplicaciones\MACROS_21\Automaticos_Biblioteca\Pshor_4S\"
@@ -3488,8 +3609,8 @@ If dato4 = "" Or dato4 = "A" Then
 
 
         'Geometría:
-        'punto1 = AcadUtil.GetPoint(, "1º Punto: ")
-        'punto2 = AcadUtil.GetPoint(punto1, "2º Punto: ")
+        'punto1 = GcadUtil.GetPoint(, "1º Punto: ")
+        'punto2 = GcadUtil.GetPoint(punto1, "2º Punto: ")
         P1(0) = punto1(0): P1(1) = punto1(1): P1(2) = punto1(2)
         P2(0) = punto2(0): P2(1) = punto2(1): P2(2) = punto2(2)
         
@@ -3516,7 +3637,7 @@ If dato4 = "" Or dato4 = "A" Then
             'If Respuesta = "Sobreescribir" Or Respuesta = "" Then
             '
             ''    For Each entity In ThisDrawing.ModelSpace
-           '         If TypeOf entity Is AcadBlockReference Then
+           '         If TypeOf entity Is GcadBlockReference Then
           '              If entity.effectiveName = k Then
          '                   entity.Delete
         '                End If
@@ -3535,7 +3656,7 @@ If dato4 = "" Or dato4 = "A" Then
         
         'Set Eje1 = ThisDrawing.Blocks.Item(k).AddLine(P1, P2)
         'Eje1.Layer = "Nonplot"
-        ANG = AcadUtil.AngleFromXAxis(P1, P2)
+        ANG = GcadUtil.AngleFromXAxis(P1, P2)
 
         x = P2(0) - P1(0)
         y = P2(1) - P1(1)
@@ -3584,6 +3705,9 @@ If dato4 = "" Or dato4 = "A" Then
         
         Dim lpprueba As Double
         lpprueba = lpuntal
+        Dim reg560 As String
+        Dim reg280 As String
+        
         'Dim carga As Double
         
         'carga = InputBox("introduzca carga")
@@ -3611,34 +3735,48 @@ If dato4 = "" Or dato4 = "A" Then
             ' se puede colocar el P6 en el medio
             nfusible = 1
             n280 = 0
+            reg280 = "no"
+            reg560 = "no"
             Case 115 To 140
             ' se puede colocar el P6 en el medio
             nfusible = 2
             n280 = 0
+            reg280 = "no"
+            reg560 = "no"
             Case 140 To 280
             ' ajustar el P6 para una de 280
             nfusible = 2
             n280 = 1
+            reg280 = "si"
+            reg560 = "no"
             Case 280 To 385
             ' ajustar el P6 para una más de 560
             nfusible = 1
             n560 = n560 + 1
             n280 = 0
+            reg280 = "no"
+            reg560 = "si"
             Case 385 To 470
             ' ajustar el P6 para una más de 560
             nfusible = 2
             n560 = n560 + 1
             n280 = 0
+            reg280 = "no"
+            reg560 = "si"
             Case 470 To 510
             ' ajustar el P6 para una más de 560 y una de 280
             nfusible = 1
             n560 = n560 + 1
             n280 = 1
+            reg280 = "si"
+            reg560 = "si"
             Case 510 To 560
             ' ajustar el P6 para una más de 560 y una de 280
             nfusible = 2
             n560 = n560 + 1
             n280 = 1
+            reg280 = "si"
+            reg560 = "si"
             Case Else
             MsgBox "Longitud no controlada " & lpuntal & "mm, fuera de rango, revisar código"
             GoTo terminar
@@ -3669,24 +3807,35 @@ If dato4 = "" Or dato4 = "A" Then
             Case 0 To 85
             ' se puede colocar el P6 en el medio
             nfusible = 1
+            reg560 = "no"
+            reg280 = "no"
             Case 85 To 180
             ' se puede colocar el P6 en el medio
             nfusible = 2
+            reg560 = "no"
+            reg280 = "no"
             Case 180 To 270
             ' se puede colocar el P6 en el medio
             nfusible = 3
+            reg280 = "no"
             Case 270 To 360
             ' ajustar el P6 para una más de 560
             nfusible = 1
             n560 = n560 + 1
+            reg280 = "no"
+            reg560 = "si"
             Case 360 To 460
             ' ajustar el P6 para una más de 560
             nfusible = 2
             n560 = n560 + 1
+            reg280 = "no"
+            reg560 = "si"
             Case 460 To 560
             ' ajustar el P6 para una más de 560
             nfusible = 3
             n560 = n560 + 1
+            reg280 = "no"
+            reg560 = "si"
             Case Else
             MsgBox "Longitud no controlada " & lpuntal & "mm, fuera de rango, revisar código"
             GoTo terminar
@@ -4248,6 +4397,8 @@ End If
 
 terminar:
 End Sub
+
+
 
 
 
